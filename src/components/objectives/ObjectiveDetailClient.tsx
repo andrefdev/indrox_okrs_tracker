@@ -12,6 +12,7 @@ import { RisksTab } from "./tabs/RisksTab";
 import { DependenciesTab } from "./tabs/DependenciesTab";
 import { DecisionsTab } from "./tabs/DecisionsTab";
 import type { OkrCycle } from "@/db/schema/okr";
+import type { Owner } from "@/db/schema/core";
 
 // Type for objective with all relations
 interface ObjectiveWithRelations {
@@ -31,6 +32,9 @@ interface ObjectiveWithRelations {
 interface ObjectiveDetailClientProps {
     objective: ObjectiveWithRelations;
     cycles: OkrCycle[];
+    owners: Owner[];
+    allInitiatives: any[];
+    allObjectives: any[];
 }
 
 const tabs = [
@@ -47,6 +51,9 @@ const tabs = [
 export function ObjectiveDetailClient({
     objective,
     cycles,
+    owners,
+    allInitiatives,
+    allObjectives,
 }: ObjectiveDetailClientProps) {
     const [activeTab, setActiveTab] = useState("overview");
 
@@ -75,6 +82,7 @@ export function ObjectiveDetailClient({
                         entityId={objective.objective.objectiveKey}
                         checkins={objective.checkins}
                         keyResults={objective.keyResults}
+                        owners={owners}
                     />
                 );
             case "evidence":
@@ -84,6 +92,7 @@ export function ObjectiveDetailClient({
                         entityId={objective.objective.objectiveKey}
                         evidence={objective.evidence}
                         keyResults={objective.keyResults}
+                        owners={owners}
                     />
                 );
             case "risks":
@@ -92,6 +101,7 @@ export function ObjectiveDetailClient({
                         entityType="objective"
                         entityId={objective.objective.objectiveKey}
                         risks={objective.risks}
+                        owners={owners}
                     />
                 );
             case "dependencies":
@@ -100,6 +110,8 @@ export function ObjectiveDetailClient({
                         entityType="objective"
                         entityId={objective.objective.objectiveKey}
                         dependencies={objective.dependencies}
+                        initiatives={allInitiatives}
+                        objectives={allObjectives}
                     />
                 );
             case "decisions":
@@ -108,6 +120,7 @@ export function ObjectiveDetailClient({
                         entityType="objective"
                         entityId={objective.objective.objectiveKey}
                         decisions={objective.decisions}
+                        owners={owners}
                     />
                 );
             default:

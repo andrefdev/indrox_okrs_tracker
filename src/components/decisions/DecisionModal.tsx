@@ -21,13 +21,17 @@ interface DecisionModalProps {
     onClose: () => void;
     decision: DecisionLog | null;
     owners: Owner[];
+    entityType?: string;
+    entityId?: string;
 }
 
 export function DecisionModal({
     isOpen,
     onClose,
     decision,
-    owners
+    owners,
+    entityType,
+    entityId,
 }: DecisionModalProps) {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,6 +47,8 @@ export function DecisionModal({
             decisionDate: formData.get("decisionDate") as string,
             ownerId: formData.get("ownerId") as string | null,
             evidenceUrl: formData.get("evidenceUrl") as string,
+            entityType: (formData.get("entityType") as any) || entityType,
+            entityId: (formData.get("entityId") as string) || entityId,
         };
 
         try {
@@ -68,6 +74,13 @@ export function DecisionModal({
                 <Modal.Container>
                     <Modal.Dialog>
                         <form onSubmit={handleSubmit}>
+                            {/* Hidden inputs to preserve context if not editing */}
+                            {!decision && (
+                                <>
+                                    <input type="hidden" name="entityType" value={entityType} />
+                                    <input type="hidden" name="entityId" value={entityId} />
+                                </>
+                            )}
                             <Modal.Header>
                                 <Modal.Heading>
                                     {decision ? "Editar Decisión" : "Registrar Decisión"}

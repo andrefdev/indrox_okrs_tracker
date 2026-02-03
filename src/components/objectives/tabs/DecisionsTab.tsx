@@ -2,19 +2,24 @@
 
 import { Card, Button } from "@heroui/react";
 import { Plus, FileCheck, ExternalLink } from "lucide-react";
+import { useState } from "react";
+import { DecisionModal } from "@/components/decisions/DecisionModal";
+import type { Owner } from "@/db/schema/core";
 
 interface DecisionsTabProps {
     entityType: string;
     entityId: string;
     decisions: any[];
+    owners: Owner[];
 }
 
-export function DecisionsTab({ entityType, entityId, decisions }: DecisionsTabProps) {
+export function DecisionsTab({ entityType, entityId, decisions, owners }: DecisionsTabProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Decisiones ({decisions.length})</h3>
-                <Button>
+                <Button onPress={() => setIsModalOpen(true)}>
                     <Plus className="h-4 w-4" />
                     Nueva Decisión
                 </Button>
@@ -93,6 +98,15 @@ export function DecisionsTab({ entityType, entityId, decisions }: DecisionsTabPr
                     </div>
                 </Card>
             )}
+
+            <DecisionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                decision={null}
+                owners={owners}
+                entityType={entityType}
+                entityId={entityId}
+            />
         </div>
     );
 }

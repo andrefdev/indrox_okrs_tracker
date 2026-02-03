@@ -3,15 +3,20 @@
 import { Card, Button } from "@heroui/react";
 import { Plus, Calendar, MessageSquare } from "lucide-react";
 import { StatusChip } from "@/components/ui";
+import { useState } from "react";
+import { ObjectiveCheckinModal } from "@/components/checkins/ObjectiveCheckinModal";
+import type { Owner } from "@/db/schema/core";
 
 interface CheckinsTabProps {
     entityType: string;
     entityId: string;
     checkins: any[];
     keyResults?: any[];
+    owners: Owner[];
 }
 
-export function CheckinsTab({ entityType, entityId, checkins, keyResults = [] }: CheckinsTabProps) {
+export function CheckinsTab({ entityType, entityId, checkins, keyResults = [], owners }: CheckinsTabProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     // Flatten and normalize check-ins
     const krCheckins = keyResults.flatMap(kr =>
         (kr.checkIns || []).map((c: any) => ({
@@ -48,7 +53,7 @@ export function CheckinsTab({ entityType, entityId, checkins, keyResults = [] }:
         <div className="mt-4 space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Check-ins ({allCheckins.length})</h3>
-                <Button>
+                <Button onPress={() => setIsModalOpen(true)}>
                     <Plus className="h-4 w-4" />
                     Nuevo Check-in
                 </Button>
@@ -145,6 +150,13 @@ export function CheckinsTab({ entityType, entityId, checkins, keyResults = [] }:
                     ))}
                 </div>
             )}
+
+            <ObjectiveCheckinModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                objectiveId={entityId}
+                owners={owners}
+            />
         </div>
     );
 }

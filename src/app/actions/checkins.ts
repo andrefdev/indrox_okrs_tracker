@@ -9,6 +9,7 @@ import {
     type NewKeyResultCheckIn,
     type NewCheckInEvidence
 } from "@/db/schema/okr";
+import { checkin, type NewCheckin } from "@/db/schema/okr-related";
 import { eq, desc } from "drizzle-orm";
 import { requireAuth } from "@/lib/auth";
 
@@ -64,6 +65,23 @@ export async function createCheckIn(
         revalidatePath(`/objectives/${updatedKr.objectiveId}`);
         return newCheckIn;
     });
+
+}
+
+/**
+ * Create a generic check-in (for Objectives/Initiatives)
+ */
+export async function createGenericCheckIn(data: NewCheckin) {
+    await requireAuth();
+
+    try {
+        const [newCheckIn] = await db.insert(checkin).values(data).returning();
+        revalidatePath(`/objectives/${data.entityId}`); // Assumes objectives generic checkin for now
+        return newCheckIn;
+    } catch (error) {
+        console.error("Error creating generic check-in:", error);
+        throw new Error("Failed to create check-in");
+    }
 }
 
 /**

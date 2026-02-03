@@ -2,11 +2,15 @@
 
 import { Card, Button } from "@heroui/react";
 import { Plus, AlertTriangle } from "lucide-react";
+import { useState } from "react";
+import { RiskModal } from "@/components/risks/RiskModal";
+import type { Owner } from "@/db/schema/core";
 
 interface RisksTabProps {
     entityType: string;
     entityId: string;
     risks: any[];
+    owners: Owner[];
 }
 
 const statusLabels: Record<string, { label: string; className: string }> = {
@@ -25,12 +29,25 @@ function getRiskScore(probability: number, impact: number) {
     return { label: "Bajo", className: "bg-success/20 text-success" };
 }
 
-export function RisksTab({ entityType, entityId, risks }: RisksTabProps) {
+export function RisksTab({ entityType, entityId, risks, owners }: RisksTabProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedRisk, setSelectedRisk] = useState<any>(null);
+
+    const handleCreateRisk = () => {
+        setSelectedRisk(null);
+        setIsModalOpen(true);
+    };
+
+    const handleEditRisk = (risk: any) => {
+        setSelectedRisk(risk);
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Riesgos ({risks.length})</h3>
-                <Button>
+                <Button onPress={handleCreateRisk}>
                     <Plus className="h-4 w-4" />
                     Nuevo Riesgo
                 </Button>
@@ -39,7 +56,7 @@ export function RisksTab({ entityType, entityId, risks }: RisksTabProps) {
             {risks.length === 0 ? (
                 <Card className="p-8 text-center">
                     <p className="text-default-500">No hay riesgos identificados.</p>
-                    <Button className="mt-4">
+                    <Button className="mt-4" onPress={handleCreateRisk}>
                         <Plus className="h-4 w-4" />
                         Registrar primer riesgo
                     </Button>
@@ -64,7 +81,11 @@ export function RisksTab({ entityType, entityId, risks }: RisksTabProps) {
                                     const statusConfig = statusLabels[risk.status] || statusLabels.open;
 
                                     return (
-                                        <tr key={risk.riskKey} className="hover:bg-default-50">
+                                        <tr
+                                            key={risk.riskKey}
+                                            className="hover:bg-default-50 cursor-pointer transition-colors"
+                                            onClick={() => handleEditRisk(risk)}
+                                        >
                                             <td className="px-4 py-3">
                                                 <div className="flex items-start gap-2">
                                                     <AlertTriangle className="h-4 w-4 text-warning mt-0.5" />
@@ -109,6 +130,15 @@ export function RisksTab({ entityType, entityId, risks }: RisksTabProps) {
                     </div>
                 </Card>
             )}
+
+            <RiskModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                risk={selectedRisk}
+                owners={owners}
+                entityType={entityType as any}
+                entityId={entityId}
+            />
         </div>
     );
 }

@@ -115,14 +115,12 @@ export function RiskModal({ isOpen, onClose, risk, owners, entityType = "initiat
                                     <div className="flex flex-col gap-2">
                                         <span className="text-small text-default-500">Probabilidad (1-5)</span>
                                         <Slider
-                                            size="sm"
                                             step={1}
                                             maxValue={5}
                                             minValue={1}
                                             defaultValue={1}
                                             value={probability}
-                                            // @ts-ignore
-                                            onChange={setProbability}
+                                            onChange={(val) => setProbability(val as number)}
                                             className="max-w-md"
                                         />
                                         <div className="flex justify-between text-xs text-default-400 px-1">
@@ -133,14 +131,12 @@ export function RiskModal({ isOpen, onClose, risk, owners, entityType = "initiat
                                     <div className="flex flex-col gap-2">
                                         <span className="text-small text-default-500">Impacto (1-5)</span>
                                         <Slider
-                                            size="sm"
                                             step={1}
                                             maxValue={5}
                                             minValue={1}
                                             defaultValue={1}
                                             value={impact}
-                                            // @ts-ignore
-                                            onChange={setImpact}
+                                            onChange={(val) => setImpact(val as number)}
                                             className="max-w-md"
                                         />
                                         <div className="flex justify-between text-xs text-default-400 px-1">

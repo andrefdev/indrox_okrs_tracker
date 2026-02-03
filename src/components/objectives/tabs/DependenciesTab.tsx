@@ -2,11 +2,15 @@
 
 import { Card, Button } from "@heroui/react";
 import { Plus, ArrowRight, ArrowLeft, Link2 } from "lucide-react";
+import { useState } from "react";
+import { DependencyModal } from "@/components/dependencies/DependencyModal";
 
 interface DependenciesTabProps {
     entityType: string;
     entityId: string;
     dependencies: any[];
+    initiatives: any[];
+    objectives: any[];
 }
 
 const typeLabels: Record<string, { label: string; icon: React.ReactNode }> = {
@@ -19,12 +23,15 @@ export function DependenciesTab({
     entityType,
     entityId,
     dependencies,
+    initiatives,
+    objectives,
 }: DependenciesTabProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Dependencias ({dependencies.length})</h3>
-                <Button>
+                <Button onPress={() => setIsModalOpen(true)}>
                     <Plus className="h-4 w-4" />
                     Nueva Dependencia
                 </Button>
@@ -85,6 +92,16 @@ export function DependenciesTab({
                     </div>
                 </Card>
             )}
+
+            <DependencyModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                dependency={null}
+                initiatives={initiatives}
+                objectives={objectives}
+                defaultFromType="objective"
+                defaultFromId={entityId}
+            />
         </div>
     );
 }

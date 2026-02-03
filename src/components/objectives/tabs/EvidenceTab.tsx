@@ -2,12 +2,16 @@
 
 import { Card, Button } from "@heroui/react";
 import { Plus, ExternalLink, FileText, Image, Video, Link2 } from "lucide-react";
+import { useState } from "react";
+import { EvidenceModal } from "@/components/evidence/EvidenceModal";
+import type { Owner } from "@/db/schema/core";
 
 interface EvidenceTabProps {
     entityType: string;
     entityId: string;
     evidence: any[];
     keyResults?: any[];
+    owners: Owner[];
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
@@ -26,7 +30,8 @@ const typeLabels: Record<string, string> = {
     other: "Otro",
 };
 
-export function EvidenceTab({ entityType, entityId, evidence, keyResults = [] }: EvidenceTabProps) {
+export function EvidenceTab({ entityType, entityId, evidence, keyResults = [], owners }: EvidenceTabProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     // Flatten and normalize evidence
     const krEvidence = keyResults.flatMap(kr =>
         (kr.checkIns || []).flatMap((c: any) =>
@@ -60,7 +65,7 @@ export function EvidenceTab({ entityType, entityId, evidence, keyResults = [] }:
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Evidencia ({allEvidence.length})</h3>
-                <Button>
+                <Button onPress={() => setIsModalOpen(true)}>
                     <Plus className="h-4 w-4" />
                     Adjuntar Evidencia
                 </Button>
@@ -131,6 +136,14 @@ export function EvidenceTab({ entityType, entityId, evidence, keyResults = [] }:
                     </div>
                 </Card>
             )}
+
+            <EvidenceModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                entityType={entityType}
+                entityId={entityId}
+                owners={owners}
+            />
         </div>
     );
 }

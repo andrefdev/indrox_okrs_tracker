@@ -29,7 +29,17 @@ export default async function AppLayout({
         }
 
         // User is authenticated and has an owner record - render the app
-        return <AppShell>{children}</AppShell>;
+        return (
+            <AppShell
+                user={{
+                    name: owner.fullName,
+                    email: owner.email,
+                    role: owner.role,
+                }}
+            >
+                {children}
+            </AppShell>
+        );
     } catch (error) {
         // Check if the error is specifically the Next.js Dynamic Usage error
         // If it is, we re-throw it so Next.js handles it (though force-dynamic should prevent it)

@@ -5,12 +5,19 @@ import { Button, Input, Avatar, Popover } from "@heroui/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
+interface UserData {
+    name: string;
+    email: string;
+    role: string;
+}
+
 interface TopbarProps {
     onMenuClick: () => void;
     sidebarCollapsed: boolean;
+    user: UserData;
 }
 
-export function Topbar({ onMenuClick }: TopbarProps) {
+export function Topbar({ onMenuClick, user }: TopbarProps) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -21,13 +28,6 @@ export function Topbar({ onMenuClick }: TopbarProps) {
 
     const toggleTheme = () => {
         setTheme(theme === "dark" ? "light" : "dark");
-    };
-
-    // Placeholder user data - replace with actual auth context
-    const user = {
-        name: "John Doe",
-        email: "john@example.com",
-        role: "CEO",
     };
 
     return (

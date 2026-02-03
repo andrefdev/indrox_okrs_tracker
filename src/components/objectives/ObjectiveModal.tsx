@@ -150,6 +150,7 @@ export function ObjectiveModal({
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Incrementar MRR en 30%"
+                                    color="primary"
                                     required
                                 />
                             </div>

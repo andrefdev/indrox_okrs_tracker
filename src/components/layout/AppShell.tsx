@@ -4,11 +4,18 @@ import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { useState } from "react";
 
-interface AppShellProps {
-    children: React.ReactNode;
+interface UserData {
+    name: string;
+    email: string;
+    role: string;
 }
 
-export function AppShell({ children }: AppShellProps) {
+interface AppShellProps {
+    children: React.ReactNode;
+    user: UserData;
+}
+
+export function AppShell({ children, user }: AppShellProps) {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -52,6 +59,7 @@ export function AppShell({ children }: AppShellProps) {
                 <Topbar
                     onMenuClick={() => setMobileSidebarOpen(true)}
                     sidebarCollapsed={!sidebarOpen}
+                    user={user}
                 />
                 <main className="min-h-[calc(100vh-64px)] p-4 md:p-6">
                     {children}

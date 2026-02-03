@@ -1,153 +1,83 @@
-/* Tailwind CSS v4 - Must be first */
 @import "tailwindcss";
-
-/* HeroUI v3 styles - Must be after Tailwind */
 @import "@heroui/styles";
 
-/* Custom theme variables */
-:root {
-  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+/*
+ * HeroUI Theme Customization
+ * Add this to your global.css after importing @heroui/styles
+ * Only includes base variables from variables.css
+ * @see https://v3.heroui.com/docs/react/getting-started/theming
+ */
+
+:root,
+.light,
+.default,
+[data-theme="light"],
+[data-theme="default"] {
+    /* Theme Colors (Light Mode) */
+    --accent: oklch(77.00% 0.1300 305.00);
+    --accent-foreground: oklch(15% 0.0260 305.00);
+    --background: oklch(97.02% 0.0015 305.00);
+    --border: oklch(90.00% 0.0015 305.00);
+    --danger: oklch(65.32% 0.2335 31.88);
+    --danger-foreground: oklch(99.11% 0 0);
+    --default: oklch(94.00% 0.0015 305.00);
+    --default-foreground: oklch(21.03% 0.0059 305.00);
+    --field-background: oklch(100.00% 0.0008 305.00);
+    --field-foreground: oklch(21.03% 0.0059 305.00);
+    --field-placeholder: oklch(55.17% 0.0030 305.00);
+    --focus: oklch(77.00% 0.1300 305.00);
+    --foreground: oklch(21.03% 0.0059 305.00);
+    --muted: oklch(55.17% 0.0030 305.00);
+    --overlay: oklch(100.00% 0.0004 305.00);
+    --overlay-foreground: oklch(21.03% 0.0059 305.00);
+    --scrollbar: oklch(87.10% 0.0015 305.00);
+    --segment: oklch(100.00% 0.0015 305.00);
+    --segment-foreground: oklch(21.03% 0.0059 305.00);
+    --separator: oklch(92.00% 0.0015 305.00);
+    --success: oklch(73.29% 0.1941 156.95);
+    --success-foreground: oklch(21.03% 0.0059 156.95);
+    --surface: oklch(100.00% 0.0008 305.00);
+    --surface-foreground: oklch(21.03% 0.0059 305.00);
+    --warning: oklch(78.19% 0.1590 78.47);
+    --warning-foreground: oklch(21.03% 0.0059 78.47);
+
+    /* Border Radius */
+    --radius: 0.5rem;
+    --field-radius: 0.75rem;
+
+    /* Font Family */
+    /* Make sure to load Inter font in your app */
+    --font-sans: var(--font-inter);
 }
 
-/* Body defaults */
-body {
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Sidebar width token */
-@theme inline {
-  --sidebar-width: 260px;
-  --topbar-height: 64px;
-}
-
-/* ============================================
-   HeroUI Form Improvements
-   ============================================ */
-
-/* Force vertical layout for form field containers */
-.space-y-2:has([data-slot="input-wrapper"]),
-.space-y-2:has([data-slot="trigger"]),
-.space-y-2:has([data-slot="text-area"]),
-.space-y-4:has([data-slot="input-wrapper"]),
-.space-y-4:has([data-slot="trigger"]) {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-/* TextField component - force vertical layout */
-[data-slot="text-field"],
-[data-slot="text-area"] {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-/* Label styling - ensure it's above the input */
-[data-slot="label"] {
-  margin-bottom: 0.25rem;
-}
-
-/* Ensure inputs and selects take full width */
-[data-slot="input-wrapper"],
-[data-slot="trigger"],
-[data-slot="base"]:has([data-slot="input-wrapper"]),
-[data-slot="base"]:has([data-slot="trigger"]) {
-  width: 100%;
-}
-
-/* Input styling with visible borders */
-[data-slot="input-wrapper"] {
-  border: 1px solid hsl(240 5% 84%);
-  border-radius: 0.5rem;
-  background-color: hsl(0 0% 100%);
-  transition: border-color 0.15s ease, outline 0.15s ease;
-}
-
-[data-slot="input-wrapper"]:hover {
-  border-color: hsl(240 5% 65%);
-}
-
-[data-slot="input-wrapper"]:focus-within {
-  border-color: hsl(212 100% 48%);
-  outline: 2px solid hsl(212 100% 48% / 0.3);
-  outline-offset: 1px;
-}
-
-/* Select trigger styling */
-[data-slot="trigger"] {
-  border: 1px solid hsl(240 5% 84%);
-  border-radius: 0.5rem;
-  background-color: hsl(0 0% 100%);
-  transition: border-color 0.15s ease, outline 0.15s ease;
-}
-
-[data-slot="trigger"]:hover {
-  border-color: hsl(240 5% 65%);
-}
-
-[data-slot="trigger"]:focus,
-[data-slot="trigger"][data-open="true"] {
-  border-color: hsl(212 100% 48%);
-  outline: 2px solid hsl(212 100% 48% / 0.3);
-  outline-offset: 1px;
-}
-
-/* TextArea base container - force vertical layout */
-[data-slot="text-area"] {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-/* TextArea inner wrapper */
-[data-slot="input-wrapper"]:has(textarea) {
-  width: 100%;
-}
-
-/* TextArea input styling */
-[data-slot="input"]:is(textarea) {
-  width: 100%;
-  border: 1px solid hsl(240 5% 84%);
-  border-radius: 0.5rem;
-  background-color: hsl(0 0% 100%);
-  transition: border-color 0.15s ease, outline 0.15s ease;
-}
-
-[data-slot="input"]:is(textarea):hover {
-  border-color: hsl(240 5% 65%);
-}
-
-[data-slot="input"]:is(textarea):focus {
-  border-color: hsl(212 100% 48%);
-  outline: 2px solid hsl(212 100% 48% / 0.3);
-  outline-offset: 1px;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-
-  [data-slot="input-wrapper"],
-  [data-slot="trigger"],
-  [data-slot="input"]:is(textarea) {
-    border-color: hsl(240 5% 26%);
-    background-color: hsl(240 6% 10%);
-  }
-
-  [data-slot="input-wrapper"]:hover,
-  [data-slot="trigger"]:hover,
-  [data-slot="input"]:is(textarea):hover {
-    border-color: hsl(240 5% 40%);
-  }
-
-  [data-slot="input-wrapper"]:focus-within,
-  [data-slot="trigger"]:focus,
-  [data-slot="trigger"][data-open="true"],
-  [data-slot="input"]:is(textarea):focus {
-    border-color: hsl(212 100% 60%);
-    outline-color: hsl(212 100% 60% / 0.3);
-  }
+.dark,
+[data-theme="dark"] {
+    color-scheme: dark;
+    /* Theme Colors (Dark Mode) */
+    --accent: oklch(77.00% 0.1300 305.00);
+    --accent-foreground: oklch(15% 0.0260 305.00);
+    --background: oklch(12.00% 0.0015 305.00);
+    --border: oklch(28.00% 0.0015 305.00);
+    --danger: oklch(59.40% 0.1973 30.77);
+    --danger-foreground: oklch(99.11% 0 0);
+    --default: oklch(27.40% 0.0015 305.00);
+    --default-foreground: oklch(99.11% 0 0);
+    --field-background: oklch(24.924% 0.00239 325.096);
+    --field-foreground: oklch(99.11% 0.0000 0.00);
+    --field-placeholder: oklch(70.50% 0.0030 305.00);
+    --focus: oklch(77.00% 0.1300 305.00);
+    --foreground: oklch(99.11% 0.0000 0.00);
+    --muted: oklch(70.50% 0.0030 305.00);
+    --overlay: oklch(21.03% 0.0030 305.00);
+    --overlay-foreground: oklch(99.11% 0.0000 0.00);
+    --scrollbar: oklch(70.50% 0.0015 305.00);
+    --segment: oklch(39.64% 0.0015 305.00);
+    --segment-foreground: oklch(99.11% 0.0000 0.00);
+    --separator: oklch(25.00% 0.0015 305.00);
+    --success: oklch(73.29% 0.1941 156.95);
+    --success-foreground: oklch(21.03% 0.0059 156.95);
+    --surface: oklch(21.03% 0.0030 305.00);
+    --surface-foreground: oklch(99.11% 0.0000 0.00);
+    --warning: oklch(82.03% 0.1392 82.48);
+    --warning-foreground: oklch(21.03% 0.0059 82.48);
 }

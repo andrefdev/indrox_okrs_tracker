@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, Button, Input, Select, ListBoxItem } from "@heroui/react";
+import { Card, Button, Input, Select, ListBox, ListBoxItem } from "@heroui/react";
 import { Plus, Search } from "lucide-react";
 import { ObjectivesTable } from "./ObjectivesTable";
 import { ObjectiveModal } from "./ObjectiveModal";
@@ -118,16 +118,20 @@ export function ObjectivesClient({
                         }
                         className="w-40"
                     >
-                        <Select.Trigger />
+                        <Select.Trigger>
+                            <Select.Value />
+                        </Select.Trigger>
                         <Select.Popover>
-                            <ListBoxItem key="all" id="all">
-                                Todos los ciclos
-                            </ListBoxItem>
-                            {cycles.map((cycle) => (
-                                <ListBoxItem key={cycle.cycleId} id={cycle.cycleId}>
-                                    {cycle.name}
+                            <ListBox>
+                                <ListBoxItem key="all" id="all">
+                                    Todos los ciclos
                                 </ListBoxItem>
-                            ))}
+                                {cycles.map((cycle) => (
+                                    <ListBoxItem key={cycle.cycleId} id={cycle.cycleId}>
+                                        {cycle.name}
+                                    </ListBoxItem>
+                                ))}
+                            </ListBox>
                         </Select.Popover>
                     </Select>
 
@@ -139,16 +143,20 @@ export function ObjectivesClient({
                         }
                         className="w-40"
                     >
-                        <Select.Trigger />
+                        <Select.Trigger>
+                            <Select.Value />
+                        </Select.Trigger>
                         <Select.Popover>
-                            {statusOptions.map((opt) => (
-                                <ListBoxItem
-                                    key={opt.value || "all"}
-                                    id={opt.value || "all"}
-                                >
-                                    {opt.label}
-                                </ListBoxItem>
-                            ))}
+                            <ListBox>
+                                {statusOptions.map((opt) => (
+                                    <ListBoxItem
+                                        key={opt.value || "all"}
+                                        id={opt.value || "all"}
+                                    >
+                                        {opt.label}
+                                    </ListBoxItem>
+                                ))}
+                            </ListBox>
                         </Select.Popover>
                     </Select>
 
@@ -162,14 +170,16 @@ export function ObjectivesClient({
                     >
                         <Select.Trigger />
                         <Select.Popover>
-                            {priorityOptions.map((opt) => (
-                                <ListBoxItem
-                                    key={opt.value || "all"}
-                                    id={opt.value || "all"}
-                                >
-                                    {opt.label}
-                                </ListBoxItem>
-                            ))}
+                            <ListBox>
+                                {priorityOptions.map((opt) => (
+                                    <ListBoxItem
+                                        key={opt.value || "all"}
+                                        id={opt.value || "all"}
+                                    >
+                                        {opt.label}
+                                    </ListBoxItem>
+                                ))}
+                            </ListBox>
                         </Select.Popover>
                     </Select>
 

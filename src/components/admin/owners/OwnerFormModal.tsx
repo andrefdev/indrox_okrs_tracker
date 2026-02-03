@@ -122,156 +122,157 @@ export function OwnerFormModal({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
-            <Modal.Backdrop />
-            <Modal.Container>
-                <Modal.Dialog>
-                    <Modal.CloseTrigger />
-                    <Modal.Header>
-                        <Modal.Heading>
-                            {ownerToEdit ? "Editar Owner" : "Nuevo Owner"}
-                        </Modal.Heading>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form id="owner-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                            <Controller
-                                name="fullName"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        isInvalid={!!errors.fullName}
-                                        className="w-full"
-                                    >
-                                        <Label>Nombre Completo</Label>
-                                        <Input
-                                            {...field}
-                                            placeholder="ej. John Doe"
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger />
+                        <Modal.Header>
+                            <Modal.Heading>
+                                {ownerToEdit ? "Editar Owner" : "Nuevo Owner"}
+                            </Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <form id="owner-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                                <Controller
+                                    name="fullName"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            isInvalid={!!errors.fullName}
                                             className="w-full"
-                                        />
-                                        <FieldError>{errors.fullName?.message}</FieldError>
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name="email"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        isInvalid={!!errors.email}
-                                        className="w-full"
-                                    >
-                                        <Label>Email</Label>
-                                        <Input
-                                            {...field}
-                                            placeholder="ej. john@example.com"
+                                        >
+                                            <Label>Nombre Completo</Label>
+                                            <Input
+                                                {...field}
+                                                placeholder="ej. John Doe"
+                                                className="w-full"
+                                            />
+                                            <FieldError>{errors.fullName?.message}</FieldError>
+                                        </TextField>
+                                    )}
+                                />
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            isInvalid={!!errors.email}
                                             className="w-full"
-                                        />
-                                        <FieldError>{errors.email?.message}</FieldError>
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name="role"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select
-                                        selectedKey={field.value}
-                                        onSelectionChange={(key) => field.onChange(key)}
-                                        isInvalid={!!errors.role}
-                                        className="w-full"
-                                        placeholder="Selecciona un rol"
-                                    >
-                                        <Label>Rol</Label>
-                                        <Select.Trigger>
-                                            <Select.Value />
-                                        </Select.Trigger>
-                                        <Select.Popover>
-                                            <ListBox>
-                                                {roles.map((role) => (
-                                                    <ListBoxItem key={role} textValue={role}>
-                                                        {role}
-                                                    </ListBoxItem>
-                                                ))}
-                                            </ListBox>
-                                        </Select.Popover>
-                                        <FieldError>{errors.role?.message}</FieldError>
-                                    </Select>
-                                )}
-                            />
-                            <Controller
-                                name="areaId"
-                                control={control}
-                                render={({ field }) => (
-                                    <Autocomplete
-                                        selectedKey={field.value ? String(field.value) : null}
-                                        onSelectionChange={(key) => field.onChange(key)}
-                                        isInvalid={!!errors.areaId}
-                                        className="w-full"
-                                    >
-                                        <Label>Área</Label>
-                                        <Autocomplete.Trigger>
-                                            <Autocomplete.Value />
-                                        </Autocomplete.Trigger>
-                                        <Autocomplete.Popover>
-                                            <Autocomplete.Filter>
-                                                <Input placeholder="Selecciona un área" />
-                                            </Autocomplete.Filter>
-                                            <ListBox>
-                                                {areas.map((area) => (
-                                                    <ListBoxItem key={area.areaKey} textValue={area.name}>
-                                                        {area.name}
-                                                    </ListBoxItem>
-                                                ))}
-                                            </ListBox>
-                                        </Autocomplete.Popover>
-                                        <FieldError>{errors.areaId?.message}</FieldError>
-                                    </Autocomplete>
-                                )}
-                            />
-                            <Controller
-                                name="authUserId"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        isInvalid={!!errors.authUserId}
-                                        className="w-full"
-                                    >
-                                        <Label>Auth User ID (Supabase UUID)</Label>
-                                        <Input
-                                            {...field}
-                                            type="password"
-                                            placeholder="Pegar UUID de Supabase Auth"
+                                        >
+                                            <Label>Email</Label>
+                                            <Input
+                                                {...field}
+                                                placeholder="ej. john@example.com"
+                                                className="w-full"
+                                            />
+                                            <FieldError>{errors.email?.message}</FieldError>
+                                        </TextField>
+                                    )}
+                                />
+                                <Controller
+                                    name="role"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            selectedKey={field.value}
+                                            onSelectionChange={(key) => field.onChange(key)}
+                                            isInvalid={!!errors.role}
                                             className="w-full"
-                                        />
-                                        <FieldError>{errors.authUserId?.message}</FieldError>
-                                        {/* Description note: could add Description component if imported */}
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name="isActive"
-                                control={control}
-                                render={({ field: { value, onChange, ...field } }) => (
-                                    <Switch
-                                        isSelected={value}
-                                        onChange={onChange}
-                                        {...field}
-                                    >
-                                        Activo
-                                    </Switch>
-                                )}
-                            />
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onPress={onClose}>
-                            Cancelar
-                        </Button>
-                        <Button variant="primary" type="submit" form="owner-form" isDisabled={isSubmitting}>
-                            Guardar
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Dialog>
-            </Modal.Container>
+                                            placeholder="Selecciona un rol"
+                                        >
+                                            <Label>Rol</Label>
+                                            <Select.Trigger>
+                                                <Select.Value />
+                                            </Select.Trigger>
+                                            <Select.Popover>
+                                                <ListBox>
+                                                    {roles.map((role) => (
+                                                        <ListBoxItem key={role} textValue={role}>
+                                                            {role}
+                                                        </ListBoxItem>
+                                                    ))}
+                                                </ListBox>
+                                            </Select.Popover>
+                                            <FieldError>{errors.role?.message}</FieldError>
+                                        </Select>
+                                    )}
+                                />
+                                <Controller
+                                    name="areaId"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Autocomplete
+                                            selectedKey={field.value ? String(field.value) : null}
+                                            onSelectionChange={(key) => field.onChange(key)}
+                                            isInvalid={!!errors.areaId}
+                                            className="w-full"
+                                        >
+                                            <Label>Área</Label>
+                                            <Autocomplete.Trigger>
+                                                <Autocomplete.Value />
+                                            </Autocomplete.Trigger>
+                                            <Autocomplete.Popover>
+                                                <Autocomplete.Filter>
+                                                    <Input placeholder="Selecciona un área" />
+                                                </Autocomplete.Filter>
+                                                <ListBox>
+                                                    {areas.map((area) => (
+                                                        <ListBoxItem key={area.areaKey} textValue={area.name}>
+                                                            {area.name}
+                                                        </ListBoxItem>
+                                                    ))}
+                                                </ListBox>
+                                            </Autocomplete.Popover>
+                                            <FieldError>{errors.areaId?.message}</FieldError>
+                                        </Autocomplete>
+                                    )}
+                                />
+                                <Controller
+                                    name="authUserId"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            isInvalid={!!errors.authUserId}
+                                            className="w-full"
+                                        >
+                                            <Label>Auth User ID (Supabase UUID)</Label>
+                                            <Input
+                                                {...field}
+                                                type="password"
+                                                placeholder="Pegar UUID de Supabase Auth"
+                                                className="w-full"
+                                            />
+                                            <FieldError>{errors.authUserId?.message}</FieldError>
+                                            {/* Description note: could add Description component if imported */}
+                                        </TextField>
+                                    )}
+                                />
+                                <Controller
+                                    name="isActive"
+                                    control={control}
+                                    render={({ field: { value, onChange, ...field } }) => (
+                                        <Switch
+                                            isSelected={value}
+                                            onChange={onChange}
+                                            {...field}
+                                        >
+                                            Activo
+                                        </Switch>
+                                    )}
+                                />
+                            </form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onPress={onClose}>
+                                Cancelar
+                            </Button>
+                            <Button variant="primary" type="submit" form="owner-form" isDisabled={isSubmitting}>
+                                Guardar
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Input, Select, ListBoxItem } from "@heroui/react";
+import { Button, Input, Select, ListBox, ListBoxItem } from "@heroui/react";
 import { Plus, Search, FilterX } from "lucide-react";
 import { WorkItemWithRelations } from "@/db/queries/work-items";
 import { WorkItemsTable } from "./WorkItemsTable";
@@ -76,12 +76,16 @@ export function WorkItemsClient({
                         selectedKey={searchParams.get("initiativeId") || "all"}
                         onSelectionChange={(k) => handleFilterChange("initiativeId", String(k))}
                     >
-                        <Select.Trigger />
+                        <Select.Trigger>
+                            <Select.Value />
+                        </Select.Trigger>
                         <Select.Popover>
-                            <ListBoxItem key="all" id="all">Todas</ListBoxItem>
-                            {initiatives.map((init) => (
-                                <ListBoxItem key={init.initiativeKey} id={init.initiativeKey}>{init.name}</ListBoxItem>
-                            ))}
+                            <ListBox>
+                                <ListBoxItem key="all" id="all">Todas</ListBoxItem>
+                                {initiatives.map((init) => (
+                                    <ListBoxItem key={init.initiativeKey} id={init.initiativeKey}>{init.name}</ListBoxItem>
+                                ))}
+                            </ListBox>
                         </Select.Popover>
                     </Select>
 
@@ -92,14 +96,18 @@ export function WorkItemsClient({
                         selectedKey={searchParams.get("status") || "all"}
                         onSelectionChange={(k) => handleFilterChange("status", String(k))}
                     >
-                        <Select.Trigger />
+                        <Select.Trigger>
+                            <Select.Value />
+                        </Select.Trigger>
                         <Select.Popover>
-                            <ListBoxItem key="all" id="all">Todos</ListBoxItem>
-                            <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
-                            <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
-                            <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
-                            <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
-                            <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
+                            <ListBox>
+                                <ListBoxItem key="all" id="all">Todos</ListBoxItem>
+                                <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
+                                <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
+                                <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
+                                <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
+                                <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
+                            </ListBox>
                         </Select.Popover>
                     </Select>
 
@@ -112,11 +120,13 @@ export function WorkItemsClient({
                     >
                         <Select.Trigger />
                         <Select.Popover>
-                            <ListBoxItem key="all" id="all">Todos</ListBoxItem>
-                            <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
-                            <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
-                            <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
-                            <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
+                            <ListBox>
+                                <ListBoxItem key="all" id="all">Todos</ListBoxItem>
+                                <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
+                                <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
+                                <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
+                                <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
+                            </ListBox>
                         </Select.Popover>
                     </Select>
 

@@ -127,178 +127,179 @@ export function WorkItemModal({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
-            <Modal.Backdrop />
-            <Modal.Container>
-                <Modal.Dialog>
-                    <Modal.Header>
-                        <Modal.Heading>{isEditing ? "Editar Work Item" : "Nuevo Work Item"}</Modal.Heading>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form id="work-item-form" onSubmit={handleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="col-span-2 space-y-1">
-                                    <label className="text-sm font-medium">Título</label>
-                                    <Input
-                                        placeholder="Ej: Implementar login"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        required
-                                    />
-                                </div>
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.Header>
+                            <Modal.Heading>{isEditing ? "Editar Work Item" : "Nuevo Work Item"}</Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <form id="work-item-form" onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="col-span-2 space-y-1">
+                                        <label className="text-sm font-medium">Título</label>
+                                        <Input
+                                            placeholder="Ej: Implementar login"
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            required
+                                        />
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Tipo</label>
-                                    <Select
-                                        selectedKey={type}
-                                        onSelectionChange={(k) => setType(String(k))}
-                                    >
-                                        <Select.Trigger />
-                                        <Select.Popover>
-                                            <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
-                                            <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
-                                            <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
-                                            <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
-                                            <ListBoxItem key="other" id="other">Otro</ListBoxItem>
-                                        </Select.Popover>
-                                    </Select>
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Tipo</label>
+                                        <Select
+                                            selectedKey={type}
+                                            onSelectionChange={(k) => setType(String(k))}
+                                        >
+                                            <Select.Trigger />
+                                            <Select.Popover>
+                                                <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
+                                                <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
+                                                <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
+                                                <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
+                                                <ListBoxItem key="other" id="other">Otro</ListBoxItem>
+                                            </Select.Popover>
+                                        </Select>
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Iniciativa</label>
-                                    <Select
-                                        selectedKey={initiativeId}
-                                        onSelectionChange={(k) => setInitiativeId(String(k))}
-                                        isRequired
-                                    >
-                                        <Select.Trigger />
-                                        <Select.Popover>
-                                            {initiatives.map((init) => (
-                                                <ListBoxItem key={init.initiativeKey} id={init.initiativeKey} textValue={init.name}>
-                                                    {init.name}
-                                                </ListBoxItem>
-                                            ))}
-                                        </Select.Popover>
-                                    </Select>
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Iniciativa</label>
+                                        <Select
+                                            selectedKey={initiativeId}
+                                            onSelectionChange={(k) => setInitiativeId(String(k))}
+                                            isRequired
+                                        >
+                                            <Select.Trigger />
+                                            <Select.Popover>
+                                                {initiatives.map((init) => (
+                                                    <ListBoxItem key={init.initiativeKey} id={init.initiativeKey} textValue={init.name}>
+                                                        {init.name}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </Select.Popover>
+                                        </Select>
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Asignado a</label>
-                                    <Select
-                                        selectedKey={ownerId}
-                                        onSelectionChange={(k) => setOwnerId(String(k))}
-                                    >
-                                        <Select.Trigger />
-                                        <Select.Popover>
-                                            {owners.map((owner) => (
-                                                <ListBoxItem key={owner.ownerKey} id={owner.ownerKey} textValue={owner.fullName}>
-                                                    {owner.fullName}
-                                                </ListBoxItem>
-                                            ))}
-                                        </Select.Popover>
-                                    </Select>
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Asignado a</label>
+                                        <Select
+                                            selectedKey={ownerId}
+                                            onSelectionChange={(k) => setOwnerId(String(k))}
+                                        >
+                                            <Select.Trigger />
+                                            <Select.Popover>
+                                                {owners.map((owner) => (
+                                                    <ListBoxItem key={owner.ownerKey} id={owner.ownerKey} textValue={owner.fullName}>
+                                                        {owner.fullName}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </Select.Popover>
+                                        </Select>
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Estado</label>
-                                    <Select
-                                        selectedKey={status}
-                                        onSelectionChange={(k) => setStatus(String(k))}
-                                    >
-                                        <Select.Trigger />
-                                        <Select.Popover>
-                                            <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
-                                            <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
-                                            <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
-                                            <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
-                                            <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
-                                            <ListBoxItem key="cancelled" id="cancelled">Cancelado</ListBoxItem>
-                                        </Select.Popover>
-                                    </Select>
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Estado</label>
+                                        <Select
+                                            selectedKey={status}
+                                            onSelectionChange={(k) => setStatus(String(k))}
+                                        >
+                                            <Select.Trigger />
+                                            <Select.Popover>
+                                                <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
+                                                <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
+                                                <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
+                                                <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
+                                                <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
+                                                <ListBoxItem key="cancelled" id="cancelled">Cancelado</ListBoxItem>
+                                            </Select.Popover>
+                                        </Select>
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Prioridad</label>
-                                    <Select
-                                        selectedKey={priority}
-                                        onSelectionChange={(k) => setPriority(String(k))}
-                                    >
-                                        <Select.Trigger />
-                                        <Select.Popover>
-                                            <ListBoxItem key="low" id="low">Baja</ListBoxItem>
-                                            <ListBoxItem key="medium" id="medium">Media</ListBoxItem>
-                                            <ListBoxItem key="high" id="high">Alta</ListBoxItem>
-                                            <ListBoxItem key="critical" id="critical">Crítica</ListBoxItem>
-                                        </Select.Popover>
-                                    </Select>
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Prioridad</label>
+                                        <Select
+                                            selectedKey={priority}
+                                            onSelectionChange={(k) => setPriority(String(k))}
+                                        >
+                                            <Select.Trigger />
+                                            <Select.Popover>
+                                                <ListBoxItem key="low" id="low">Baja</ListBoxItem>
+                                                <ListBoxItem key="medium" id="medium">Media</ListBoxItem>
+                                                <ListBoxItem key="high" id="high">Alta</ListBoxItem>
+                                                <ListBoxItem key="critical" id="critical">Crítica</ListBoxItem>
+                                            </Select.Popover>
+                                        </Select>
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Fecha Inicio</label>
-                                    <Input
-                                        type="date"
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                        placeholder=" "
-                                    />
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Fecha Inicio</label>
+                                        <Input
+                                            type="date"
+                                            value={startDate}
+                                            onChange={(e) => setStartDate(e.target.value)}
+                                            placeholder=" "
+                                        />
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Fecha Entrega</label>
-                                    <Input
-                                        type="date"
-                                        value={dueDate}
-                                        onChange={(e) => setDueDate(e.target.value)}
-                                        placeholder=" "
-                                    />
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Fecha Entrega</label>
+                                        <Input
+                                            type="date"
+                                            value={dueDate}
+                                            onChange={(e) => setDueDate(e.target.value)}
+                                            placeholder=" "
+                                        />
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Estimado (horas)</label>
-                                    <Input
-                                        type="number"
-                                        value={estimateHours}
-                                        onChange={(e) => setEstimateHours(e.target.value)}
-                                    />
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Estimado (horas)</label>
+                                        <Input
+                                            type="number"
+                                            value={estimateHours}
+                                            onChange={(e) => setEstimateHours(e.target.value)}
+                                        />
+                                    </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">Real (horas)</label>
-                                    <Input
-                                        type="number"
-                                        value={actualHours}
-                                        onChange={(e) => setActualHours(e.target.value)}
-                                    />
-                                </div>
+                                    <div className="space-y-1">
+                                        <label className="text-sm font-medium">Real (horas)</label>
+                                        <Input
+                                            type="number"
+                                            value={actualHours}
+                                            onChange={(e) => setActualHours(e.target.value)}
+                                        />
+                                    </div>
 
-                                <div className="col-span-2 space-y-1">
-                                    <label className="text-sm font-medium">Link a herramienta (Jira/Linear)</label>
-                                    <Input
-                                        value={linkToTool}
-                                        onChange={(e) => setLinkToTool(e.target.value)}
-                                    />
-                                </div>
+                                    <div className="col-span-2 space-y-1">
+                                        <label className="text-sm font-medium">Link a herramienta (Jira/Linear)</label>
+                                        <Input
+                                            value={linkToTool}
+                                            onChange={(e) => setLinkToTool(e.target.value)}
+                                        />
+                                    </div>
 
-                                <div className="col-span-2 space-y-1">
-                                    <label className="text-sm font-medium">Criterios de Aceptación</label>
-                                    <TextArea
-                                        value={acceptanceCriteria}
-                                        onChange={(e) => setAcceptanceCriteria(e.target.value)}
-                                        rows={3}
-                                    />
+                                    <div className="col-span-2 space-y-1">
+                                        <label className="text-sm font-medium">Criterios de Aceptación</label>
+                                        <TextArea
+                                            value={acceptanceCriteria}
+                                            onChange={(e) => setAcceptanceCriteria(e.target.value)}
+                                            rows={3}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="outline" onPress={onClose}>
-                            Cancelar
-                        </Button>
-                        <Button type="submit" form="work-item-form" isDisabled={isSubmitting}>
-                            {isSubmitting ? "Guardando..." : "Guardar"}
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Dialog>
-            </Modal.Container>
+                            </form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="outline" onPress={onClose}>
+                                Cancelar
+                            </Button>
+                            <Button type="submit" form="work-item-form" isDisabled={isSubmitting}>
+                                {isSubmitting ? "Guardando..." : "Guardar"}
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }

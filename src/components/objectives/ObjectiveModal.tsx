@@ -8,6 +8,7 @@ import {
     Input,
     TextArea,
     Select,
+    ListBox,
     ListBoxItem,
     Label,
     Slider,
@@ -130,141 +131,158 @@ export function ObjectiveModal({
     };
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <Modal.Backdrop />
-            <Modal.Container size="lg">
-                <Modal.Dialog>
-                    <Modal.Header>
-                        <Modal.Heading>
-                            {isEditing ? "Editar Objetivo" : "Nuevo Objetivo"}
-                        </Modal.Heading>
-                    </Modal.Header>
+        <Modal isOpen={isOpen} onOpenChange={onClose}>
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.Header>
+                            <Modal.Heading>
+                                {isEditing ? "Editar Objetivo" : "Nuevo Objetivo"}
+                            </Modal.Heading>
+                        </Modal.Header>
 
-                    <Modal.Body className="space-y-4">
-                        {/* Title */}
-                        <div className="space-y-2">
-                            <Label htmlFor="title">Título *</Label>
-                            <Input
-                                id="title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Incrementar MRR en 30%"
-                                required
-                            />
-                        </div>
-
-                        {/* Description */}
-                        <div className="space-y-2">
-                            <Label htmlFor="description">Descripción</Label>
-                            <TextArea
-                                id="description"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Descripción detallada del objetivo..."
-                                rows={3}
-                            />
-                        </div>
-
-                        {/* Cycle */}
-                        <div className="space-y-2">
-                            <Label>Ciclo *</Label>
-                            <Select
-                                selectedKey={cycleId}
-                                onSelectionChange={(key) => setCycleId(String(key))}
-                            >
-                                <Select.Trigger />
-                                <Select.Popover>
-                                    {cycles.map((cycle) => (
-                                        <ListBoxItem key={cycle.cycleId} id={cycle.cycleId}>
-                                            {cycle.name}
-                                        </ListBoxItem>
-                                    ))}
-                                </Select.Popover>
-                            </Select>
-                        </div>
-
-                        {/* Type & Priority */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <Modal.Body className="space-y-4">
+                            {/* Title */}
                             <div className="space-y-2">
-                                <Label>Tipo</Label>
+                                <Label htmlFor="title">Título *</Label>
+                                <Input
+                                    id="title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    placeholder="Incrementar MRR en 30%"
+                                    required
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div className="space-y-2">
+                                <Label htmlFor="description">Descripción</Label>
+                                <TextArea
+                                    id="description"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    placeholder="Descripción detallada del objetivo..."
+                                    rows={3}
+                                />
+                            </div>
+
+                            {/* Cycle */}
+                            <div className="space-y-2">
+                                <Label>Ciclo *</Label>
                                 <Select
-                                    selectedKey={objectiveType}
-                                    onSelectionChange={(key) => setObjectiveType(String(key))}
+                                    selectedKey={cycleId}
+                                    onSelectionChange={(key) => setCycleId(String(key))}
                                 >
-                                    <Select.Trigger />
+                                    <Select.Trigger>
+                                        <Select.Value />
+                                    </Select.Trigger>
                                     <Select.Popover>
-                                        {objectiveTypes.map((opt) => (
-                                            <ListBoxItem key={opt.value} id={opt.value}>
-                                                {opt.label}
-                                            </ListBoxItem>
-                                        ))}
+                                        <ListBox>
+                                            {cycles.map((cycle) => (
+                                                <ListBoxItem key={cycle.cycleId} id={cycle.cycleId}>
+                                                    {cycle.name}
+                                                </ListBoxItem>
+                                            ))}
+                                        </ListBox>
                                     </Select.Popover>
                                 </Select>
                             </div>
 
+                            {/* Type & Priority */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>Tipo</Label>
+                                    <Select
+                                        selectedKey={objectiveType}
+                                        onSelectionChange={(key) => setObjectiveType(String(key))}
+                                    >
+                                        <Select.Trigger>
+                                            <Select.Value />
+                                        </Select.Trigger>
+                                        <Select.Popover>
+                                            <ListBox>
+                                                {objectiveTypes.map((opt) => (
+                                                    <ListBoxItem key={opt.value} id={opt.value}>
+                                                        {opt.label}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </ListBox>
+                                        </Select.Popover>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Prioridad</Label>
+                                    <Select
+                                        selectedKey={priority}
+                                        onSelectionChange={(key) => setPriority(String(key))}
+                                    >
+                                        <Select.Trigger>
+                                            <Select.Value />
+                                        </Select.Trigger>
+                                        <Select.Popover>
+                                            <ListBox>
+                                                {priorityOptions.map((opt) => (
+                                                    <ListBoxItem key={opt.value} id={opt.value}>
+                                                        {opt.label}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </ListBox>
+                                        </Select.Popover>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            {/* Status */}
                             <div className="space-y-2">
-                                <Label>Prioridad</Label>
+                                <Label>Estado</Label>
                                 <Select
-                                    selectedKey={priority}
-                                    onSelectionChange={(key) => setPriority(String(key))}
+                                    selectedKey={status}
+                                    onSelectionChange={(key) => setStatus(String(key))}
                                 >
-                                    <Select.Trigger />
+                                    <Select.Trigger>
+                                        <Select.Value />
+                                    </Select.Trigger>
                                     <Select.Popover>
-                                        {priorityOptions.map((opt) => (
-                                            <ListBoxItem key={opt.value} id={opt.value}>
-                                                {opt.label}
-                                            </ListBoxItem>
-                                        ))}
+                                        <ListBox>
+                                            {statusOptions.map((opt) => (
+                                                <ListBoxItem key={opt.value} id={opt.value}>
+                                                    {opt.label}
+                                                </ListBoxItem>
+                                            ))}
+                                        </ListBox>
                                     </Select.Popover>
                                 </Select>
                             </div>
-                        </div>
 
-                        {/* Status */}
-                        <div className="space-y-2">
-                            <Label>Estado</Label>
-                            <Select
-                                selectedKey={status}
-                                onSelectionChange={(key) => setStatus(String(key))}
-                            >
-                                <Select.Trigger />
-                                <Select.Popover>
-                                    {statusOptions.map((opt) => (
-                                        <ListBoxItem key={opt.value} id={opt.value}>
-                                            {opt.label}
-                                        </ListBoxItem>
-                                    ))}
-                                </Select.Popover>
-                            </Select>
-                        </div>
-
-                        {/* Confidence */}
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <Label>Confianza</Label>
-                                <span className="text-sm font-medium">{confidence}%</span>
+                            {/* Confidence */}
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <Label>Confianza</Label>
+                                    <span className="text-sm font-medium">{confidence}%</span>
+                                </div>
+                                <Slider
+                                    value={confidence}
+                                    onChange={(val) => setConfidence(val as number)}
+                                    minValue={0}
+                                    maxValue={100}
+                                    step={5}
+                                    aria-label="Confianza"
+                                />
                             </div>
-                            <Slider
-                                value={confidence}
-                                onChange={(val) => setConfidence(val as number)}
-                                minValue={0}
-                                maxValue={100}
-                                step={5}
-                                aria-label="Confianza"
-                            />
-                        </div>
-                    </Modal.Body>
+                        </Modal.Body>
 
-                    <Modal.Footer>
-                        <Button variant="ghost" onPress={onClose} isDisabled={isPending}>
-                            Cancelar
-                        </Button>
-                        <Button onPress={handleSubmit} isPending={isPending}>
-                            {isEditing ? "Guardar Cambios" : "Crear Objetivo"}
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Dialog>
-            </Modal.Container>
+                        <Modal.Footer>
+                            <Button variant="ghost" onPress={onClose} isDisabled={isPending}>
+                                Cancelar
+                            </Button>
+                            <Button onPress={handleSubmit} isPending={isPending}>
+                                {isEditing ? "Guardar Cambios" : "Crear Objetivo"}
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }

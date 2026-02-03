@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Modal, Button, Select, ListBoxItem, Slider, Label } from "@heroui/react";
+import { Modal, Button, Select, ListBox, ListBoxItem, Slider, Label } from "@heroui/react";
 import { linkInitiativeToObjective } from "@/app/actions/initiatives";
 import { toast } from "sonner";
 
@@ -68,93 +68,102 @@ export function LinkInitiativeModal({
     };
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <Modal.Backdrop />
-            <Modal.Container size="md">
-                <Modal.Dialog>
-                    <Modal.Header>
-                        <Modal.Heading>Vincular Iniciativa</Modal.Heading>
-                    </Modal.Header>
+        <Modal isOpen={isOpen} onOpenChange={onClose}>
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.Header>
+                            <Modal.Heading>Vincular Iniciativa</Modal.Heading>
+                        </Modal.Header>
 
-                    <Modal.Body className="space-y-4">
-                        <div className="space-y-2">
-                            <Label>Iniciativa</Label>
-                            <Select
-                                selectedKey={selectedInitiativeId}
-                                onSelectionChange={(key) =>
-                                    setSelectedInitiativeId(String(key))
-                                }
-                            >
-                                <Select.Trigger />
-                                <Select.Popover>
-                                    {availableInitiatives.length === 0 ? (
-                                        <ListBoxItem key="empty" id="empty" isDisabled>
-                                            No hay iniciativas disponibles
-                                        </ListBoxItem>
-                                    ) : (
-                                        availableInitiatives.map((i) => (
-                                            <ListBoxItem key={i.initiativeKey} id={i.initiativeKey}>
-                                                {i.name}
-                                            </ListBoxItem>
-                                        ))
-                                    )}
-                                </Select.Popover>
-                            </Select>
-                            <p className="text-xs text-default-400">
-                                Nota: Primero crea iniciativas desde /initiatives para poder
-                                vincularlas.
-                            </p>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label>Tipo de relación</Label>
-                            <Select
-                                selectedKey={relationType}
-                                onSelectionChange={(key) =>
-                                    setRelationType(key as "primary" | "secondary")
-                                }
-                            >
-                                <Select.Trigger />
-                                <Select.Popover>
-                                    <ListBoxItem key="primary" id="primary">
-                                        Primaria (contribuye directamente)
-                                    </ListBoxItem>
-                                    <ListBoxItem key="secondary" id="secondary">
-                                        Secundaria (contribuye indirectamente)
-                                    </ListBoxItem>
-                                </Select.Popover>
-                            </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <Label>Peso de contribución</Label>
-                                <span className="text-sm font-medium">{weight}%</span>
+                        <Modal.Body className="space-y-4">
+                            <div className="space-y-2">
+                                <Label>Iniciativa</Label>
+                                <Select
+                                    selectedKey={selectedInitiativeId}
+                                    onSelectionChange={(key) =>
+                                        setSelectedInitiativeId(String(key))
+                                    }
+                                >
+                                    <Select.Trigger>
+                                        <Select.Value />
+                                    </Select.Trigger>
+                                    <Select.Popover>
+                                        <ListBox>
+                                            {availableInitiatives.length === 0 ? (
+                                                <ListBoxItem key="empty" id="empty" isDisabled>
+                                                    No hay iniciativas disponibles
+                                                </ListBoxItem>
+                                            ) : (
+                                                availableInitiatives.map((i) => (
+                                                    <ListBoxItem key={i.initiativeKey} id={i.initiativeKey}>
+                                                        {i.name}
+                                                    </ListBoxItem>
+                                                ))
+                                            )}
+                                        </ListBox>
+                                    </Select.Popover>
+                                </Select>
+                                <p className="text-xs text-default-400">
+                                    Nota: Primero crea iniciativas desde /initiatives para poder
+                                    vincularlas.
+                                </p>
                             </div>
-                            <Slider
-                                value={weight}
-                                onChange={(val) => setWeight(val as number)}
-                                minValue={0}
-                                maxValue={100}
-                                step={10}
-                                aria-label="Peso"
-                            />
-                            <p className="text-xs text-default-400">
-                                Define qué porcentaje del objetivo depende de esta iniciativa.
-                            </p>
-                        </div>
-                    </Modal.Body>
 
-                    <Modal.Footer>
-                        <Button variant="ghost" onPress={onClose} isDisabled={isPending}>
-                            Cancelar
-                        </Button>
-                        <Button onPress={handleSubmit} isPending={isPending}>
-                            Vincular
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Dialog>
-            </Modal.Container>
+                            <div className="space-y-2">
+                                <Label>Tipo de relación</Label>
+                                <Select
+                                    selectedKey={relationType}
+                                    onSelectionChange={(key) =>
+                                        setRelationType(key as "primary" | "secondary")
+                                    }
+                                >
+                                    <Select.Trigger>
+                                        <Select.Value />
+                                    </Select.Trigger>
+                                    <Select.Popover>
+                                        <ListBox>
+                                            <ListBoxItem key="primary" id="primary">
+                                                Primaria (contribuye directamente)
+                                            </ListBoxItem>
+                                            <ListBoxItem key="secondary" id="secondary">
+                                                Secundaria (contribuye indirectamente)
+                                            </ListBoxItem>
+                                        </ListBox>
+                                    </Select.Popover>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <Label>Peso de contribución</Label>
+                                    <span className="text-sm font-medium">{weight}%</span>
+                                </div>
+                                <Slider
+                                    value={weight}
+                                    onChange={(val) => setWeight(val as number)}
+                                    minValue={0}
+                                    maxValue={100}
+                                    step={10}
+                                    aria-label="Peso"
+                                />
+                                <p className="text-xs text-default-400">
+                                    Define qué porcentaje del objetivo depende de esta iniciativa.
+                                </p>
+                            </div>
+                        </Modal.Body>
+
+                        <Modal.Footer>
+                            <Button variant="ghost" onPress={onClose} isDisabled={isPending}>
+                                Cancelar
+                            </Button>
+                            <Button onPress={handleSubmit} isPending={isPending}>
+                                Vincular
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }

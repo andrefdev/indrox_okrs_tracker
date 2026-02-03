@@ -103,95 +103,96 @@ export function AreaFormModal({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
-            <Modal.Backdrop />
-            <Modal.Container>
-                <Modal.Dialog>
-                    <Modal.CloseTrigger />
-                    <Modal.Header>
-                        <Modal.Heading>
-                            {areaToEdit ? "Editar Área" : "Nueva Área"}
-                        </Modal.Heading>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form id="area-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                            <Controller
-                                name="code"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        isInvalid={!!errors.code}
-                                        className="w-full"
-                                    >
-                                        <Label>Código</Label>
-                                        <Input
-                                            {...field}
-                                            placeholder="ej. ENG"
+            <Modal.Backdrop>
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger />
+                        <Modal.Header>
+                            <Modal.Heading>
+                                {areaToEdit ? "Editar Área" : "Nueva Área"}
+                            </Modal.Heading>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <form id="area-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                                <Controller
+                                    name="code"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            isInvalid={!!errors.code}
                                             className="w-full"
-                                        />
-                                        <FieldError>{errors.code?.message}</FieldError>
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name="name"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        isInvalid={!!errors.name}
-                                        className="w-full"
-                                    >
-                                        <Label>Nombre</Label>
-                                        <Input
-                                            {...field}
-                                            placeholder="ej. Engineering"
+                                        >
+                                            <Label>Código</Label>
+                                            <Input
+                                                {...field}
+                                                placeholder="ej. ENG"
+                                                className="w-full"
+                                            />
+                                            <FieldError>{errors.code?.message}</FieldError>
+                                        </TextField>
+                                    )}
+                                />
+                                <Controller
+                                    name="name"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TextField
+                                            isInvalid={!!errors.name}
                                             className="w-full"
-                                        />
-                                        <FieldError>{errors.name?.message}</FieldError>
-                                    </TextField>
-                                )}
-                            />
-                            <Controller
-                                name="leadOwnerId"
-                                control={control}
-                                render={({ field }) => (
-                                    <Autocomplete
-                                        selectedKey={field.value ? String(field.value) : null}
-                                        onSelectionChange={(key) => field.onChange(key)}
-                                        isInvalid={!!errors.leadOwnerId}
-                                        className="w-full"
-                                    >
-                                        <Label>Líder (Owner)</Label>
-                                        <Autocomplete.Trigger>
-                                            <Autocomplete.Value />
-                                        </Autocomplete.Trigger>
-                                        <Autocomplete.Popover>
-                                            <Autocomplete.Filter>
-                                                <Input placeholder="Selecciona un líder" />
-                                            </Autocomplete.Filter>
-                                            <ListBox>
-                                                {owners.map((owner) => (
-                                                    <ListBoxItem key={owner.ownerKey} textValue={owner.fullName}>
-                                                        {owner.fullName}
-                                                    </ListBoxItem>
-                                                ))}
-                                            </ListBox>
-                                        </Autocomplete.Popover>
-                                        <FieldError>{errors.leadOwnerId?.message}</FieldError>
-                                    </Autocomplete>
-                                )}
-                            />
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onPress={onClose}>
-                            Cancelar
-                        </Button>
-                        <Button variant="primary" type="submit" form="area-form" isDisabled={isSubmitting}>
-                            Guardar
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Dialog>
-            </Modal.Container>
+                                        >
+                                            <Label>Nombre</Label>
+                                            <Input
+                                                {...field}
+                                                placeholder="ej. Engineering"
+                                                className="w-full"
+                                            />
+                                            <FieldError>{errors.name?.message}</FieldError>
+                                        </TextField>
+                                    )}
+                                />
+                                <Controller
+                                    name="leadOwnerId"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Autocomplete
+                                            selectedKey={field.value ? String(field.value) : null}
+                                            onSelectionChange={(key) => field.onChange(key)}
+                                            isInvalid={!!errors.leadOwnerId}
+                                            className="w-full"
+                                        >
+                                            <Label>Líder (Owner)</Label>
+                                            <Autocomplete.Trigger>
+                                                <Autocomplete.Value />
+                                            </Autocomplete.Trigger>
+                                            <Autocomplete.Popover>
+                                                <Autocomplete.Filter>
+                                                    <Input placeholder="Selecciona un líder" />
+                                                </Autocomplete.Filter>
+                                                <ListBox>
+                                                    {owners.map((owner) => (
+                                                        <ListBoxItem key={owner.ownerKey} textValue={owner.fullName}>
+                                                            {owner.fullName}
+                                                        </ListBoxItem>
+                                                    ))}
+                                                </ListBox>
+                                            </Autocomplete.Popover>
+                                            <FieldError>{errors.leadOwnerId?.message}</FieldError>
+                                        </Autocomplete>
+                                    )}
+                                />
+                            </form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onPress={onClose}>
+                                Cancelar
+                            </Button>
+                            <Button variant="primary" type="submit" form="area-form" isDisabled={isSubmitting}>
+                                Guardar
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
         </Modal>
     );
 }

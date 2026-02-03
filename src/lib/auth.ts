@@ -31,6 +31,7 @@ export async function getCurrentOwner(): Promise<Owner | null> {
 
     // Query core.owner table for the user's owner record
     const { data: owner, error } = await supabase
+        .schema("core")
         .from("owner")
         .select("*")
         .eq("auth_user_id", user.id)

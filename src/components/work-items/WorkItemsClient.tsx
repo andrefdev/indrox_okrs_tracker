@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Input, Select, ListBox, ListBoxItem } from "@heroui/react";
+import { Card, Button, Input, Select, ListBox, ListBoxItem } from "@heroui/react";
 import { Plus, Search, FilterX } from "lucide-react";
 import { WorkItemWithRelations } from "@/db/queries/work-items";
 import { WorkItemsTable } from "./WorkItemsTable";
@@ -55,17 +55,21 @@ export function WorkItemsClient({
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col gap-4 md:flex-row md:items-end justify-between bg-white p-4 rounded-lg border border-default-200 shadow-sm">
-                {/* Filters */}
-                <div className="flex flex-wrap gap-2 items-center w-full">
-                    <div className="relative w-full md:w-64">
-                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-default-400 z-10" />
+        <div className="space-y-4">
+            {/* Filters */}
+            <Card className="p-4">
+                <div className="flex flex-wrap items-center gap-4">
+                    {/* Search */}
+                    <div className="relative flex-1 min-w-[200px]">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-default-400" />
                         <Input
+                            type="search"
                             placeholder="Buscar..."
-                            className="pl-8 w-full"
                             defaultValue={searchParams.get("search") || ""}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFilterChange("search", e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                handleFilterChange("search", e.target.value)
+                            }
+                            className="pl-9"
                         />
                     </div>
 
@@ -81,9 +85,13 @@ export function WorkItemsClient({
                         </Select.Trigger>
                         <Select.Popover>
                             <ListBox>
-                                <ListBoxItem key="all" id="all">Todas</ListBoxItem>
+                                <ListBoxItem key="all" id="all">
+                                    Todas las iniciativas
+                                </ListBoxItem>
                                 {initiatives.map((init) => (
-                                    <ListBoxItem key={init.initiativeKey} id={init.initiativeKey}>{init.name}</ListBoxItem>
+                                    <ListBoxItem key={init.initiativeKey} id={init.initiativeKey}>
+                                        {init.name}
+                                    </ListBoxItem>
                                 ))}
                             </ListBox>
                         </Select.Popover>
@@ -92,7 +100,7 @@ export function WorkItemsClient({
                     <Select
                         aria-label="Filtrar por Estado"
                         placeholder="Estado"
-                        className="w-32"
+                        className="w-40"
                         selectedKey={searchParams.get("status") || "all"}
                         onSelectionChange={(k) => handleFilterChange("status", String(k))}
                     >
@@ -101,12 +109,24 @@ export function WorkItemsClient({
                         </Select.Trigger>
                         <Select.Popover>
                             <ListBox>
-                                <ListBoxItem key="all" id="all">Todos</ListBoxItem>
-                                <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
-                                <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
-                                <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
-                                <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
-                                <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
+                                <ListBoxItem key="all" id="all">
+                                    Todos los estados
+                                </ListBoxItem>
+                                <ListBoxItem key="not_started" id="not_started">
+                                    Sin iniciar
+                                </ListBoxItem>
+                                <ListBoxItem key="on_track" id="on_track">
+                                    On Track
+                                </ListBoxItem>
+                                <ListBoxItem key="at_risk" id="at_risk">
+                                    En Riesgo
+                                </ListBoxItem>
+                                <ListBoxItem key="off_track" id="off_track">
+                                    Off Track
+                                </ListBoxItem>
+                                <ListBoxItem key="completed" id="completed">
+                                    Completado
+                                </ListBoxItem>
                             </ListBox>
                         </Select.Popover>
                     </Select>
@@ -114,35 +134,50 @@ export function WorkItemsClient({
                     <Select
                         aria-label="Filtrar por Tipo"
                         placeholder="Tipo"
-                        className="w-32"
+                        className="w-40"
                         selectedKey={searchParams.get("type") || "all"}
                         onSelectionChange={(k) => handleFilterChange("type", String(k))}
                     >
-                        <Select.Trigger />
+                        <Select.Trigger>
+                            <Select.Value />
+                        </Select.Trigger>
                         <Select.Popover>
                             <ListBox>
-                                <ListBoxItem key="all" id="all">Todos</ListBoxItem>
-                                <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
-                                <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
-                                <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
-                                <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
+                                <ListBoxItem key="all" id="all">
+                                    Todos los tipos
+                                </ListBoxItem>
+                                <ListBoxItem key="task" id="task">
+                                    Tarea
+                                </ListBoxItem>
+                                <ListBoxItem key="bug" id="bug">
+                                    Bug
+                                </ListBoxItem>
+                                <ListBoxItem key="feature" id="feature">
+                                    Feature
+                                </ListBoxItem>
+                                <ListBoxItem key="spike" id="spike">
+                                    Spike
+                                </ListBoxItem>
                             </ListBox>
                         </Select.Popover>
                     </Select>
 
-                    {(searchParams.toString().length > 0) && (
+                    {searchParams.toString().length > 0 && (
                         <Button isIconOnly variant="ghost" onPress={clearFilters} size="sm">
                             <FilterX className="h-4 w-4 text-default-500" />
                         </Button>
                     )}
-                </div>
 
-                {/* Create Button */}
-                <Button onPress={handleCreate} className="bg-primary text-primary-foreground flex items-center gap-2">
-                    <Plus className="h-4 w-4" />
-                    Nuevo Work Item
-                </Button>
-            </div>
+                    {/* Create Button */}
+                    <Button
+                        onPress={handleCreate}
+                        className="bg-primary text-primary-foreground flex items-center gap-2"
+                    >
+                        <Plus className="h-4 w-4" />
+                        Nuevo Work Item
+                    </Button>
+                </div>
+            </Card>
 
             <WorkItemsTable
                 workItems={workItems}

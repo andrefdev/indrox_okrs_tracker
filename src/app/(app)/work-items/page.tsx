@@ -39,7 +39,7 @@ export default async function WorkItemsPage({
     });
 
     return (
-        <div className="space-y-6">
+        <div>
             <PageHeader
                 title="Work Items"
                 description="Gestión de tareas, bugs y features vinculados a iniciativas."

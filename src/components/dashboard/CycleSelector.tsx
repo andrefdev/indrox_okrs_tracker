@@ -1,6 +1,6 @@
 "use client";
 
-import { Select, SelectItem } from "@heroui/react";
+import { Select, Label, ListBox, ListBoxItem } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { OkrCycle } from "@/db/schema/okr";
 
@@ -13,9 +13,9 @@ export function CycleSelector({ cycles, currentCycleId }: CycleSelectorProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value;
-        if (!value) return;
+    const handleSelectionChange = (key: React.Key | null) => {
+        if (!key) return;
+        const value = String(key);
 
         const params = new URLSearchParams(searchParams.toString());
         params.set("cycleId", value);
@@ -25,17 +25,23 @@ export function CycleSelector({ cycles, currentCycleId }: CycleSelectorProps) {
 
     return (
         <Select
-            label="Ciclo"
-            placeholder="Selecciona un ciclo"
-            selectedKeys={[currentCycleId]}
-            onChange={handleSelectionChange}
+            selectedKey={currentCycleId}
+            onSelectionChange={handleSelectionChange}
             className="max-w-xs"
         >
-            {cycles.map((cycle) => (
-                <SelectItem key={cycle.cycleId} value={cycle.cycleId} textValue={cycle.name}>
-                    {cycle.name}
-                </SelectItem>
-            ))}
+            <Label>Ciclo</Label>
+            <Select.Trigger>
+                <Select.Value />
+            </Select.Trigger>
+            <Select.Popover>
+                <ListBox>
+                    {cycles.map((cycle) => (
+                        <ListBoxItem key={cycle.cycleId} textValue={cycle.name}>
+                            {cycle.name}
+                        </ListBoxItem>
+                    ))}
+                </ListBox>
+            </Select.Popover>
         </Select>
     );
 }

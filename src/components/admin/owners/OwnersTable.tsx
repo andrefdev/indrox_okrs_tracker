@@ -1,16 +1,3 @@
-"use client";
-
-import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Tooltip,
-    User,
-    Chip,
-} from "@heroui/react";
 import { Edit, Trash2 } from "lucide-react";
 import type { Owner, Area } from "@/db/schema/core";
 import { deleteOwnerAction } from "@/app/actions/owners";
@@ -34,64 +21,77 @@ export function OwnersTable({ owners, onEdit }: OwnersTableProps) {
     };
 
     return (
-        <Table aria-label="Tabla de owners">
-            <TableHeader>
-                <TableColumn>NOMBRE</TableColumn>
-                <TableColumn>ROL</TableColumn>
-                <TableColumn>ÁREA</TableColumn>
-                <TableColumn>ESTADO</TableColumn>
-                <TableColumn>ACCIONES</TableColumn>
-            </TableHeader>
-            <TableBody emptyContent={"No hay owners registrados."}>
-                {owners.map((owner) => (
-                    <TableRow key={owner.ownerKey}>
-                        <TableCell>
-                            <User
-                                name={owner.fullName}
-                                description={owner.email}
-                                avatarProps={{
-                                    name: owner.fullName.charAt(0),
-                                }}
-                            />
-                        </TableCell>
-                        <TableCell>
-                            <Chip size="sm" variant="flat" color="primary">
-                                {owner.role}
-                            </Chip>
-                        </TableCell>
-                        <TableCell>{owner.area?.name || "-"}</TableCell>
-                        <TableCell>
-                            <Chip
-                                size="sm"
-                                variant="dot"
-                                color={owner.isActive ? "success" : "danger"}
-                            >
-                                {owner.isActive ? "Activo" : "Inactivo"}
-                            </Chip>
-                        </TableCell>
-                        <TableCell>
-                            <div className="relative flex items-center gap-2">
-                                <Tooltip content="Editar owner">
-                                    <span
-                                        className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                                        onClick={() => onEdit(owner)}
-                                    >
-                                        <Edit className="w-4 h-4" />
+        <div className="w-full overflow-x-auto border rounded-lg">
+            <table className="w-full text-sm text-left">
+                <thead className="bg-default-100 uppercase text-xs font-semibold text-default-500">
+                    <tr>
+                        <th className="px-4 py-3">NOMBRE</th>
+                        <th className="px-4 py-3">ROL</th>
+                        <th className="px-4 py-3">ÁREA</th>
+                        <th className="px-4 py-3">ESTADO</th>
+                        <th className="px-4 py-3">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-default-200">
+                    {owners.length === 0 ? (
+                        <tr>
+                            <td colSpan={5} className="px-4 py-3 text-center text-default-500">
+                                No hay owners registrados.
+                            </td>
+                        </tr>
+                    ) : (
+                        owners.map((owner) => (
+                            <tr key={owner.ownerKey} className="hover:bg-default-50">
+                                <td className="px-4 py-3">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold uppercase">
+                                            {owner.fullName.charAt(0)}
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="font-medium">{owner.fullName}</span>
+                                            <span className="text-xs text-default-500">{owner.email}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="px-4 py-3">
+                                    <span className="px-2 py-0.5 rounded-md text-xs font-medium bg-primary/10 text-primary">
+                                        {owner.role}
                                     </span>
-                                </Tooltip>
-                                <Tooltip color="danger" content="Eliminar owner">
+                                </td>
+                                <td className="px-4 py-3">{owner.area?.name || "-"}</td>
+                                <td className="px-4 py-3">
                                     <span
-                                        className="text-lg text-danger cursor-pointer active:opacity-50"
-                                        onClick={() => handleDelete(owner.ownerKey)}
+                                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${owner.isActive
+                                                ? "bg-success/20 text-success"
+                                                : "bg-danger/20 text-danger"
+                                            }`}
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        {owner.isActive ? "Activo" : "Inactivo"}
                                     </span>
-                                </Tooltip>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                                </td>
+                                <td className="px-4 py-3">
+                                    <div className="relative flex items-center gap-2">
+                                        <button
+                                            title="Editar owner"
+                                            className="text-default-400 hover:text-primary transition-colors"
+                                            onClick={() => onEdit(owner)}
+                                        >
+                                            <Edit className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            title="Eliminar owner"
+                                            className="text-danger hover:text-danger-600 transition-colors"
+                                            onClick={() => handleDelete(owner.ownerKey)}
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
+        </div>
     );
 }

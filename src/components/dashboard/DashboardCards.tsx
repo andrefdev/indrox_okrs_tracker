@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardContent } from "@heroui/react";
 
 interface StatusCount {
     status: string;
@@ -16,55 +16,26 @@ interface DashboardCardsProps {
 }
 
 export function DashboardCards({ stats }: DashboardCardsProps) {
-    const countTotal = (counts: StatusCount[]) =>
-        counts.reduce((acc, curr) => acc + curr.count, 0);
-
-    const getStatusCount = (counts: StatusCount[], status: string) =>
-        counts.find((c) => c.status === status)?.count || 0;
-
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatCard
-                title="Objetivos"
-                total={countTotal(stats.objectives)}
-                completed={getStatusCount(stats.objectives, "completed")}
-                onTrack={getStatusCount(stats.objectives, "on_track")}
-                atRisk={getStatusCount(stats.objectives, "at_risk") + getStatusCount(stats.objectives, "off_track")}
-            />
-            <StatCard
-                title="Resultados Clave (KRs)"
-                total={countTotal(stats.keyResults)}
-                completed={getStatusCount(stats.keyResults, "completed")}
-                onTrack={getStatusCount(stats.keyResults, "on_track")}
-                atRisk={getStatusCount(stats.keyResults, "at_risk") + getStatusCount(stats.keyResults, "off_track")}
-            />
-            <StatCard
-                title="Iniciativas"
-                total={countTotal(stats.initiatives)}
-                completed={getStatusCount(stats.initiatives, "completed")}
-                onTrack={getStatusCount(stats.initiatives, "on_track")}
-                atRisk={getStatusCount(stats.initiatives, "at_risk") + getStatusCount(stats.initiatives, "off_track")}
-            />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <DashboardCard title="Objetivos (Objectives)" counts={stats.objectives} />
+            <DashboardCard title="Resultados Clave (KRs)" counts={stats.keyResults} />
+            <DashboardCard title="Iniciativas" counts={stats.initiatives} />
         </div>
     );
 }
 
-function StatCard({
-    title,
-    total,
-    completed,
-    onTrack,
-    atRisk,
-}: {
-    title: string;
-    total: number;
-    completed: number;
-    onTrack: number;
-    atRisk: number;
-}) {
+function DashboardCard({ title, counts }: { title: string; counts: StatusCount[] }) {
+    const total = counts.reduce((acc, curr) => acc + curr.count, 0);
+    const completed = counts.find((s) => s.status === "completed")?.count || 0;
+    const onTrack = counts.find((s) => s.status === "on_track")?.count || 0;
+    const atRisk = counts
+        .filter((s) => ["at_risk", "off_track"].includes(s.status))
+        .reduce((acc, curr) => acc + curr.count, 0);
+
     return (
         <Card>
-            <CardBody className="gap-4">
+            <CardContent className="gap-4">
                 <div className="flex justify-between items-start">
                     <h3 className="font-semibold text-lg">{title}</h3>
                     <span className="text-2xl font-bold">{total}</span>
@@ -98,7 +69,7 @@ function StatCard({
                         style={{ width: `${(atRisk / (total || 1)) * 100}%` }}
                     />
                 </div>
-            </CardBody>
+            </CardContent>
         </Card>
     );
 }

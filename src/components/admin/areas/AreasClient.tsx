@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardBody } from "@heroui/react";
+import { Button, Card, CardContent } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { AreasTable } from "./AreasTable";
 import { AreaFormModal } from "./AreaFormModal";
@@ -35,15 +35,16 @@ export function AreasClient({ areas, owners }: AreasClientProps) {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Áreas</h1>
-                <Button color="primary" onPress={handleCreate} startContent={<Plus className="w-4 h-4" />}>
+                <Button variant="primary" onPress={handleCreate}>
+                    <Plus className="w-4 h-4 mr-2" />
                     Nueva Área
                 </Button>
             </div>
 
             <Card>
-                <CardBody>
+                <CardContent>
                     <AreasTable areas={areas} onEdit={handleEdit} />
-                </CardBody>
+                </CardContent>
             </Card>
 
             <AreaFormModal

@@ -12,7 +12,7 @@ const publicRoutes = ["/", "/login", "/reset", "/auth/callback"];
  * - Protects /(app) routes
  * - Allows /(auth) routes freely
  */
-export async function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
     const { supabaseResponse, user } = await updateSession(request);
 
     const pathname = request.nextUrl.pathname;

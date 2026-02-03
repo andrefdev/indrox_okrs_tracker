@@ -6,14 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
     Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     Button,
     Input,
     Autocomplete,
-    AutocompleteItem,
+    TextField,
+    Label,
+    FieldError,
+    ListBox,
+    ListBoxItem,
 } from "@heroui/react";
 import { createAreaAction, updateAreaAction } from "@/app/actions/areas";
 import { toast } from "sonner";
@@ -102,38 +102,52 @@ export function AreaFormModal({
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} placement="center">
-            <ModalContent>
-                {(onClose) => (
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalHeader className="flex flex-col gap-1">
+        <Modal isOpen={isOpen} onOpenChange={onClose}>
+            <Modal.Backdrop />
+            <Modal.Container>
+                <Modal.Dialog>
+                    <Modal.CloseTrigger />
+                    <Modal.Header>
+                        <Modal.Heading>
                             {areaToEdit ? "Editar Área" : "Nueva Área"}
-                        </ModalHeader>
-                        <ModalBody>
+                        </Modal.Heading>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <form id="area-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                             <Controller
                                 name="code"
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        label="Código"
-                                        placeholder="ej. ENG"
-                                        errorMessage={errors.code?.message}
+                                    <TextField
                                         isInvalid={!!errors.code}
-                                    />
+                                        className="w-full"
+                                    >
+                                        <Label>Código</Label>
+                                        <Input
+                                            {...field}
+                                            placeholder="ej. ENG"
+                                            className="w-full"
+                                        />
+                                        <FieldError>{errors.code?.message}</FieldError>
+                                    </TextField>
                                 )}
                             />
                             <Controller
                                 name="name"
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        label="Nombre"
-                                        placeholder="ej. Engineering"
-                                        errorMessage={errors.name?.message}
+                                    <TextField
                                         isInvalid={!!errors.name}
-                                    />
+                                        className="w-full"
+                                    >
+                                        <Label>Nombre</Label>
+                                        <Input
+                                            {...field}
+                                            placeholder="ej. Engineering"
+                                            className="w-full"
+                                        />
+                                        <FieldError>{errors.name?.message}</FieldError>
+                                    </TextField>
                                 )}
                             />
                             <Controller
@@ -141,33 +155,43 @@ export function AreaFormModal({
                                 control={control}
                                 render={({ field }) => (
                                     <Autocomplete
-                                        label="Líder (Owner)"
-                                        placeholder="Selecciona un líder"
-                                        defaultSelectedKey={field.value ? String(field.value) : undefined}
+                                        selectedKey={field.value ? String(field.value) : null}
                                         onSelectionChange={(key) => field.onChange(key)}
-                                        errorMessage={errors.leadOwnerId?.message}
                                         isInvalid={!!errors.leadOwnerId}
+                                        className="w-full"
                                     >
-                                        {owners.map((owner) => (
-                                            <AutocompleteItem key={owner.ownerKey} textValue={owner.fullName}>
-                                                {owner.fullName}
-                                            </AutocompleteItem>
-                                        ))}
+                                        <Label>Líder (Owner)</Label>
+                                        <Autocomplete.Trigger>
+                                            <Autocomplete.Value />
+                                        </Autocomplete.Trigger>
+                                        <Autocomplete.Popover>
+                                            <Autocomplete.Filter>
+                                                <Input placeholder="Selecciona un líder" />
+                                            </Autocomplete.Filter>
+                                            <ListBox>
+                                                {owners.map((owner) => (
+                                                    <ListBoxItem key={owner.ownerKey} textValue={owner.fullName}>
+                                                        {owner.fullName}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </ListBox>
+                                        </Autocomplete.Popover>
+                                        <FieldError>{errors.leadOwnerId?.message}</FieldError>
                                     </Autocomplete>
                                 )}
                             />
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" variant="light" onPress={onClose}>
-                                Cancelar
-                            </Button>
-                            <Button color="primary" type="submit" isLoading={isSubmitting}>
-                                Guardar
-                            </Button>
-                        </ModalFooter>
-                    </form>
-                )}
-            </ModalContent>
+                        </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onPress={onClose}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" type="submit" form="area-form" isDisabled={isSubmitting}>
+                            Guardar
+                        </Button>
+                    </Modal.Footer>
+                </Modal.Dialog>
+            </Modal.Container>
         </Modal>
     );
 }

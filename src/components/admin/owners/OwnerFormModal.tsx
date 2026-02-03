@@ -6,17 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
     Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     Button,
     Input,
     Select,
-    SelectItem,
     Autocomplete,
-    AutocompleteItem,
     Switch,
+    TextField,
+    Label,
+    FieldError,
+    ListBox,
+    ListBoxItem,
 } from "@heroui/react";
 import { createOwnerAction, updateOwnerAction } from "@/app/actions/owners";
 import { toast } from "sonner";
@@ -30,7 +29,7 @@ const schema = z.object({
     role: z.enum(["CEO", "CMO", "CTO", "PM", "DEV", "DEVOPS", "UI_DESIGNER"]),
     areaId: z.string().optional().nullable(),
     authUserId: z.string().min(1, "El Auth User ID es requerido (UUID de Supabase)"),
-    isActive: z.boolean().default(true),
+    isActive: z.boolean().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -122,38 +121,52 @@ export function OwnerFormModal({
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} placement="center">
-            <ModalContent>
-                {(onClose) => (
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <ModalHeader className="flex flex-col gap-1">
+        <Modal isOpen={isOpen} onOpenChange={onClose}>
+            <Modal.Backdrop />
+            <Modal.Container>
+                <Modal.Dialog>
+                    <Modal.CloseTrigger />
+                    <Modal.Header>
+                        <Modal.Heading>
                             {ownerToEdit ? "Editar Owner" : "Nuevo Owner"}
-                        </ModalHeader>
-                        <ModalBody>
+                        </Modal.Heading>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <form id="owner-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                             <Controller
                                 name="fullName"
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        label="Nombre Completo"
-                                        placeholder="ej. John Doe"
-                                        errorMessage={errors.fullName?.message}
+                                    <TextField
                                         isInvalid={!!errors.fullName}
-                                    />
+                                        className="w-full"
+                                    >
+                                        <Label>Nombre Completo</Label>
+                                        <Input
+                                            {...field}
+                                            placeholder="ej. John Doe"
+                                            className="w-full"
+                                        />
+                                        <FieldError>{errors.fullName?.message}</FieldError>
+                                    </TextField>
                                 )}
                             />
                             <Controller
                                 name="email"
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        label="Email"
-                                        placeholder="ej. john@example.com"
-                                        errorMessage={errors.email?.message}
+                                    <TextField
                                         isInvalid={!!errors.email}
-                                    />
+                                        className="w-full"
+                                    >
+                                        <Label>Email</Label>
+                                        <Input
+                                            {...field}
+                                            placeholder="ej. john@example.com"
+                                            className="w-full"
+                                        />
+                                        <FieldError>{errors.email?.message}</FieldError>
+                                    </TextField>
                                 )}
                             />
                             <Controller
@@ -161,18 +174,26 @@ export function OwnerFormModal({
                                 control={control}
                                 render={({ field }) => (
                                     <Select
-                                        label="Rol"
-                                        placeholder="Selecciona un rol"
-                                        defaultSelectedKeys={field.value ? [field.value] : []}
-                                        onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
-                                        errorMessage={errors.role?.message}
+                                        selectedKey={field.value}
+                                        onSelectionChange={(key) => field.onChange(key)}
                                         isInvalid={!!errors.role}
+                                        className="w-full"
+                                        placeholder="Selecciona un rol"
                                     >
-                                        {roles.map((role) => (
-                                            <SelectItem key={role} value={role}>
-                                                {role}
-                                            </SelectItem>
-                                        ))}
+                                        <Label>Rol</Label>
+                                        <Select.Trigger>
+                                            <Select.Value />
+                                        </Select.Trigger>
+                                        <Select.Popover>
+                                            <ListBox>
+                                                {roles.map((role) => (
+                                                    <ListBoxItem key={role} textValue={role}>
+                                                        {role}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </ListBox>
+                                        </Select.Popover>
+                                        <FieldError>{errors.role?.message}</FieldError>
                                     </Select>
                                 )}
                             />
@@ -181,18 +202,28 @@ export function OwnerFormModal({
                                 control={control}
                                 render={({ field }) => (
                                     <Autocomplete
-                                        label="Área"
-                                        placeholder="Selecciona un área"
-                                        defaultSelectedKey={field.value ? String(field.value) : undefined}
+                                        selectedKey={field.value ? String(field.value) : null}
                                         onSelectionChange={(key) => field.onChange(key)}
-                                        errorMessage={errors.areaId?.message}
                                         isInvalid={!!errors.areaId}
+                                        className="w-full"
                                     >
-                                        {areas.map((area) => (
-                                            <AutocompleteItem key={area.areaKey} textValue={area.name}>
-                                                {area.name}
-                                            </AutocompleteItem>
-                                        ))}
+                                        <Label>Área</Label>
+                                        <Autocomplete.Trigger>
+                                            <Autocomplete.Value />
+                                        </Autocomplete.Trigger>
+                                        <Autocomplete.Popover>
+                                            <Autocomplete.Filter>
+                                                <Input placeholder="Selecciona un área" />
+                                            </Autocomplete.Filter>
+                                            <ListBox>
+                                                {areas.map((area) => (
+                                                    <ListBoxItem key={area.areaKey} textValue={area.name}>
+                                                        {area.name}
+                                                    </ListBoxItem>
+                                                ))}
+                                            </ListBox>
+                                        </Autocomplete.Popover>
+                                        <FieldError>{errors.areaId?.message}</FieldError>
                                     </Autocomplete>
                                 )}
                             />
@@ -200,15 +231,20 @@ export function OwnerFormModal({
                                 name="authUserId"
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
-                                        {...field}
-                                        label="Auth User ID (Supabase UUID)"
-                                        type="password" // Ocultar por seguridad visual básica, aunque no es sensible
-                                        placeholder="Pegar UUID de Supabase Auth"
-                                        description="Pega aquí el ID de usuario desde Supabase Authentication"
-                                        errorMessage={errors.authUserId?.message}
+                                    <TextField
                                         isInvalid={!!errors.authUserId}
-                                    />
+                                        className="w-full"
+                                    >
+                                        <Label>Auth User ID (Supabase UUID)</Label>
+                                        <Input
+                                            {...field}
+                                            type="password"
+                                            placeholder="Pegar UUID de Supabase Auth"
+                                            className="w-full"
+                                        />
+                                        <FieldError>{errors.authUserId?.message}</FieldError>
+                                        {/* Description note: could add Description component if imported */}
+                                    </TextField>
                                 )}
                             />
                             <Controller
@@ -217,25 +253,25 @@ export function OwnerFormModal({
                                 render={({ field: { value, onChange, ...field } }) => (
                                     <Switch
                                         isSelected={value}
-                                        onValueChange={onChange}
+                                        onChange={onChange}
                                         {...field}
                                     >
                                         Activo
                                     </Switch>
                                 )}
                             />
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" variant="light" onPress={onClose}>
-                                Cancelar
-                            </Button>
-                            <Button color="primary" type="submit" isLoading={isSubmitting}>
-                                Guardar
-                            </Button>
-                        </ModalFooter>
-                    </form>
-                )}
-            </ModalContent>
+                        </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onPress={onClose}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" type="submit" form="owner-form" isDisabled={isSubmitting}>
+                            Guardar
+                        </Button>
+                    </Modal.Footer>
+                </Modal.Dialog>
+            </Modal.Container>
         </Modal>
     );
 }

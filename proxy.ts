@@ -7,12 +7,12 @@ import { updateSession } from "@/lib/supabase/middleware";
 const publicRoutes = ["/", "/login", "/reset", "/auth/callback"];
 
 /**
- * Middleware for Supabase Auth SSR
+ * Proxy for Supabase Auth SSR
  * - Refreshes auth session
  * - Protects /(app) routes
  * - Allows /(auth) routes freely
  */
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
     const { supabaseResponse, user } = await updateSession(request);
 
     const pathname = request.nextUrl.pathname;

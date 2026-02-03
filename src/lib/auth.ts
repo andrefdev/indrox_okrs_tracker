@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Owner } from "@/types/user";
+import { db } from "@/db";
+import { owner as ownerTable } from "@/db/schema/core";
+import { eq } from "drizzle-orm";
 
 /**
  * Get the current Supabase Auth user
@@ -29,28 +32,28 @@ export async function getCurrentOwner(): Promise<Owner | null> {
         return null;
     }
 
-    // Query core.owner table for the user's owner record
-    const { data: owner, error } = await supabase
-        .schema("core")
-        .from("owner")
-        .select("*")
-        .eq("auth_user_id", user.id)
-        .single();
+    // Query core.owner table for the user's owner record using Drizzle
+    // This bypasses Supabase RLS policies and is more direct
+    const [owner] = await db
+        .select()
+        .from(ownerTable)
+        .where(eq(ownerTable.authUserId, user.id))
+        .limit(1);
 
-    if (error || !owner) {
+    if (!owner) {
         // User is authenticated but has no owner record
         return null;
     }
 
     // Map DB record to Owner type
     return {
-        ownerKey: owner.owner_key,
-        authUserId: owner.auth_user_id,
-        fullName: owner.full_name,
+        ownerKey: owner.ownerKey,
+        authUserId: owner.authUserId,
+        fullName: owner.fullName,
         email: owner.email || user.email || "",
         role: owner.role,
-        areaId: owner.area_id,
-        isActive: owner.is_active,
+        areaId: owner.areaId,
+        isActive: owner.isActive,
     };
 }
 

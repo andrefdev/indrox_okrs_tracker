@@ -6,6 +6,7 @@ import {
     Button,
     Input,
     Select,
+    ListBox,
     ListBoxItem,
     TextArea,
 } from "@heroui/react";
@@ -154,11 +155,13 @@ export function WorkItemModal({
                                         >
                                             <Select.Trigger />
                                             <Select.Popover>
-                                                <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
-                                                <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
-                                                <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
-                                                <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
-                                                <ListBoxItem key="other" id="other">Otro</ListBoxItem>
+                                                <ListBox>
+                                                    <ListBoxItem key="task" id="task">Tarea</ListBoxItem>
+                                                    <ListBoxItem key="bug" id="bug">Bug</ListBoxItem>
+                                                    <ListBoxItem key="feature" id="feature">Feature</ListBoxItem>
+                                                    <ListBoxItem key="spike" id="spike">Spike</ListBoxItem>
+                                                    <ListBoxItem key="other" id="other">Otro</ListBoxItem>
+                                                </ListBox>
                                             </Select.Popover>
                                         </Select>
                                     </div>
@@ -172,11 +175,13 @@ export function WorkItemModal({
                                         >
                                             <Select.Trigger />
                                             <Select.Popover>
-                                                {initiatives.map((init) => (
-                                                    <ListBoxItem key={init.initiativeKey} id={init.initiativeKey} textValue={init.name}>
-                                                        {init.name}
-                                                    </ListBoxItem>
-                                                ))}
+                                                <ListBox>
+                                                    {initiatives.map((init) => (
+                                                        <ListBoxItem key={init.initiativeKey} id={init.initiativeKey} textValue={init.name}>
+                                                            {init.name}
+                                                        </ListBoxItem>
+                                                    ))}
+                                                </ListBox>
                                             </Select.Popover>
                                         </Select>
                                     </div>
@@ -189,11 +194,13 @@ export function WorkItemModal({
                                         >
                                             <Select.Trigger />
                                             <Select.Popover>
-                                                {owners.map((owner) => (
-                                                    <ListBoxItem key={owner.ownerKey} id={owner.ownerKey} textValue={owner.fullName}>
-                                                        {owner.fullName}
-                                                    </ListBoxItem>
-                                                ))}
+                                                <ListBox>
+                                                    {owners.map((owner) => (
+                                                        <ListBoxItem key={owner.ownerKey} id={owner.ownerKey} textValue={owner.fullName}>
+                                                            {owner.fullName}
+                                                        </ListBoxItem>
+                                                    ))}
+                                                </ListBox>
                                             </Select.Popover>
                                         </Select>
                                     </div>
@@ -206,12 +213,14 @@ export function WorkItemModal({
                                         >
                                             <Select.Trigger />
                                             <Select.Popover>
-                                                <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
-                                                <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
-                                                <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
-                                                <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
-                                                <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
-                                                <ListBoxItem key="cancelled" id="cancelled">Cancelado</ListBoxItem>
+                                                <ListBox>
+                                                    <ListBoxItem key="not_started" id="not_started">Sin iniciar</ListBoxItem>
+                                                    <ListBoxItem key="on_track" id="on_track">On Track</ListBoxItem>
+                                                    <ListBoxItem key="at_risk" id="at_risk">En Riesgo</ListBoxItem>
+                                                    <ListBoxItem key="off_track" id="off_track">Off Track</ListBoxItem>
+                                                    <ListBoxItem key="completed" id="completed">Completado</ListBoxItem>
+                                                    <ListBoxItem key="cancelled" id="cancelled">Cancelado</ListBoxItem>
+                                                </ListBox>
                                             </Select.Popover>
                                         </Select>
                                     </div>
@@ -224,10 +233,12 @@ export function WorkItemModal({
                                         >
                                             <Select.Trigger />
                                             <Select.Popover>
-                                                <ListBoxItem key="low" id="low">Baja</ListBoxItem>
-                                                <ListBoxItem key="medium" id="medium">Media</ListBoxItem>
-                                                <ListBoxItem key="high" id="high">Alta</ListBoxItem>
-                                                <ListBoxItem key="critical" id="critical">Crítica</ListBoxItem>
+                                                <ListBox>
+                                                    <ListBoxItem key="low" id="low">Baja</ListBoxItem>
+                                                    <ListBoxItem key="medium" id="medium">Media</ListBoxItem>
+                                                    <ListBoxItem key="high" id="high">Alta</ListBoxItem>
+                                                    <ListBoxItem key="critical" id="critical">Crítica</ListBoxItem>
+                                                </ListBox>
                                             </Select.Popover>
                                         </Select>
                                     </div>

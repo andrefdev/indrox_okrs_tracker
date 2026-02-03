@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Button } from "@heroui/react";
 import { UserX, Mail } from "lucide-react";
 

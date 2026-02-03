@@ -4,9 +4,12 @@ import * as coreSchema from "./schema/core";
 import * as okrSchema from "./schema/okr";
 import * as okrRelatedSchema from "./schema/okr-related";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 // Create postgres connection
 const client = postgres(process.env.DATABASE_URL!, {
     prepare: false, // Required for Supabase connection pooling
+    ssl: isProduction ? "require" : false,
 });
 
 // Combine all schemas

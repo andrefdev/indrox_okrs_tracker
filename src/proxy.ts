@@ -2,31 +2,38 @@ import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 export async function proxy(request: NextRequest) {
-    const { supabaseResponse, user } = await updateSession(request);
+    try {
+        const { supabaseResponse, user } = await updateSession(request);
 
-    // Protected routes requiring authentication
-    // Check if the current path is NOT /login or /auth/* or public assets
-    // If we want to aggressively protect everything except login:
-    const isLoginPage = request.nextUrl.pathname.startsWith("/login");
-    const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-    const isNextStatic = request.nextUrl.pathname.startsWith("/_next");
-    const isPublicAsset = request.nextUrl.pathname === "/favicon.ico";
+        // Protected routes requiring authentication
+        // Check if the current path is NOT /login or /auth/* or public assets
+        // If we want to aggressively protect everything except login:
+        const isLoginPage = request.nextUrl.pathname.startsWith("/login");
+        const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
+        const isNextStatic = request.nextUrl.pathname.startsWith("/_next");
+        const isPublicAsset = request.nextUrl.pathname === "/favicon.ico";
 
-    if (!user && !isLoginPage && !isAuthPage && !isNextStatic && !isPublicAsset) {
-        // Redirect to login if user is not authenticated and trying to access protected route
-        const loginUrl = request.nextUrl.clone();
-        loginUrl.pathname = "/login";
-        return NextResponse.redirect(loginUrl);
+        if (!user && !isLoginPage && !isAuthPage && !isNextStatic && !isPublicAsset) {
+            // Redirect to login if user is not authenticated and trying to access protected route
+            const loginUrl = request.nextUrl.clone();
+            loginUrl.pathname = "/login";
+            return NextResponse.redirect(loginUrl);
+        }
+
+        if (user && isLoginPage) {
+            // Redirect to dashboard if user is authenticated and trying to access login
+            const dashboardUrl = request.nextUrl.clone();
+            dashboardUrl.pathname = "/";
+            return NextResponse.redirect(dashboardUrl);
+        }
+
+        return supabaseResponse;
+    } catch (error) {
+        console.error("Middleware error:", error);
+        // On fatal middleware error, we might want to allow the request to proceed 
+        // to a basic error page or just return NextResponse.next()
+        return NextResponse.next();
     }
-
-    if (user && isLoginPage) {
-        // Redirect to dashboard if user is authenticated and trying to access login
-        const dashboardUrl = request.nextUrl.clone();
-        dashboardUrl.pathname = "/";
-        return NextResponse.redirect(dashboardUrl);
-    }
-
-    return supabaseResponse;
 }
 
 export const config = {

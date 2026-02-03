@@ -76,8 +76,8 @@ export function LinkInitiativeModal({
                             <Modal.Heading>Vincular Iniciativa</Modal.Heading>
                         </Modal.Header>
 
-                        <Modal.Body className="space-y-4">
-                            <div className="space-y-2">
+                        <Modal.Body className="space-y-4 p-1">
+                            <div className="flex flex-col gap-1">
                                 <Label>Iniciativa</Label>
                                 <Select
                                     selectedKey={selectedInitiativeId}
@@ -110,7 +110,7 @@ export function LinkInitiativeModal({
                                 </p>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label>Tipo de relación</Label>
                                 <Select
                                     selectedKey={relationType}
@@ -134,7 +134,7 @@ export function LinkInitiativeModal({
                                 </Select>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <div className="flex items-center justify-between">
                                     <Label>Peso de contribución</Label>
                                     <span className="text-sm font-medium">{weight}%</span>

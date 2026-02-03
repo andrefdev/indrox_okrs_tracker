@@ -36,7 +36,6 @@ export default async function ObjectivesPage({
             <PageHeader
                 title="Objetivos"
                 description="Gestiona los objetivos estratégicos y tácticos de tu organización"
-                breadcrumbs={[{ label: "Objetivos" }]}
             />
 
             <Suspense fallback={<LoadingSkeleton variant="table" />}>

@@ -113,7 +113,7 @@ export function AreaFormModal({
                             </Modal.Heading>
                         </Modal.Header>
                         <Modal.Body>
-                            <form id="area-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            <form id="area-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-1">
                                 <Controller
                                     name="code"
                                     control={control}
@@ -156,7 +156,9 @@ export function AreaFormModal({
                                     render={({ field }) => (
                                         <Autocomplete
                                             selectedKey={field.value ? String(field.value) : null}
-                                            onSelectionChange={(key) => field.onChange(key)}
+                                            onSelectionChange={(key) => {
+                                                field.onChange(key !== null && key !== undefined ? String(key) : null);
+                                            }}
                                             isInvalid={!!errors.leadOwnerId}
                                             className="w-full"
                                         >
@@ -170,7 +172,7 @@ export function AreaFormModal({
                                                 </Autocomplete.Filter>
                                                 <ListBox>
                                                     {owners.map((owner) => (
-                                                        <ListBoxItem key={owner.ownerKey} textValue={owner.fullName}>
+                                                        <ListBoxItem key={owner.ownerKey} id={owner.ownerKey} textValue={owner.fullName}>
                                                             {owner.fullName}
                                                         </ListBoxItem>
                                                     ))}

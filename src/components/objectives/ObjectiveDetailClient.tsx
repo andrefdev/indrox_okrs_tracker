@@ -74,6 +74,7 @@ export function ObjectiveDetailClient({
                         entityType="objective"
                         entityId={objective.objective.objectiveKey}
                         checkins={objective.checkins}
+                        keyResults={objective.keyResults}
                     />
                 );
             case "evidence":
@@ -82,6 +83,7 @@ export function ObjectiveDetailClient({
                         entityType="objective"
                         entityId={objective.objective.objectiveKey}
                         evidence={objective.evidence}
+                        keyResults={objective.keyResults}
                     />
                 );
             case "risks":

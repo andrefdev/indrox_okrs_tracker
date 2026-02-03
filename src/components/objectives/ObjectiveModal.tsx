@@ -141,9 +141,9 @@ export function ObjectiveModal({
                             </Modal.Heading>
                         </Modal.Header>
 
-                        <Modal.Body className="space-y-4">
+                        <Modal.Body className="space-y-4 p-1">
                             {/* Title */}
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label htmlFor="title">Título *</Label>
                                 <Input
                                     id="title"
@@ -155,7 +155,7 @@ export function ObjectiveModal({
                             </div>
 
                             {/* Description */}
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label htmlFor="description">Descripción</Label>
                                 <TextArea
                                     id="description"
@@ -167,7 +167,7 @@ export function ObjectiveModal({
                             </div>
 
                             {/* Cycle */}
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label>Ciclo *</Label>
                                 <Select
                                     selectedKey={cycleId}
@@ -190,7 +190,7 @@ export function ObjectiveModal({
 
                             {/* Type & Priority */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Tipo</Label>
                                     <Select
                                         selectedKey={objectiveType}
@@ -211,7 +211,7 @@ export function ObjectiveModal({
                                     </Select>
                                 </div>
 
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Prioridad</Label>
                                     <Select
                                         selectedKey={priority}
@@ -234,7 +234,7 @@ export function ObjectiveModal({
                             </div>
 
                             {/* Status */}
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label>Estado</Label>
                                 <Select
                                     selectedKey={status}
@@ -256,7 +256,7 @@ export function ObjectiveModal({
                             </div>
 
                             {/* Confidence */}
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <div className="flex items-center justify-between">
                                     <Label>Confianza</Label>
                                     <span className="text-sm font-medium">{confidence}%</span>

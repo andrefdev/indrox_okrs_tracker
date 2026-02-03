@@ -5,6 +5,7 @@ import {
     initiative,
     objectiveInitiative,
     okrCycle,
+    keyResultCheckIn,
 } from "@/db/schema/okr";
 import {
     checkin,
@@ -118,12 +119,19 @@ export async function getObjectiveById(objectiveId: string) {
         return null;
     }
 
-    // Get related Key Results
-    const keyResults = await db
-        .select()
-        .from(keyResult)
-        .where(eq(keyResult.objectiveId, objectiveId))
-        .orderBy(keyResult.createdAt);
+    // Get related Key Results with Check-ins and Evidence
+    const keyResults = await db.query.keyResult.findMany({
+        where: eq(keyResult.objectiveId, objectiveId),
+        with: {
+            checkIns: {
+                with: {
+                    evidence: true,
+                },
+                orderBy: [desc(keyResultCheckIn.createdAt)],
+            },
+        },
+        orderBy: [keyResult.createdAt],
+    });
 
     // Get linked initiatives via bridge table
     const initiativeLinks = await db
@@ -141,8 +149,8 @@ export async function getObjectiveById(objectiveId: string) {
         .leftJoin(owner, eq(initiative.ownerId, owner.ownerKey))
         .where(eq(objectiveInitiative.objectiveId, objectiveId));
 
-    // Get check-ins for this objective
-    const checkins = await db
+    // Get check-ins for this objective (Objective-level check-ins)
+    const objectiveCheckins = await db
         .select({
             checkin: checkin,
             owner: {
@@ -160,8 +168,8 @@ export async function getObjectiveById(objectiveId: string) {
         )
         .orderBy(desc(checkin.checkinDate));
 
-    // Get evidence for this objective
-    const evidenceItems = await db
+    // Get evidence for this objective (Objective-level evidence)
+    const objectiveEvidence = await db
         .select({
             evidence: evidence,
             uploadedBy: {
@@ -228,12 +236,16 @@ export async function getObjectiveById(objectiveId: string) {
         )
         .orderBy(desc(decisionLog.decisionDate));
 
+    // Aggregate Check-ins and Evidence
+    // We already have KR checkins nested in keyResults.
+    // We can also flatten them if needed, but passing the full KR structure is better context.
+
     return {
         ...mainObjective,
         keyResults,
         initiatives: initiativeLinks,
-        checkins,
-        evidence: evidenceItems,
+        checkins: objectiveCheckins,
+        evidence: objectiveEvidence,
         risks,
         dependencies,
         decisions,

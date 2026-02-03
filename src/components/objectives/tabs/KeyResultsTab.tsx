@@ -2,14 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Card, Button, Input } from "@heroui/react";
-import { Plus, Edit, Trash2, Check, X } from "lucide-react";
+import { Card, Button } from "@heroui/react";
+import { Plus, Edit, Trash2, History } from "lucide-react";
 import { StatusChip, ConfidenceBadge } from "@/components/ui";
 import { KeyResultModal } from "../KeyResultModal";
-import {
-    deleteKeyResult,
-    updateKeyResultProgress,
-} from "@/app/actions/key-results";
+import { CheckInModal } from "@/components/checkins/CheckInModal";
+import { deleteKeyResult } from "@/app/actions/key-results";
 import { toast } from "sonner";
 
 interface KeyResultsTabProps {
@@ -20,19 +18,28 @@ interface KeyResultsTabProps {
 export function KeyResultsTab({ objectiveId, keyResults }: KeyResultsTabProps) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Key Result Modal State
+    const [isKRModalOpen, setIsKRModalOpen] = useState(false);
     const [editingKR, setEditingKR] = useState<any>(null);
-    const [quickEditId, setQuickEditId] = useState<string | null>(null);
-    const [quickEditValue, setQuickEditValue] = useState("");
+
+    // Check-in Modal State
+    const [isCheckInModalOpen, setIsCheckInModalOpen] = useState(false);
+    const [checkInKR, setCheckInKR] = useState<any>(null);
 
     const handleCreate = () => {
         setEditingKR(null);
-        setIsModalOpen(true);
+        setIsKRModalOpen(true);
     };
 
     const handleEdit = (kr: any) => {
         setEditingKR(kr);
-        setIsModalOpen(true);
+        setIsKRModalOpen(true);
+    };
+
+    const handleCheckIn = (kr: any) => {
+        setCheckInKR(kr);
+        setIsCheckInModalOpen(true);
     };
 
     const handleDelete = (krKey: string) => {
@@ -47,29 +54,6 @@ export function KeyResultsTab({ objectiveId, keyResults }: KeyResultsTabProps) {
                 toast.error("Error al eliminar");
             }
         });
-    };
-
-    const handleQuickEdit = (kr: any) => {
-        setQuickEditId(kr.krKey);
-        setQuickEditValue(kr.currentValue || "");
-    };
-
-    const handleQuickSave = (krKey: string) => {
-        startTransition(async () => {
-            try {
-                await updateKeyResultProgress(krKey, quickEditValue);
-                toast.success("Valor actualizado");
-                setQuickEditId(null);
-                router.refresh();
-            } catch (error) {
-                toast.error("Error al actualizar");
-            }
-        });
-    };
-
-    const handleQuickCancel = () => {
-        setQuickEditId(null);
-        setQuickEditValue("");
     };
 
     // Calculate progress percentage
@@ -128,50 +112,19 @@ export function KeyResultsTab({ objectiveId, keyResults }: KeyResultsTabProps) {
                                             )}
                                         </td>
                                         <td className="px-4 py-3">
-                                            {quickEditId === kr.krKey ? (
-                                                <div className="flex items-center gap-1">
-                                                    <Input
-                                                        value={quickEditValue}
-                                                        onChange={(e) => setQuickEditValue(e.target.value)}
-                                                        className="w-20 text-sm"
-                                                    />
-                                                    <span className="text-xs text-default-400">
-                                                        / {kr.targetValue} {kr.unit}
-                                                    </span>
-                                                    <Button
-                                                        isIconOnly
-                                                        variant="ghost"
-                                                        onPress={() => handleQuickSave(kr.krKey)}
-                                                        isPending={isPending}
-                                                        className="h-7 w-7 min-w-7"
-                                                    >
-                                                        <Check className="h-3 w-3" />
-                                                    </Button>
-                                                    <Button
-                                                        isIconOnly
-                                                        variant="ghost"
-                                                        onPress={handleQuickCancel}
-                                                        className="h-7 w-7 min-w-7"
-                                                    >
-                                                        <X className="h-3 w-3" />
-                                                    </Button>
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    className="cursor-pointer hover:text-primary"
-                                                    onClick={() => handleQuickEdit(kr)}
-                                                    role="button"
-                                                    tabIndex={0}
-                                                >
-                                                    <span className="font-medium">
-                                                        {kr.currentValue || kr.baselineValue || "0"}
-                                                    </span>
-                                                    <span className="text-default-400">
-                                                        {" / "}
-                                                        {kr.targetValue} {kr.unit}
-                                                    </span>
-                                                </div>
-                                            )}
+                                            <div
+                                                className="cursor-pointer hover:text-primary transition-colors flex items-center gap-1 group"
+                                                onClick={() => handleCheckIn(kr)}
+                                            >
+                                                <span className="font-medium">
+                                                    {kr.currentValue || kr.baselineValue || "0"}
+                                                </span>
+                                                <span className="text-default-400">
+                                                    {" / "}
+                                                    {kr.targetValue} {kr.unit}
+                                                </span>
+                                                <History className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity text-default-400" />
+                                            </div>
                                         </td>
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-2">
@@ -194,6 +147,14 @@ export function KeyResultsTab({ objectiveId, keyResults }: KeyResultsTabProps) {
                                         </td>
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-1">
+                                                <Button
+                                                    isIconOnly
+                                                    variant="ghost"
+                                                    onPress={() => handleCheckIn(kr)}
+                                                    className="h-8 w-8 min-w-8 text-primary"
+                                                >
+                                                    <History className="h-4 w-4" />
+                                                </Button>
                                                 <Button
                                                     isIconOnly
                                                     variant="ghost"
@@ -221,13 +182,22 @@ export function KeyResultsTab({ objectiveId, keyResults }: KeyResultsTabProps) {
             )}
 
             <KeyResultModal
-                isOpen={isModalOpen}
+                isOpen={isKRModalOpen}
                 onClose={() => {
-                    setIsModalOpen(false);
+                    setIsKRModalOpen(false);
                     setEditingKR(null);
                 }}
                 objectiveId={objectiveId}
                 keyResult={editingKR}
+            />
+
+            <CheckInModal
+                isOpen={isCheckInModalOpen}
+                onClose={() => {
+                    setIsCheckInModalOpen(false);
+                    setCheckInKR(null);
+                }}
+                keyResult={checkInKR}
             />
         </div>
     );

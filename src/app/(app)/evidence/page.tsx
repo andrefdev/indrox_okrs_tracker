@@ -1,13 +1,38 @@
-export default function EvidencePage() {
+import { getAllEvidence } from "@/db/queries/checkins";
+import { EvidenceClient } from "@/components/evidence/EvidenceClient";
+import { PageHeader } from "@/components/ui";
+
+export default async function EvidencePage() {
+    const { entityEvidence, checkInEvidences } = await getAllEvidence();
+
+    const allEvidence = [
+        ...entityEvidence.map((e) => ({
+            id: e.evidenceKey,
+            type: e.type,
+            title: e.title,
+            context: "Objetivo",
+            uploadedBy: e.uploadedByOwner?.fullName || "Desconocido",
+            date: e.createdAt,
+            url: e.url,
+        })),
+        ...checkInEvidences.map((e) => ({
+            id: e.id,
+            type: "link",
+            title: e.name || "Evidencia",
+            context: `Check-in: ${e.checkIn.keyResult.title}`,
+            uploadedBy: "Usuario",
+            date: e.createdAt,
+            url: e.url,
+        })),
+    ].sort((a, b) => b.date.getTime() - a.date.getTime());
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Evidencia</h1>
-                <p className="text-default-500">Documentación y pruebas de cumplimiento.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Evidencia Global"
+                description="Repositorio central de toda la evidencia subida."
+            />
+            <EvidenceClient data={allEvidence} />
         </div>
     );
 }

@@ -15,6 +15,7 @@ export async function createOwnerAction(data: NewOwner) {
     }
 }
 
+
 export async function updateOwnerAction(id: string, data: Partial<NewOwner>) {
     try {
         await updateOwner(id, data);

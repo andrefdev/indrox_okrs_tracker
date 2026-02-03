@@ -1,13 +1,24 @@
-export default function BudgetPage() {
+import { getAllBudgetItems } from "@/db/queries/budget";
+import { getInitiatives } from "@/db/queries/initiatives";
+import { BudgetClient } from "@/components/budget/BudgetClient";
+import { PageHeader } from "@/components/ui";
+
+export default async function BudgetPage() {
+    const [budgetItems, initiatives] = await Promise.all([
+        getAllBudgetItems(),
+        getInitiatives(),
+    ]);
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Presupuesto</h1>
-                <p className="text-default-500">Seguimiento de recursos financieros asignados.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Presupuesto"
+                description="Gestión financiera de iniciativas, seguimiento de planificación vs ejecución."
+            />
+            <BudgetClient
+                budgetItems={budgetItems}
+                initiatives={initiatives}
+            />
         </div>
     );
 }

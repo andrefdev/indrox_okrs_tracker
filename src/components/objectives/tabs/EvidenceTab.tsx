@@ -7,6 +7,7 @@ interface EvidenceTabProps {
     entityType: string;
     entityId: string;
     evidence: any[];
+    keyResults?: any[];
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
@@ -25,24 +26,49 @@ const typeLabels: Record<string, string> = {
     other: "Otro",
 };
 
-export function EvidenceTab({ entityType, entityId, evidence }: EvidenceTabProps) {
+export function EvidenceTab({ entityType, entityId, evidence, keyResults = [] }: EvidenceTabProps) {
+    // Flatten and normalize evidence
+    const krEvidence = keyResults.flatMap(kr =>
+        (kr.checkIns || []).flatMap((c: any) =>
+            (c.evidence || []).map((ev: any) => ({
+                id: ev.id,
+                type: 'link', // KR evidence is typically links
+                title: ev.name || "Evidencia de Check-in",
+                uploadedBy: null,
+                date: ev.createdAt,
+                url: ev.url,
+                source: `Check-in: ${kr.title}`
+            }))
+        )
+    );
+
+    const objEvidence = evidence.map(({ evidence: ev, uploadedBy }) => ({
+        id: ev.evidenceKey,
+        type: ev.type,
+        title: ev.title,
+        uploadedBy: uploadedBy,
+        date: ev.createdAt,
+        url: ev.url,
+        source: "Directo"
+    }));
+
+    const allEvidence = [...krEvidence, ...objEvidence].sort((a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Evidencia ({evidence.length})</h3>
+                <h3 className="text-lg font-semibold">Evidencia ({allEvidence.length})</h3>
                 <Button>
                     <Plus className="h-4 w-4" />
                     Adjuntar Evidencia
                 </Button>
             </div>
 
-            {evidence.length === 0 ? (
+            {allEvidence.length === 0 ? (
                 <Card className="p-8 text-center">
                     <p className="text-default-500">No hay evidencia adjunta.</p>
-                    <Button className="mt-4">
-                        <Plus className="h-4 w-4" />
-                        Adjuntar primera evidencia
-                    </Button>
                 </Card>
             ) : (
                 <Card className="overflow-hidden">
@@ -52,14 +78,14 @@ export function EvidenceTab({ entityType, entityId, evidence }: EvidenceTabProps
                                 <tr>
                                     <th className="px-4 py-3 text-left font-medium text-default-600">Tipo</th>
                                     <th className="px-4 py-3 text-left font-medium text-default-600">Título</th>
-                                    <th className="px-4 py-3 text-left font-medium text-default-600">Subido por</th>
+                                    <th className="px-4 py-3 text-left font-medium text-default-600">Fuente</th>
                                     <th className="px-4 py-3 text-left font-medium text-default-600">Fecha</th>
                                     <th className="px-4 py-3 text-left font-medium text-default-600">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-default-100">
-                                {evidence.map(({ evidence: ev, uploadedBy }) => (
-                                    <tr key={ev.evidenceKey} className="hover:bg-default-50">
+                                {allEvidence.map((ev) => (
+                                    <tr key={ev.id} className="hover:bg-default-50">
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-default-500">
@@ -72,11 +98,18 @@ export function EvidenceTab({ entityType, entityId, evidence }: EvidenceTabProps
                                             <p className="font-medium">{ev.title}</p>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <span className="text-sm">{uploadedBy?.fullName || "-"}</span>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm text-default-600">{ev.source}</span>
+                                                {ev.uploadedBy && (
+                                                    <span className="text-xs text-default-400">
+                                                        por {ev.uploadedBy.fullName}
+                                                    </span>
+                                                )}
+                                            </div>
                                         </td>
                                         <td className="px-4 py-3">
                                             <span className="text-sm text-default-400">
-                                                {new Date(ev.createdAt).toLocaleDateString("es-ES")}
+                                                {new Date(ev.date).toLocaleDateString("es-ES")}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3">

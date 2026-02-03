@@ -1,13 +1,27 @@
-export default function DependenciesPage() {
+import { getAllDependencies } from "@/db/queries/dependencies";
+import { getObjectives } from "@/db/queries/objectives";
+import { getInitiatives } from "@/db/queries/initiatives";
+import { DependenciesClient } from "@/components/dependencies/DependenciesClient";
+import { PageHeader } from "@/components/ui";
+
+export default async function DependenciesPage() {
+    const [dependencies, objectives, initiatives] = await Promise.all([
+        getAllDependencies(),
+        getObjectives(),
+        getInitiatives(),
+    ]);
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Dependencias</h1>
-                <p className="text-default-500">Gestión de interconexiones entre equipos y objetivos.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Dependencias"
+                description="Visualiza y gestiona las relaciones y bloqueos entre OKRs e Iniciativas."
+            />
+            <DependenciesClient
+                dependencies={dependencies}
+                initiatives={initiatives}
+                objectives={objectives.map(o => o.objective)}
+            />
         </div>
     );
 }

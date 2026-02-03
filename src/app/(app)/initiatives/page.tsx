@@ -1,13 +1,36 @@
-export default function InitiativesPage() {
+import { Suspense } from "react";
+import { getInitiatives } from "@/db/queries/initiatives";
+import { getCycles } from "@/db/queries/cycles";
+import { getOwners } from "@/db/queries/owners";
+import { getAreas } from "@/db/queries/areas";
+import { PageHeader, LoadingSkeleton } from "@/components/ui";
+import { InitiativesClient } from "@/components/initiatives/InitiativesClient";
+
+export default async function InitiativesPage() {
+    // Fetch all necessary data
+    const [initiatives, cycles, owners, areas] = await Promise.all([
+        getInitiatives(),
+        getCycles(),
+        getOwners(),
+        getAreas(),
+    ]);
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Iniciativas</h1>
-                <p className="text-default-500">Proyectos y esfuerzos para alcanzar tus objetivos.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Iniciativas"
+                description="Proyectos y esfuerzos concretos para alcanzar tus objetivos."
+            />
+
+            <Suspense fallback={<LoadingSkeleton variant="table" />}>
+                <InitiativesClient
+                    initiatives={initiatives as any}
+                    cycles={cycles}
+                    owners={owners}
+                    areas={areas}
+                />
+            </Suspense>
         </div>
     );
 }
+

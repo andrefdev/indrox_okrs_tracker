@@ -186,6 +186,38 @@ export const objectiveInitiative = okrSchema.table("objective_initiative", {
 // RELATIONS
 // ============================================
 
+/**
+ * Log of Check-ins for Key Results
+ */
+export const keyResultCheckIn = okrSchema.table("key_result_check_in", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    krId: uuid("kr_id")
+        .references(() => keyResult.krKey, { onDelete: "cascade" })
+        .notNull(),
+    value: text("value").notNull(),
+    previousValue: text("previous_value"),
+    comment: text("comment"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/**
+ * Evidence links for Check-ins
+ */
+export const checkInEvidence = okrSchema.table("check_in_evidence", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    checkInId: uuid("check_in_id")
+        .references(() => keyResultCheckIn.id, { onDelete: "cascade" })
+        .notNull(),
+    url: text("url").notNull(),
+    name: text("name"),
+    description: text("description"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// ============================================
+// RELATIONS
+// ============================================
+
 export const okrCycleRelations = relations(okrCycle, ({ many }) => ({
     objectives: many(objective),
     initiatives: many(initiative),
@@ -208,11 +240,12 @@ export const objectiveRelations = relations(objective, ({ one, many }) => ({
     objectiveInitiatives: many(objectiveInitiative),
 }));
 
-export const keyResultRelations = relations(keyResult, ({ one }) => ({
+export const keyResultRelations = relations(keyResult, ({ one, many }) => ({
     objective: one(objective, {
         fields: [keyResult.objectiveId],
         references: [objective.objectiveKey],
     }),
+    checkIns: many(keyResultCheckIn),
 }));
 
 export const initiativeRelations = relations(initiative, ({ one, many }) => ({
@@ -245,6 +278,21 @@ export const objectiveInitiativeRelations = relations(
     })
 );
 
+export const keyResultCheckInRelations = relations(keyResultCheckIn, ({ one, many }) => ({
+    keyResult: one(keyResult, {
+        fields: [keyResultCheckIn.krId],
+        references: [keyResult.krKey],
+    }),
+    evidence: many(checkInEvidence),
+}));
+
+export const checkInEvidenceRelations = relations(checkInEvidence, ({ one }) => ({
+    checkIn: one(keyResultCheckIn, {
+        fields: [checkInEvidence.checkInId],
+        references: [keyResultCheckIn.id],
+    }),
+}));
+
 // ============================================
 // TYPE EXPORTS
 // ============================================
@@ -259,3 +307,7 @@ export type Initiative = typeof initiative.$inferSelect;
 export type NewInitiative = typeof initiative.$inferInsert;
 export type ObjectiveInitiative = typeof objectiveInitiative.$inferSelect;
 export type NewObjectiveInitiative = typeof objectiveInitiative.$inferInsert;
+export type KeyResultCheckIn = typeof keyResultCheckIn.$inferSelect;
+export type NewKeyResultCheckIn = typeof keyResultCheckIn.$inferInsert;
+export type CheckInEvidence = typeof checkInEvidence.$inferSelect;
+export type NewCheckInEvidence = typeof checkInEvidence.$inferInsert;

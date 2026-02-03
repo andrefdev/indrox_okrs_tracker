@@ -117,8 +117,8 @@ export function KeyResultModal({
                             </Modal.Heading>
                         </Modal.Header>
 
-                        <Modal.Body className="space-y-4">
-                            <div className="space-y-2">
+                        <Modal.Body className="space-y-4 p-1">
+                            <div className="flex flex-col gap-1">
                                 <Label htmlFor="kr-title">Título *</Label>
                                 <Input
                                     id="kr-title"
@@ -128,7 +128,7 @@ export function KeyResultModal({
                                 />
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label htmlFor="metric-name">Nombre de métrica</Label>
                                 <Input
                                     id="metric-name"
@@ -139,7 +139,7 @@ export function KeyResultModal({
                             </div>
 
                             <div className="grid grid-cols-3 gap-4">
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Línea base</Label>
                                     <Input
                                         value={baselineValue}
@@ -147,7 +147,7 @@ export function KeyResultModal({
                                         placeholder="0"
                                     />
                                 </div>
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Objetivo *</Label>
                                     <Input
                                         value={targetValue}
@@ -155,7 +155,7 @@ export function KeyResultModal({
                                         placeholder="100"
                                     />
                                 </div>
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Actual</Label>
                                     <Input
                                         value={currentValue}
@@ -166,7 +166,7 @@ export function KeyResultModal({
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Unidad</Label>
                                     <Input
                                         value={unit}
@@ -174,7 +174,7 @@ export function KeyResultModal({
                                         placeholder="%"
                                     />
                                 </div>
-                                <div className="space-y-2">
+                                <div className="flex flex-col gap-1">
                                     <Label>Método de scoring</Label>
                                     <Select
                                         selectedKey={scoringMethod}
@@ -196,7 +196,7 @@ export function KeyResultModal({
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <Label>Estado</Label>
                                 <Select
                                     selectedKey={status}
@@ -217,7 +217,7 @@ export function KeyResultModal({
                                 </Select>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-1">
                                 <div className="flex items-center justify-between">
                                     <Label>Confianza</Label>
                                     <span className="text-sm font-medium">{confidence}%</span>

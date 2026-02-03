@@ -1,0 +1,323 @@
+    {
+        "areas": [
+            {
+                "refId": "area-tech",
+                "code": "TECH",
+                "name": "Technology",
+                "leadOwnerRefId": "owner-cto"
+            },
+            {
+                "refId": "area-product",
+                "code": "PROD",
+                "name": "Product",
+                "leadOwnerRefId": "owner-pm"
+            }
+        ],
+        "owners": [
+            {
+                "refId": "owner-ceo",
+                "authUserId": "00000000-0000-0000-0000-000000000001",
+                "fullName": "CEO Example",
+                "email": "ceo@example.com",
+                "role": "CEO"
+            },
+            {
+                "refId": "owner-cto",
+                "authUserId": "00000000-0000-0000-0000-000000000002",
+                "fullName": "CTO Example",
+                "email": "cto@example.com",
+                "role": "CTO",
+                "areaRefId": "area-tech"
+            },
+            {
+                "refId": "owner-pm",
+                "authUserId": "00000000-0000-0000-0000-000000000003",
+                "fullName": "PM Example",
+                "email": "pm@example.com",
+                "role": "PM",
+                "areaRefId": "area-product"
+            },
+            {
+                "refId": "owner-dev1",
+                "authUserId": "00000000-0000-0000-0000-000000000004",
+                "fullName": "Developer One",
+                "email": "dev1@example.com",
+                "role": "DEV",
+                "areaRefId": "area-tech"
+            }
+        ],
+        "cycles": [
+            {
+                "refId": "cycle-q1-2025",
+                "name": "Q1 2025",
+                "startDate": "2025-01-01",
+                "endDate": "2025-03-31",
+                "status": "active",
+                "notes": "First quarter objectives"
+            }
+        ],
+        "objectives": [
+            {
+                "refId": "obj-launch-product",
+                "cycleRefId": "cycle-q1-2025",
+                "areaRefId": "area-tech",
+                "ownerRefId": "owner-cto",
+                "title": "Launch Product v2.0",
+                "description": "Release the new version with all enhanced features",
+                "objectiveType": "strategic",
+                "priority": "high",
+                "status": "on_track",
+                "confidence": 75
+            },
+            {
+                "refId": "obj-user-growth",
+                "cycleRefId": "cycle-q1-2025",
+                "areaRefId": "area-product",
+                "ownerRefId": "owner-pm",
+                "title": "Grow Active User Base",
+                "description": "Increase user engagement and acquisition",
+                "objectiveType": "strategic",
+                "priority": "high",
+                "status": "on_track",
+                "confidence": 70
+            }
+        ],
+        "keyResults": [
+            {
+                "refId": "kr-users",
+                "objectiveRefId": "obj-user-growth",
+                "title": "Reach 10,000 active users",
+                "metricName": "Active Users",
+                "baselineValue": "1000",
+                "targetValue": "10000",
+                "currentValue": "3500",
+                "unit": "users",
+                "scoringMethod": "percentage",
+                "status": "on_track",
+                "confidence": 70
+            },
+            {
+                "refId": "kr-nps",
+                "objectiveRefId": "obj-user-growth",
+                "title": "Achieve NPS score of 50",
+                "metricName": "NPS Score",
+                "baselineValue": "30",
+                "targetValue": "50",
+                "currentValue": "42",
+                "unit": "points",
+                "scoringMethod": "percentage",
+                "status": "on_track",
+                "confidence": 80
+            },
+            {
+                "refId": "kr-features",
+                "objectiveRefId": "obj-launch-product",
+                "title": "Complete all v2.0 features",
+                "metricName": "Features Completed",
+                "baselineValue": "0",
+                "targetValue": "20",
+                "currentValue": "12",
+                "unit": "features",
+                "scoringMethod": "percentage",
+                "status": "on_track",
+                "confidence": 75
+            }
+        ],
+        "initiatives": [
+            {
+                "refId": "init-mobile-app",
+                "cycleRefId": "cycle-q1-2025",
+                "ownerRefId": "owner-cto",
+                "areaRefId": "area-tech",
+                "name": "Mobile App Development",
+                "problemStatement": "Users need mobile access to the platform",
+                "expectedOutcome": "Increase user engagement by 40%",
+                "startDate": "2025-01-15",
+                "dueDate": "2025-03-15",
+                "status": "on_track",
+                "priority": "high",
+                "effort": "high",
+                "impact": "high",
+                "notes": "iOS and Android apps using React Native"
+            },
+            {
+                "refId": "init-onboarding",
+                "cycleRefId": "cycle-q1-2025",
+                "ownerRefId": "owner-pm",
+                "areaRefId": "area-product",
+                "name": "Improve User Onboarding",
+                "problemStatement": "High drop-off rate during onboarding",
+                "expectedOutcome": "Reduce onboarding abandonment by 50%",
+                "startDate": "2025-01-10",
+                "dueDate": "2025-02-28",
+                "status": "on_track",
+                "priority": "medium",
+                "effort": "medium",
+                "impact": "high"
+            }
+        ],
+        "objectiveInitiatives": [
+            {
+                "objectiveRefId": "obj-launch-product",
+                "initiativeRefId": "init-mobile-app",
+                "relationType": "primary",
+                "weight": 1.0
+            },
+            {
+                "objectiveRefId": "obj-user-growth",
+                "initiativeRefId": "init-mobile-app",
+                "relationType": "secondary",
+                "weight": 0.5
+            },
+            {
+                "objectiveRefId": "obj-user-growth",
+                "initiativeRefId": "init-onboarding",
+                "relationType": "primary",
+                "weight": 1.0
+            }
+        ],
+        "workItems": [
+            {
+                "refId": "wi-design-ui",
+                "initiativeRefId": "init-mobile-app",
+                "title": "Design mobile UI screens",
+                "type": "task",
+                "ownerRefId": "owner-dev1",
+                "status": "completed",
+                "priority": "high",
+                "startDate": "2025-01-15",
+                "dueDate": "2025-02-01",
+                "estimateHours": 80,
+                "actualHours": 75,
+                "linkToTool": "https://linear.app/project/123",
+                "acceptanceCriteria": "All screens designed and approved by stakeholders"
+            },
+            {
+                "refId": "wi-api-integration",
+                "initiativeRefId": "init-mobile-app",
+                "title": "Integrate backend APIs",
+                "type": "feature",
+                "ownerRefId": "owner-dev1",
+                "status": "on_track",
+                "priority": "high",
+                "startDate": "2025-02-01",
+                "dueDate": "2025-02-20",
+                "estimateHours": 60,
+                "acceptanceCriteria": "All endpoints connected and tested"
+            },
+            {
+                "refId": "wi-onboarding-flow",
+                "initiativeRefId": "init-onboarding",
+                "title": "Redesign onboarding flow",
+                "type": "feature",
+                "ownerRefId": "owner-pm",
+                "status": "on_track",
+                "priority": "medium",
+                "startDate": "2025-01-10",
+                "dueDate": "2025-02-15",
+                "estimateHours": 40
+            }
+        ],
+        "keyResultCheckIns": [
+            {
+                "refId": "kr-checkin-1",
+                "krRefId": "kr-users",
+                "value": "3500",
+                "previousValue": "2500",
+                "comment": "Good progress this week, marketing campaign helped"
+            },
+            {
+                "refId": "kr-checkin-2",
+                "krRefId": "kr-nps",
+                "value": "42",
+                "previousValue": "38",
+                "comment": "Improved after support team training"
+            }
+        ],
+        "checkInEvidence": [
+            {
+                "checkInRefId": "kr-checkin-1",
+                "url": "https://analytics.example.com/dashboard",
+                "name": "Analytics Dashboard",
+                "description": "Screenshot showing user growth metrics"
+            }
+        ],
+        "checkins": [
+            {
+                "entityType": "initiative",
+                "entityRefId": "init-mobile-app",
+                "ownerRefId": "owner-cto",
+                "checkinDate": "2025-02-01",
+                "status": "on_track",
+                "confidence": 80,
+                "progressNote": "UI designs completed, development in progress",
+                "nextActions": "Complete API integration this week",
+                "blockers": null
+            }
+        ],
+        "evidence": [
+            {
+                "entityType": "initiative",
+                "entityRefId": "init-mobile-app",
+                "title": "Mobile App Design Mockups",
+                "url": "https://figma.com/file/abc123",
+                "type": "link",
+                "uploadedByRefId": "owner-dev1"
+            }
+        ],
+        "dependencies": [
+            {
+                "fromType": "work_item",
+                "fromRefId": "wi-api-integration",
+                "toType": "work_item",
+                "toRefId": "wi-design-ui",
+                "dependencyType": "blocked_by",
+                "notes": "API integration depends on finalized UI designs"
+            }
+        ],
+        "risks": [
+            {
+                "entityType": "initiative",
+                "entityRefId": "init-mobile-app",
+                "title": "App Store Approval Delay",
+                "description": "Apple review process may take longer than expected",
+                "probability": 3,
+                "impact": 4,
+                "mitigation": "Submit for review 2 weeks before launch date",
+                "ownerRefId": "owner-cto",
+                "status": "open"
+            }
+        ],
+        "budgetItems": [
+            {
+                "initiativeRefId": "init-mobile-app",
+                "category": "Development Tools",
+                "plannedAmount": 5000.00,
+                "actualAmount": 4500.00,
+                "currency": "USD",
+                "vendor": "Apple Developer Program",
+                "spendDate": "2025-01-10",
+                "notes": "Annual subscription for iOS development"
+            },
+            {
+                "initiativeRefId": "init-mobile-app",
+                "category": "Cloud Services",
+                "plannedAmount": 2000.00,
+                "currency": "USD",
+                "vendor": "AWS",
+                "notes": "Mobile backend infrastructure"
+            }
+        ],
+        "decisionLogs": [
+            {
+                "entityType": "initiative",
+                "entityRefId": "init-mobile-app",
+                "decisionDate": "2025-01-05",
+                "title": "Choose React Native for Mobile Development",
+                "context": "Need cross-platform solution to ship faster",
+                "decision": "Use React Native to leverage existing React skills and ship iOS/Android simultaneously",
+                "ownerRefId": "owner-cto",
+                "evidenceUrl": "https://notion.so/decision-doc-123"
+            }
+        ]
+    }

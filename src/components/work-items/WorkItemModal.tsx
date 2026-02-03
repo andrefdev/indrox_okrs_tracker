@@ -135,9 +135,9 @@ export function WorkItemModal({
                             <Modal.Heading>{isEditing ? "Editar Work Item" : "Nuevo Work Item"}</Modal.Heading>
                         </Modal.Header>
                         <Modal.Body>
-                            <form id="work-item-form" onSubmit={handleSubmit} className="space-y-4">
+                            <form id="work-item-form" onSubmit={handleSubmit} className="space-y-4 p-1">
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="col-span-2 space-y-1">
+                                    <div className="col-span-2 flex flex-col gap-1">
                                         <label className="text-sm font-medium">Título</label>
                                         <Input
                                             placeholder="Ej: Implementar login"
@@ -147,7 +147,7 @@ export function WorkItemModal({
                                         />
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Tipo</label>
                                         <Select
                                             selectedKey={type}
@@ -166,7 +166,7 @@ export function WorkItemModal({
                                         </Select>
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Iniciativa</label>
                                         <Select
                                             selectedKey={initiativeId}
@@ -186,7 +186,7 @@ export function WorkItemModal({
                                         </Select>
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Asignado a</label>
                                         <Select
                                             selectedKey={ownerId}
@@ -205,7 +205,7 @@ export function WorkItemModal({
                                         </Select>
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Estado</label>
                                         <Select
                                             selectedKey={status}
@@ -225,7 +225,7 @@ export function WorkItemModal({
                                         </Select>
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Prioridad</label>
                                         <Select
                                             selectedKey={priority}
@@ -243,7 +243,7 @@ export function WorkItemModal({
                                         </Select>
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Fecha Inicio</label>
                                         <Input
                                             type="date"
@@ -253,7 +253,7 @@ export function WorkItemModal({
                                         />
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Fecha Entrega</label>
                                         <Input
                                             type="date"
@@ -263,7 +263,7 @@ export function WorkItemModal({
                                         />
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Estimado (horas)</label>
                                         <Input
                                             type="number"
@@ -272,7 +272,7 @@ export function WorkItemModal({
                                         />
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="flex flex-col gap-1">
                                         <label className="text-sm font-medium">Real (horas)</label>
                                         <Input
                                             type="number"
@@ -281,7 +281,7 @@ export function WorkItemModal({
                                         />
                                     </div>
 
-                                    <div className="col-span-2 space-y-1">
+                                    <div className="col-span-2 flex flex-col gap-1">
                                         <label className="text-sm font-medium">Link a herramienta (Jira/Linear)</label>
                                         <Input
                                             value={linkToTool}
@@ -289,7 +289,7 @@ export function WorkItemModal({
                                         />
                                     </div>
 
-                                    <div className="col-span-2 space-y-1">
+                                    <div className="col-span-2 flex flex-col gap-1">
                                         <label className="text-sm font-medium">Criterios de Aceptación</label>
                                         <TextArea
                                             value={acceptanceCriteria}

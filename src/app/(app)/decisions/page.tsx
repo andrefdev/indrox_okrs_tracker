@@ -1,13 +1,24 @@
-export default function DecisionsPage() {
+import { getAllDecisions } from "@/db/queries/decisions";
+import { getOwners } from "@/db/queries/owners";
+import { DecisionsClient } from "@/components/decisions/DecisionsClient";
+import { PageHeader } from "@/components/ui";
+
+export default async function DecisionsPage() {
+    const [decisions, owners] = await Promise.all([
+        getAllDecisions(),
+        getOwners(),
+    ]);
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Decisiones</h1>
-                <p className="text-default-500">Registro de decisiones clave del proyecto.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Registro de Decisiones"
+                description="Historial de decisiones importantes, contexto y justificación."
+            />
+            <DecisionsClient
+                decisions={decisions}
+                owners={owners}
+            />
         </div>
     );
 }

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    Card,
-    CardHeader,
-    CardContent,
-} from "@heroui/react";
+import { Card, CardHeader } from "@heroui/react";
 import Link from "next/link";
 import { StatusChip, PriorityChip } from "@/components/ui";
 
@@ -28,7 +24,7 @@ export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTa
                 <CardHeader>
                     <h3 className="font-bold text-lg text-danger">Bloqueados / En Riesgo</h3>
                 </CardHeader>
-                <CardContent>
+                <div className="p-4">
                     <div className="w-full overflow-x-auto">
                         <table className="w-full text-sm text-left">
                             <thead className="border-b bg-default-100 uppercase text-xs font-semibold text-default-500">
@@ -80,7 +76,7 @@ export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTa
                             </tbody>
                         </table>
                     </div>
-                </CardContent>
+                </div>
             </Card>
 
             {/* High Priority Items */}
@@ -88,7 +84,7 @@ export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTa
                 <CardHeader>
                     <h3 className="font-bold text-lg">Prioridad Alta</h3>
                 </CardHeader>
-                <CardContent>
+                <div className="p-4">
                     <div className="w-full overflow-x-auto">
                         <table className="w-full text-sm text-left">
                             <thead className="border-b bg-default-100 uppercase text-xs font-semibold text-default-500">
@@ -130,7 +126,7 @@ export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTa
                             </tbody>
                         </table>
                     </div>
-                </CardContent>
+                </div>
             </Card>
 
             {/* No Recent Evidence */}
@@ -138,7 +134,7 @@ export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTa
                 <CardHeader>
                     <h3 className="font-bold text-lg text-warning">Sin Evidencia Reciente (+7 días)</h3>
                 </CardHeader>
-                <CardContent>
+                <div className="p-4">
                     <div className="w-full overflow-x-auto">
                         <table className="w-full text-sm text-left">
                             <thead className="border-b bg-default-100 uppercase text-xs font-semibold text-default-500">
@@ -174,7 +170,7 @@ export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTa
                             </tbody>
                         </table>
                     </div>
-                </CardContent>
+                </div>
             </Card>
 
         </div>

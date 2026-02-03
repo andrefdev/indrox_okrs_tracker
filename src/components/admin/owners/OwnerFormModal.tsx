@@ -132,7 +132,7 @@ export function OwnerFormModal({
                             </Modal.Heading>
                         </Modal.Header>
                         <Modal.Body>
-                            <form id="owner-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            <form id="owner-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-1">
                                 <Controller
                                     name="fullName"
                                     control={control}
@@ -175,7 +175,11 @@ export function OwnerFormModal({
                                     render={({ field }) => (
                                         <Select
                                             selectedKey={field.value}
-                                            onSelectionChange={(key) => field.onChange(key)}
+                                            onSelectionChange={(key) => {
+                                                if (key !== null && key !== undefined) {
+                                                    field.onChange(String(key));
+                                                }
+                                            }}
                                             isInvalid={!!errors.role}
                                             className="w-full"
                                             placeholder="Selecciona un rol"
@@ -187,7 +191,7 @@ export function OwnerFormModal({
                                             <Select.Popover>
                                                 <ListBox>
                                                     {roles.map((role) => (
-                                                        <ListBoxItem key={role} textValue={role}>
+                                                        <ListBoxItem key={role} id={role} textValue={role}>
                                                             {role}
                                                         </ListBoxItem>
                                                     ))}
@@ -203,7 +207,10 @@ export function OwnerFormModal({
                                     render={({ field }) => (
                                         <Autocomplete
                                             selectedKey={field.value ? String(field.value) : null}
-                                            onSelectionChange={(key) => field.onChange(key)}
+                                            onSelectionChange={(key) => {
+                                                // Convert Key to string or null
+                                                field.onChange(key !== null && key !== undefined ? String(key) : null);
+                                            }}
                                             isInvalid={!!errors.areaId}
                                             className="w-full"
                                         >
@@ -217,7 +224,7 @@ export function OwnerFormModal({
                                                 </Autocomplete.Filter>
                                                 <ListBox>
                                                     {areas.map((area) => (
-                                                        <ListBoxItem key={area.areaKey} textValue={area.name}>
+                                                        <ListBoxItem key={area.areaKey} id={area.areaKey} textValue={area.name}>
                                                             {area.name}
                                                         </ListBoxItem>
                                                     ))}

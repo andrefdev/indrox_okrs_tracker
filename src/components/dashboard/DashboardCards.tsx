@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent } from "@heroui/react";
+import { Card } from "@heroui/react";
 
 interface StatusCount {
     status: string;
@@ -35,7 +35,7 @@ function DashboardCard({ title, counts }: { title: string; counts: StatusCount[]
 
     return (
         <Card>
-            <CardContent className="gap-4">
+            <div className="p-4 gap-4 flex flex-col">
                 <div className="flex justify-between items-start">
                     <h3 className="font-semibold text-lg">{title}</h3>
                     <span className="text-2xl font-bold">{total}</span>
@@ -69,7 +69,7 @@ function DashboardCard({ title, counts }: { title: string; counts: StatusCount[]
                         style={{ width: `${(atRisk / (total || 1)) * 100}%` }}
                     />
                 </div>
-            </CardContent>
+            </div>
         </Card>
     );
 }

@@ -1,13 +1,21 @@
-export default function RisksPage() {
+import { getAllRisks } from "@/db/queries/risks";
+import { getOwners } from "@/db/queries/owners";
+import { RisksClient } from "@/components/risks/RisksClient";
+import { PageHeader } from "@/components/ui";
+
+export default async function RisksPage() {
+    const [risks, owners] = await Promise.all([
+        getAllRisks(),
+        getOwners(),
+    ]);
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Riesgos</h1>
-                <p className="text-default-500">Identificación y gestión de riesgos potenciales.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Gestión de Riesgos"
+                description="Identificación y monitoreo de riesgos potenciales en la ejecución de OKRs."
+            />
+            <RisksClient risks={risks} owners={owners} />
         </div>
     );
 }

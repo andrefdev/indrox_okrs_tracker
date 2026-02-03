@@ -1,13 +1,42 @@
-export default function CheckinsPage() {
+import { getAllCheckIns } from "@/db/queries/checkins";
+import { CheckinsClient, UnifiedCheckin } from "@/components/checkins/CheckinsClient";
+import { PageHeader } from "@/components/ui";
+
+export default async function CheckinsPage() {
+    const { entityCheckins, krCheckins } = await getAllCheckIns();
+
+    const unifiedCheckins: UnifiedCheckin[] = [
+        ...entityCheckins.map((c) => ({
+            id: c.checkinKey,
+            type: "objective" as const,
+            title: "Check-in de Objetivo",
+            date: new Date(c.checkinDate),
+            owner: c.owner.fullName,
+            status: c.status,
+            note: c.progressNote,
+            context: c.entityId || "Objetivo",
+        })),
+        ...krCheckins.map((c) => ({
+            id: c.id,
+            type: "key_result" as const,
+            title: c.keyResult.title,
+            date: new Date(c.createdAt),
+            owner: "Usuario",
+            value: c.value,
+            previousValue: c.previousValue,
+            unit: c.keyResult.unit,
+            comment: c.comment,
+            context: c.keyResult.objective?.title || "Objetivo",
+        })),
+    ].sort((a, b) => b.date.getTime() - a.date.getTime());
+
     return (
-        <div className="flex flex-col gap-6 p-6">
-            <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold">Check-ins</h1>
-                <p className="text-default-500">Seguimiento periódico del progreso.</p>
-            </div>
-            <div className="flex min-h-[400px] items-center justify-center rounded-xl border-2 border-dashed border-default-200">
-                <p className="text-default-400">Contenido en desarrollo</p>
-            </div>
+        <div>
+            <PageHeader
+                title="Check-ins Globales"
+                description="Historial completo de progreso en Objetivos y Key Results."
+            />
+            <CheckinsClient data={unifiedCheckins} />
         </div>
     );
 }

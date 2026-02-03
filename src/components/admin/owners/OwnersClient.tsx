@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardContent } from "@heroui/react";
+import { Button, Card } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { OwnersTable } from "./OwnersTable";
 import { OwnerFormModal } from "./OwnerFormModal";
@@ -42,9 +42,9 @@ export function OwnersClient({ owners, areas }: OwnersClientProps) {
             </div>
 
             <Card>
-                <CardContent>
+                <div className="p-4">
                     <OwnersTable owners={owners} onEdit={handleEdit} />
-                </CardContent>
+                </div>
             </Card>
 
             <OwnerFormModal

@@ -36,7 +36,7 @@ export function CycleSelector({ cycles, currentCycleId }: CycleSelectorProps) {
             <Select.Popover>
                 <ListBox>
                     {cycles.map((cycle) => (
-                        <ListBoxItem key={cycle.cycleId} textValue={cycle.name}>
+                        <ListBoxItem key={cycle.cycleId} id={cycle.cycleId} textValue={cycle.name}>
                             {cycle.name}
                         </ListBoxItem>
                     ))}

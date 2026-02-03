@@ -22,3 +22,132 @@ body {
   --sidebar-width: 260px;
   --topbar-height: 64px;
 }
+
+/* ============================================
+   HeroUI Form Improvements
+   ============================================ */
+
+/* Force vertical layout for form field containers */
+.space-y-2:has([data-slot="input-wrapper"]),
+.space-y-2:has([data-slot="trigger"]),
+.space-y-2:has([data-slot="text-area"]),
+.space-y-4:has([data-slot="input-wrapper"]),
+.space-y-4:has([data-slot="trigger"]) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* TextField component - force vertical layout */
+[data-slot="text-field"],
+[data-slot="text-area"] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Label styling - ensure it's above the input */
+[data-slot="label"] {
+  margin-bottom: 0.25rem;
+}
+
+/* Ensure inputs and selects take full width */
+[data-slot="input-wrapper"],
+[data-slot="trigger"],
+[data-slot="base"]:has([data-slot="input-wrapper"]),
+[data-slot="base"]:has([data-slot="trigger"]) {
+  width: 100%;
+}
+
+/* Input styling with visible borders */
+[data-slot="input-wrapper"] {
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 0.5rem;
+  background-color: hsl(0 0% 100%);
+  transition: border-color 0.15s ease, outline 0.15s ease;
+}
+
+[data-slot="input-wrapper"]:hover {
+  border-color: hsl(240 5% 65%);
+}
+
+[data-slot="input-wrapper"]:focus-within {
+  border-color: hsl(212 100% 48%);
+  outline: 2px solid hsl(212 100% 48% / 0.3);
+  outline-offset: 1px;
+}
+
+/* Select trigger styling */
+[data-slot="trigger"] {
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 0.5rem;
+  background-color: hsl(0 0% 100%);
+  transition: border-color 0.15s ease, outline 0.15s ease;
+}
+
+[data-slot="trigger"]:hover {
+  border-color: hsl(240 5% 65%);
+}
+
+[data-slot="trigger"]:focus,
+[data-slot="trigger"][data-open="true"] {
+  border-color: hsl(212 100% 48%);
+  outline: 2px solid hsl(212 100% 48% / 0.3);
+  outline-offset: 1px;
+}
+
+/* TextArea base container - force vertical layout */
+[data-slot="text-area"] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* TextArea inner wrapper */
+[data-slot="input-wrapper"]:has(textarea) {
+  width: 100%;
+}
+
+/* TextArea input styling */
+[data-slot="input"]:is(textarea) {
+  width: 100%;
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 0.5rem;
+  background-color: hsl(0 0% 100%);
+  transition: border-color 0.15s ease, outline 0.15s ease;
+}
+
+[data-slot="input"]:is(textarea):hover {
+  border-color: hsl(240 5% 65%);
+}
+
+[data-slot="input"]:is(textarea):focus {
+  border-color: hsl(212 100% 48%);
+  outline: 2px solid hsl(212 100% 48% / 0.3);
+  outline-offset: 1px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+
+  [data-slot="input-wrapper"],
+  [data-slot="trigger"],
+  [data-slot="input"]:is(textarea) {
+    border-color: hsl(240 5% 26%);
+    background-color: hsl(240 6% 10%);
+  }
+
+  [data-slot="input-wrapper"]:hover,
+  [data-slot="trigger"]:hover,
+  [data-slot="input"]:is(textarea):hover {
+    border-color: hsl(240 5% 40%);
+  }
+
+  [data-slot="input-wrapper"]:focus-within,
+  [data-slot="trigger"]:focus,
+  [data-slot="trigger"][data-open="true"],
+  [data-slot="input"]:is(textarea):focus {
+    border-color: hsl(212 100% 60%);
+    outline-color: hsl(212 100% 60% / 0.3);
+  }
+}

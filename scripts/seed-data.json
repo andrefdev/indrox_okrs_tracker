@@ -1,0 +1,508 @@
+{
+    "areas": [
+        {
+            "refId": "area-est",
+            "code": "EST",
+            "name": "Estrategia y Gobierno",
+            "leadOwnerRefId": "owner-andre"
+        },
+        {
+            "refId": "area-com",
+            "code": "COM",
+            "name": "Comercial y Growth",
+            "leadOwnerRefId": "owner-arnaldo"
+        },
+        {
+            "refId": "area-tec",
+            "code": "TEC",
+            "name": "Tecnología y Producto",
+            "leadOwnerRefId": "owner-jj"
+        }
+    ],
+    "owners": [
+        {
+            "refId": "owner-andre",
+            "authUserId": "user-andre-uuid",
+            "fullName": "Ricardo André Reaño",
+            "email": "ceo@indrox.com",
+            "role": "CEO",
+            "areaRefId": "area-est"
+        },
+        {
+            "refId": "owner-jj",
+            "authUserId": "user-jj-uuid",
+            "fullName": "JohnJairo Huillca",
+            "email": "cto@indrox.com",
+            "role": "CTO",
+            "areaRefId": "area-tec"
+        },
+        {
+            "refId": "owner-arnaldo",
+            "authUserId": "user-arnaldo-uuid",
+            "fullName": "Arnaldo Barrera",
+            "email": "cmo@indrox.com",
+            "role": "CMO",
+            "areaRefId": "area-com"
+        }
+    ],
+    "cycles": [
+        {
+            "refId": "cycle-2026-annual",
+            "name": "2026 Anual",
+            "startDate": "2026-01-01",
+            "endDate": "2026-12-31",
+            "status": "active",
+            "notes": "Año fundacional de escala. Objetivo: Habilitar valor económico."
+        },
+        {
+            "refId": "cycle-2026-q1",
+            "name": "2026 Q1: Control y Fundaciones",
+            "startDate": "2026-01-01",
+            "endDate": "2026-03-31",
+            "status": "active",
+            "notes": "Tema: Ordenar antes de acelerar. Foco en Rentabilidad y Gobierno."
+        },
+        {
+            "refId": "cycle-2026-q2",
+            "name": "2026 Q2: Impacto y Evidencia",
+            "startDate": "2026-04-01",
+            "endDate": "2026-06-30",
+            "status": "planned",
+            "notes": "Tema: Medir, demostrar y vender impacto (ROI)."
+        },
+        {
+            "refId": "cycle-2026-q3",
+            "name": "2026 Q3: Escala y Plataformas",
+            "startDate": "2026-07-01",
+            "endDate": "2026-09-30",
+            "status": "planned",
+            "notes": "Tema: De proyectos a sistemas repetibles (Productización)."
+        },
+        {
+            "refId": "cycle-2026-q4",
+            "name": "2026 Q4: Antifragilidad",
+            "startDate": "2026-10-01",
+            "endDate": "2026-12-31",
+            "status": "planned",
+            "notes": "Tema: Escalar sin romper. Ecosistema y continuidad."
+        }
+    ],
+    "objectives": [
+        {
+            "refId": "obj-corp-1",
+            "cycleRefId": "cycle-2026-annual",
+            "areaRefId": "area-est",
+            "ownerRefId": "owner-andre",
+            "title": "Crecimiento Rentable y Controlado",
+            "description": "Lograr ingresos con márgenes saludables, evitando la dependencia de pocos clientes y proyectos 'basura'.",
+            "objectiveType": "strategic",
+            "priority": "high",
+            "status": "on_track",
+            "confidence": 90
+        },
+        {
+            "refId": "obj-corp-2",
+            "cycleRefId": "cycle-2026-annual",
+            "areaRefId": "area-com",
+            "ownerRefId": "owner-arnaldo",
+            "title": "Impacto Económico Medible en Clientes",
+            "description": "Diferenciación competitiva basada en ROI y métricas de negocio, no en horas hombre.",
+            "objectiveType": "strategic",
+            "priority": "high",
+            "status": "on_track",
+            "confidence": 85
+        },
+        {
+            "refId": "obj-corp-3",
+            "cycleRefId": "cycle-2026-annual",
+            "areaRefId": "area-tec",
+            "ownerRefId": "owner-jj",
+            "title": "Plataformas y Ofertas Repetibles",
+            "description": "Transición de software factory (one-off) a productos y módulos reutilizables.",
+            "objectiveType": "strategic",
+            "priority": "high",
+            "status": "on_track",
+            "confidence": 80
+        },
+        {
+            "refId": "obj-tec-q1",
+            "cycleRefId": "cycle-2026-q1",
+            "areaRefId": "area-tec",
+            "ownerRefId": "owner-jj",
+            "title": "Delivery Excellence & Data Foundations (T1)",
+            "description": "Acelerar delivery, reducir retrabajo, establecer bases operables (Core Tech) y MVP de Data Warehouse.",
+            "objectiveType": "tactical",
+            "priority": "high",
+            "status": "in_progress",
+            "confidence": 95
+        },
+        {
+            "refId": "obj-com-q1",
+            "cycleRefId": "cycle-2026-q1",
+            "areaRefId": "area-com",
+            "ownerRefId": "owner-arnaldo",
+            "title": "Implementación Growth OS & Control del Discurso",
+            "description": "Desplegar stack tecnológico, filtrar 100% leads bajo nuevo ICP y vender 'TechBrain' pagado.",
+            "objectiveType": "tactical",
+            "priority": "high",
+            "status": "in_progress",
+            "confidence": 85
+        }
+    ],
+    "keyResults": [
+        {
+            "refId": "kr-fin-revenue",
+            "objectiveRefId": "obj-corp-1",
+            "title": "Ingresos Anuales USD 200k - 300k",
+            "metricName": "Revenue Anual",
+            "baselineValue": "0",
+            "targetValue": "300000",
+            "currentValue": "57000",
+            "unit": "USD",
+            "scoringMethod": "numeric",
+            "status": "on_track",
+            "confidence": 80
+        },
+        {
+            "refId": "kr-fin-margin",
+            "objectiveRefId": "obj-corp-1",
+            "title": "Margen Neto ≥ 18-22%",
+            "metricName": "Margen Neto",
+            "baselineValue": "10",
+            "targetValue": "22",
+            "currentValue": "15",
+            "unit": "percentage",
+            "scoringMethod": "numeric",
+            "status": "on_track",
+            "confidence": 85
+        },
+        {
+            "refId": "kr-imp-value",
+            "objectiveRefId": "obj-corp-2",
+            "title": "Habilitar USD 1-1.5M en valor económico para clientes",
+            "metricName": "Economic Value Enabled",
+            "baselineValue": "0",
+            "targetValue": "1500000",
+            "currentValue": "0",
+            "unit": "USD",
+            "scoringMethod": "numeric",
+            "status": "at_risk",
+            "confidence": 70
+        },
+        {
+            "refId": "kr-tec-core",
+            "objectiveRefId": "obj-tec-q1",
+            "title": "100% Adopción de Indrox Core Tech en proyectos activos",
+            "metricName": "Adopción Core",
+            "baselineValue": "0",
+            "targetValue": "100",
+            "currentValue": "20",
+            "unit": "percentage",
+            "scoringMethod": "numeric",
+            "status": "in_progress",
+            "confidence": 90
+        },
+        {
+            "refId": "kr-tec-data",
+            "objectiveRefId": "obj-tec-q1",
+            "title": "Data Warehouse MVP operativo con 2 fuentes",
+            "metricName": "Fuentes Conectadas",
+            "baselineValue": "0",
+            "targetValue": "2",
+            "currentValue": "0",
+            "unit": "count",
+            "scoringMethod": "numeric",
+            "status": "in_progress",
+            "confidence": 85
+        },
+        {
+            "refId": "kr-com-roi",
+            "objectiveRefId": "obj-com-q1",
+            "title": "70% de propuestas incluyen proyección de ROI explícito",
+            "metricName": "Propuestas con ROI",
+            "baselineValue": "0",
+            "targetValue": "70",
+            "currentValue": "10",
+            "unit": "percentage",
+            "scoringMethod": "numeric",
+            "status": "in_progress",
+            "confidence": 80
+        }
+    ],
+    "initiatives": [
+        {
+            "refId": "ini-pricing-model",
+            "cycleRefId": "cycle-2026-q1",
+            "ownerRefId": "owner-arnaldo",
+            "areaRefId": "area-com",
+            "name": "Rediseño del Modelo Comercial (Pricing & TechBrain)",
+            "problemStatement": "Vendemos horas baratas en lugar de valor. Proyectos pequeños generan caos operativo.",
+            "expectedOutcome": "Pricing: Costo + Overhead (30%) + Margen (40-50%). Cobro de diagnóstico (TechBrain).",
+            "startDate": "2026-01-15",
+            "dueDate": "2026-02-28",
+            "status": "in_progress",
+            "priority": "high",
+            "effort": "medium",
+            "impact": "high",
+            "notes": "Validado en reunión gerencia: Cobrar 300 PEN por diagnóstico."
+        },
+        {
+            "refId": "ini-finance-cleanup",
+            "cycleRefId": "cycle-2026-q1",
+            "ownerRefId": "owner-andre",
+            "areaRefId": "area-est",
+            "name": "Saneamiento Financiero y Tools",
+            "problemStatement": "Deudas pendientes y comisiones altas en pagos internacionales.",
+            "expectedOutcome": "Deuda cero con Finot/Socios y sistema de pagos eficiente.",
+            "startDate": "2026-01-01",
+            "dueDate": "2026-02-15",
+            "status": "in_progress",
+            "priority": "high",
+            "effort": "low",
+            "impact": "medium",
+            "notes": "Implementar Global66."
+        },
+        {
+            "refId": "ini-tech-core",
+            "cycleRefId": "cycle-2026-q1",
+            "ownerRefId": "owner-jj",
+            "areaRefId": "area-tec",
+            "name": "Indrox Core Tech & CI/CD",
+            "problemStatement": "Desarrollo desordenado, falta de estándares y despliegues lentos.",
+            "expectedOutcome": "Repositorio único, documentación, CI/CD estándar en GitHub Actions.",
+            "startDate": "2026-01-27",
+            "dueDate": "2026-03-30",
+            "status": "in_progress",
+            "priority": "high",
+            "effort": "high",
+            "impact": "high",
+            "notes": "Backlog T1."
+        },
+        {
+            "refId": "ini-tech-data",
+            "cycleRefId": "cycle-2026-q1",
+            "ownerRefId": "owner-jj",
+            "areaRefId": "area-tec",
+            "name": "Data Warehouse MVP",
+            "problemStatement": "No tenemos visibilidad unificada de métricas internas ni de clientes.",
+            "expectedOutcome": "Airbyte + Postgres/ClickHouse + Metabase conectados a GA4/Ads.",
+            "startDate": "2026-02-01",
+            "dueDate": "2026-03-15",
+            "status": "todo",
+            "priority": "medium",
+            "effort": "medium",
+            "impact": "high",
+            "notes": "Base para vender BI en Q2."
+        },
+        {
+            "refId": "ini-growth-tools",
+            "cycleRefId": "cycle-2026-q1",
+            "ownerRefId": "owner-arnaldo",
+            "areaRefId": "area-com",
+            "name": "Despliegue Stack Growth OS",
+            "problemStatement": "Herramientas desconectadas (Frankenstein).",
+            "expectedOutcome": "HubSpot (Startups 90% off), Clay, Taplio integrados.",
+            "startDate": "2026-01-28",
+            "dueDate": "2026-02-10",
+            "status": "in_progress",
+            "priority": "high",
+            "effort": "medium",
+            "impact": "high",
+            "notes": "Coordinar con Charlie para setup de Clay/Apollo."
+        }
+    ],
+    "objectiveInitiatives": [
+        {
+            "objectiveRefId": "obj-corp-1",
+            "initiativeRefId": "ini-pricing-model",
+            "relationType": "primary",
+            "weight": 1.0
+        },
+        {
+            "objectiveRefId": "obj-corp-1",
+            "initiativeRefId": "ini-finance-cleanup",
+            "relationType": "secondary",
+            "weight": 0.5
+        },
+        {
+            "objectiveRefId": "obj-tec-q1",
+            "initiativeRefId": "ini-tech-core",
+            "relationType": "primary",
+            "weight": 1.0
+        },
+        {
+            "objectiveRefId": "obj-tec-q1",
+            "initiativeRefId": "ini-tech-data",
+            "relationType": "primary",
+            "weight": 1.0
+        },
+        {
+            "objectiveRefId": "obj-com-q1",
+            "initiativeRefId": "ini-growth-tools",
+            "relationType": "primary",
+            "weight": 1.0
+        }
+    ],
+    "workItems": [
+        {
+            "refId": "wi-fin-debt",
+            "initiativeRefId": "ini-finance-cleanup",
+            "title": "Pagar deuda Finot y Préstamos Socios",
+            "type": "task",
+            "ownerRefId": "owner-andre",
+            "status": "in_progress",
+            "priority": "high",
+            "startDate": "2026-01-30",
+            "dueDate": "2026-02-05",
+            "estimateHours": 2,
+            "actualHours": 0,
+            "linkToTool": "global66",
+            "acceptanceCriteria": "Transferencias realizadas via Global66/Bancos."
+        },
+        {
+            "refId": "wi-hubspot-buy",
+            "initiativeRefId": "ini-growth-tools",
+            "title": "Comprar HubSpot (Sales + Marketing Starter)",
+            "type": "task",
+            "ownerRefId": "owner-andre",
+            "status": "todo",
+            "priority": "high",
+            "startDate": "2026-02-01",
+            "dueDate": "2026-02-03",
+            "estimateHours": 1,
+            "actualHours": 0,
+            "linkToTool": "hubspot.com",
+            "acceptanceCriteria": "Plan activo, aplicar descuento startup si aplica."
+        },
+        {
+            "refId": "wi-tech-repo",
+            "initiativeRefId": "ini-tech-core",
+            "title": "Crear Repositorio Único Indrox Core con Docs",
+            "type": "deliverable",
+            "ownerRefId": "owner-jj",
+            "status": "doing",
+            "priority": "high",
+            "startDate": "2026-02-01",
+            "dueDate": "2026-02-15",
+            "estimateHours": 20,
+            "actualHours": 5,
+            "linkToTool": "github.com/indrox/core",
+            "acceptanceCriteria": "Docs versionadas, ADR templates, runbooks."
+        },
+        {
+            "refId": "wi-tech-ci",
+            "initiativeRefId": "ini-tech-core",
+            "title": "Implementar Pipeline CI/CD Estándar",
+            "type": "task",
+            "ownerRefId": "owner-jj",
+            "status": "todo",
+            "priority": "high",
+            "startDate": "2026-02-05",
+            "dueDate": "2026-02-28",
+            "estimateHours": 40,
+            "actualHours": 0,
+            "linkToTool": "github actions",
+            "acceptanceCriteria": "Lint/Test/Build/Deploy funcionando en 2 proyectos."
+        },
+        {
+            "refId": "wi-com-ppt",
+            "initiativeRefId": "ini-pricing-model",
+            "title": "Crear Presentación Comercial (Dark Mode + ROI)",
+            "type": "deliverable",
+            "ownerRefId": "owner-arnaldo",
+            "status": "doing",
+            "priority": "high",
+            "startDate": "2026-01-30",
+            "dueDate": "2026-02-05",
+            "estimateHours": 10,
+            "actualHours": 3,
+            "linkToTool": "Presentations AI / Figma",
+            "acceptanceCriteria": "Slide deck listo para cliente Minera y App Multiservicios."
+        },
+        {
+            "refId": "wi-tech-sentry",
+            "initiativeRefId": "ini-tech-core",
+            "title": "Implementar Sentry + Grafana (Observabilidad)",
+            "type": "task",
+            "ownerRefId": "owner-jj",
+            "status": "todo",
+            "priority": "medium",
+            "startDate": "2026-02-10",
+            "dueDate": "2026-02-28",
+            "estimateHours": 15,
+            "actualHours": 0,
+            "linkToTool": "sentry.io",
+            "acceptanceCriteria": "Logs centralizados y alertas básicas configuradas."
+        },
+        {
+            "refId": "wi-com-podcast",
+            "initiativeRefId": "ini-growth-tools",
+            "title": "Piloto Podcast con Clientes",
+            "type": "deliverable",
+            "ownerRefId": "owner-andre",
+            "status": "todo",
+            "priority": "medium",
+            "startDate": "2026-02-15",
+            "dueDate": "2026-02-28",
+            "estimateHours": 8,
+            "actualHours": 0,
+            "linkToTool": "",
+            "acceptanceCriteria": "Grabación con Víctor (Meting) o cliente de confianza en coworking."
+        }
+    ],
+    "keyResultCheckIns": [
+        {
+            "refId": "kr-checkin-fin-1",
+            "krRefId": "kr-fin-revenue",
+            "value": "57000",
+            "previousValue": "0",
+            "comment": "Ingresos acumulados (proyección + pagos recientes)."
+        },
+        {
+            "refId": "kr-checkin-core-1",
+            "krRefId": "kr-tec-core",
+            "value": "20",
+            "previousValue": "0",
+            "comment": "Inicio de documentación y Facebolt migrado."
+        }
+    ],
+    "checkInEvidence": [
+        {
+            "checkInRefId": "kr-checkin-fin-1",
+            "url": "https://global66.com/dashboard",
+            "name": "Global66 Balance",
+            "description": "Captura de balance actual y transferencias."
+        }
+    ],
+    "checkins": [
+        {
+            "entityType": "initiative",
+            "entityRefId": "ini-finance-cleanup",
+            "ownerRefId": "owner-andre",
+            "checkinDate": "2026-01-31",
+            "status": "in_progress",
+            "confidence": 90,
+            "progressNote": "Cuenta Global66 activa, primeros pagos realizados (Julio, devs). Falta liquidar Finot.",
+            "nextActions": "Realizar transferencia a Finot y ajustar sueldos +200 PEN.",
+            "blockers": null
+        }
+    ],
+    "dependencies": [
+        {
+            "fromType": "initiative",
+            "fromRefId": "ini-tech-data",
+            "toType": "work_item",
+            "toRefId": "wi-hubspot-buy",
+            "dependencyType": "blocks",
+            "notes": "Necesitamos HubSpot activo para conectar Airbyte como fuente de datos en el futuro."
+        },
+        {
+            "fromType": "work_item",
+            "fromRefId": "wi-com-ppt",
+            "toType": "initiative",
+            "toRefId": "ini-pricing-model",
+            "dependencyType": "requires",
+            "notes": "La presentación depende de la definición final del modelo de precios (Costo+Overhead+Margen)."
+        }
+    ]
+}

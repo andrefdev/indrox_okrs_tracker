@@ -3,6 +3,8 @@ import { getOwners } from "@/db/queries/owners";
 import { getAreas } from "@/db/queries/areas";
 import { OwnersClient } from "@/components/admin/owners/OwnersClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function OwnersPage() {
     const owners = await getOwners();
     const areas = await getAreas();

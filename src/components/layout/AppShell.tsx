@@ -23,7 +23,7 @@ export function AppShell({ children, user }: AppShellProps) {
         <div className="min-h-screen bg-default-50 dark:bg-default-50">
             {/* Desktop Sidebar */}
             <aside
-                className={`fixed left-0 top-0 z-40 h-screen transition-transform duration-300 ease-in-out ${sidebarOpen ? "w-[260px]" : "w-[72px]"
+                className={`fixed left-0 top-0 z-40 h-screen transition-transform duration-300 ease-in-out ${sidebarOpen ? "w-[240px]" : "w-[72px]"
                     } hidden lg:block`}
             >
                 <Sidebar
@@ -42,7 +42,7 @@ export function AppShell({ children, user }: AppShellProps) {
 
             {/* Mobile Sidebar */}
             <aside
-                className={`fixed left-0 top-0 z-40 h-screen w-[260px] transition-transform duration-300 ease-in-out lg:hidden ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed left-0 top-0 z-40 h-screen w-[240px] transition-transform duration-300 ease-in-out lg:hidden ${mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 <Sidebar
@@ -61,7 +61,7 @@ export function AppShell({ children, user }: AppShellProps) {
                     sidebarCollapsed={!sidebarOpen}
                     user={user}
                 />
-                <main className="min-h-[calc(100vh-64px)] p-4 md:p-6">
+                <main className="min-h-[calc(100vh-48px)] p-4 md:p-5">
                     {children}
                 </main>
             </div>

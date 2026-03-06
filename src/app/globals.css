@@ -50,6 +50,11 @@
     --font-sans: var(--font-inter);
 }
 
+/* Fix rounded corner artifacts on cards with colored inner backgrounds */
+[data-heroui="card"] {
+    overflow: hidden;
+}
+
 .dark,
 [data-theme="dark"] {
     color-scheme: dark;

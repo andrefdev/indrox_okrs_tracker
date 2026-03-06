@@ -7,13 +7,21 @@ import { PageHeader, LoadingSkeleton } from "@/components/ui";
 import { InitiativesClient } from "@/components/initiatives/InitiativesClient";
 
 export default async function InitiativesPage() {
-    // Fetch all necessary data
-    const [initiatives, cycles, owners, areas] = await Promise.all([
-        getInitiatives(),
-        getCycles(),
-        getOwners(),
-        getAreas(),
-    ]);
+    let initiatives: any[] = [];
+    let cycles: any[] = [];
+    let owners: any[] = [];
+    let areas: any[] = [];
+
+    try {
+        [initiatives, cycles, owners, areas] = await Promise.all([
+            getInitiatives(),
+            getCycles(),
+            getOwners(),
+            getAreas(),
+        ]);
+    } catch (error) {
+        console.error("Error loading initiatives data:", error);
+    }
 
     return (
         <div>
@@ -24,7 +32,7 @@ export default async function InitiativesPage() {
 
             <Suspense fallback={<LoadingSkeleton variant="table" />}>
                 <InitiativesClient
-                    initiatives={initiatives as any}
+                    initiatives={initiatives}
                     cycles={cycles}
                     owners={owners}
                     areas={areas}

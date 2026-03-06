@@ -17,9 +17,6 @@ import {
 } from "lucide-react";
 import { type UserRole, ADMIN_ROLES, ALL_ROLES } from "@/types/user";
 
-/**
- * Navigation item configuration
- */
 export interface NavItem {
     id: string;
     label: string;
@@ -29,157 +26,80 @@ export interface NavItem {
     badge?: string;
 }
 
-/**
- * Navigation section with grouped items
- */
 export interface NavSection {
     id: string;
     title: string;
+    icon: LucideIcon;
     items: NavItem[];
+    href?: string;
+    roles: UserRole[];
+    defaultCollapsed?: boolean;
 }
 
-/**
- * Main navigation configuration
- */
 export const navigation: NavSection[] = [
     {
-        id: "main",
-        title: "Principal",
-        items: [
-            {
-                id: "dashboard",
-                label: "Dashboard",
-                href: "/dashboard",
-                icon: LayoutDashboard,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "cycles",
-                label: "Ciclos",
-                href: "/cycles",
-                icon: Calendar,
-                roles: ALL_ROLES,
-            },
-        ],
+        id: "dashboard",
+        title: "Dashboard",
+        icon: LayoutDashboard,
+        href: "/dashboard",
+        roles: ALL_ROLES,
+        items: [],
     },
     {
         id: "okr",
         title: "OKRs",
+        icon: Target,
+        roles: ALL_ROLES,
         items: [
-            {
-                id: "objectives",
-                label: "Objetivos",
-                href: "/objectives",
-                icon: Target,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "initiatives",
-                label: "Iniciativas",
-                href: "/initiatives",
-                icon: Rocket,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "work-items",
-                label: "Work Items",
-                href: "/work-items",
-                icon: ListTodo,
-                roles: ALL_ROLES,
-            },
+            { id: "cycles", label: "Ciclos", href: "/cycles", icon: Calendar, roles: ALL_ROLES },
+            { id: "objectives", label: "Objetivos", href: "/objectives", icon: Target, roles: ALL_ROLES },
+            { id: "initiatives", label: "Iniciativas", href: "/initiatives", icon: Rocket, roles: ALL_ROLES },
+            { id: "work-items", label: "Work Items", href: "/work-items", icon: ListTodo, roles: ALL_ROLES },
         ],
     },
     {
         id: "tracking",
         title: "Seguimiento",
+        icon: ClipboardCheck,
+        roles: ALL_ROLES,
+        defaultCollapsed: true,
         items: [
-            {
-                id: "checkins",
-                label: "Check-ins",
-                href: "/checkins",
-                icon: ClipboardCheck,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "evidence",
-                label: "Evidencia",
-                href: "/evidence",
-                icon: FileText,
-                roles: ALL_ROLES,
-            },
+            { id: "checkins", label: "Check-ins", href: "/checkins", icon: ClipboardCheck, roles: ALL_ROLES },
+            { id: "evidence", label: "Evidencia", href: "/evidence", icon: FileText, roles: ALL_ROLES },
         ],
     },
     {
         id: "governance",
         title: "Gobernanza",
+        icon: AlertTriangle,
+        roles: ALL_ROLES,
+        defaultCollapsed: true,
         items: [
-            {
-                id: "risks",
-                label: "Riesgos",
-                href: "/risks",
-                icon: AlertTriangle,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "dependencies",
-                label: "Dependencias",
-                href: "/dependencies",
-                icon: Link2,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "budget",
-                label: "Presupuesto",
-                href: "/budget",
-                icon: DollarSign,
-                roles: ALL_ROLES,
-            },
-            {
-                id: "decisions",
-                label: "Decisiones",
-                href: "/decisions",
-                icon: FileCheck,
-                roles: ALL_ROLES,
-            },
+            { id: "risks", label: "Riesgos", href: "/risks", icon: AlertTriangle, roles: ALL_ROLES },
+            { id: "dependencies", label: "Dependencias", href: "/dependencies", icon: Link2, roles: ALL_ROLES },
+            { id: "budget", label: "Presupuesto", href: "/budget", icon: DollarSign, roles: ALL_ROLES },
+            { id: "decisions", label: "Decisiones", href: "/decisions", icon: FileCheck, roles: ALL_ROLES },
         ],
     },
     {
         id: "admin",
-        title: "Administración",
+        title: "Admin",
+        icon: Settings,
+        roles: ADMIN_ROLES,
+        defaultCollapsed: true,
         items: [
-            {
-                id: "owners",
-                label: "Usuarios",
-                href: "/admin/owners",
-                icon: Users,
-                roles: ADMIN_ROLES,
-            },
-            {
-                id: "areas",
-                label: "Áreas",
-                href: "/admin/areas",
-                icon: Building2,
-                roles: ADMIN_ROLES,
-            },
-            {
-                id: "settings",
-                label: "Configuración",
-                href: "/admin/settings",
-                icon: Settings,
-                roles: ADMIN_ROLES,
-            },
+            { id: "owners", label: "Usuarios", href: "/admin/owners", icon: Users, roles: ADMIN_ROLES },
+            { id: "areas", label: "Áreas", href: "/admin/areas", icon: Building2, roles: ADMIN_ROLES },
+            { id: "settings", label: "Configuración", href: "/admin/settings", icon: Settings, roles: ADMIN_ROLES },
         ],
     },
 ];
 
-/**
- * Filter navigation items based on user role
- */
 export function getNavigationForRole(role: UserRole): NavSection[] {
     return navigation
+        .filter((section) => section.roles.includes(role))
         .map((section) => ({
             ...section,
             items: section.items.filter((item) => item.roles.includes(role)),
-        }))
-        .filter((section) => section.items.length > 0);
+        }));
 }

@@ -1,4 +1,4 @@
-import { Target } from "lucide-react";
+import { IndroxLogo } from "@/components/icons/IndroxLogo";
 
 export default function AuthLayout({
     children,
@@ -10,7 +10,7 @@ export default function AuthLayout({
             {/* Logo */}
             <div className="mb-8 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-lg">
-                    <Target className="h-7 w-7 text-primary-foreground" />
+                    <IndroxLogo className="h-7 w-7 text-primary-foreground" />
                 </div>
                 <span className="text-2xl font-bold text-foreground">Indrox OKRs</span>
             </div>

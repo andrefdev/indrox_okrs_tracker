@@ -35,6 +35,7 @@ export function CheckInModal({ isOpen, onClose, keyResult }: CheckInModalProps) 
     // Form State
     const [value, setValue] = useState("");
     const [comment, setComment] = useState("");
+    const [confidence, setConfidence] = useState<number>(50);
     const [evidenceList, setEvidenceList] = useState<EvidenceInput[]>([]);
 
     // Evidence Input State
@@ -50,6 +51,7 @@ export function CheckInModal({ isOpen, onClose, keyResult }: CheckInModalProps) 
         if (isOpen && keyResult) {
             setValue(keyResult.currentValue || "");
             setComment("");
+            setConfidence(keyResult.confidence ?? 50);
             setEvidenceList([]);
             setNewEvidenceName("");
             setNewEvidenceUrl("");
@@ -104,7 +106,7 @@ export function CheckInModal({ isOpen, onClose, keyResult }: CheckInModalProps) 
                     value: value,
                     previousValue: keyResult.currentValue,
                     comment: comment || null,
-                }, evidenceList);
+                }, evidenceList, confidence);
 
                 toast.success("Progreso actualizado correctamente");
                 onClose();
@@ -152,6 +154,26 @@ export function CheckInModal({ isOpen, onClose, keyResult }: CheckInModalProps) 
                                             />
                                             <span className="text-sm text-default-500">{keyResult.unit}</span>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm font-medium">Confianza: {confidence}%</label>
+                                    <input
+                                        type="range"
+                                        min={0}
+                                        max={100}
+                                        step={5}
+                                        value={confidence}
+                                        onChange={(e) => setConfidence(Number(e.target.value))}
+                                        className="w-full accent-primary"
+                                    />
+                                    <div className="flex justify-between text-[10px] text-default-400">
+                                        <span>0%</span>
+                                        <span className={`font-medium ${confidence >= 70 ? "text-success" : confidence >= 40 ? "text-warning" : "text-danger"}`}>
+                                            {confidence >= 70 ? "Alta" : confidence >= 40 ? "Media" : "Baja"}
+                                        </span>
+                                        <span>100%</span>
                                     </div>
                                 </div>
 

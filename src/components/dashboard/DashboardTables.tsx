@@ -1,15 +1,16 @@
 "use client";
 
-import { Card, CardHeader } from "@heroui/react";
+import { Card } from "@heroui/react";
 import Link from "next/link";
 import { StatusChip, PriorityChip } from "@/components/ui";
+import { AlertTriangle, Clock } from "lucide-react";
 
 interface DashboardTablesProps {
     blocked: {
         objectives: any[];
         initiatives: any[];
     };
-    noEvidence: any[]; // Initiatives
+    noEvidence: any[];
     priorities: {
         objectives: any[];
         initiatives: any[];
@@ -17,162 +18,128 @@ interface DashboardTablesProps {
 }
 
 export function DashboardTables({ blocked, noEvidence, priorities }: DashboardTablesProps) {
+    const blockedItems = [
+        ...blocked.objectives.map((o) => ({
+            key: o.objectiveKey,
+            title: o.title,
+            type: "Objetivo" as const,
+            link: `/objectives/${o.objectiveKey}`,
+            owner: o.owner?.fullName,
+            status: o.status,
+            priority: o.priority,
+        })),
+        ...blocked.initiatives.map((i) => ({
+            key: i.initiativeKey,
+            title: i.name,
+            type: "Iniciativa" as const,
+            link: `/initiatives`,
+            owner: i.owner?.fullName,
+            status: i.status,
+            priority: i.priority,
+        })),
+    ];
+
+    const highPriorityItems = [
+        ...priorities.objectives.map((o) => ({
+            key: o.objectiveKey,
+            title: o.title,
+            type: "Objetivo" as const,
+            link: `/objectives/${o.objectiveKey}`,
+            priority: o.priority,
+        })),
+        ...priorities.initiatives.map((i) => ({
+            key: i.initiativeKey,
+            title: i.name,
+            type: "Iniciativa" as const,
+            link: `/initiatives`,
+            priority: i.priority,
+        })),
+    ];
+
+    const hasAlerts = blockedItems.length > 0 || highPriorityItems.length > 0 || noEvidence.length > 0;
+
+    if (!hasAlerts) {
+        return (
+            <Card className="p-6 text-center text-default-400">
+                <p className="text-sm">No hay alertas activas. Todo va bien.</p>
+            </Card>
+        );
+    }
+
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Blocked Items */}
-            <Card className="lg:col-span-2">
-                <CardHeader>
-                    <h3 className="font-bold text-lg text-danger">Bloqueados / En Riesgo</h3>
-                </CardHeader>
-                <div className="p-4">
-                    <div className="w-full overflow-x-auto">
-                        <table className="w-full text-sm text-left">
-                            <thead className="border-b bg-default-100 uppercase text-xs font-semibold text-default-500">
-                                <tr>
-                                    <th className="px-4 py-3">TIPO</th>
-                                    <th className="px-4 py-3">TÍTULO</th>
-                                    <th className="px-4 py-3">OWNER</th>
-                                    <th className="px-4 py-3">STATUS</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-default-200">
-                                {[
-                                    ...blocked.objectives.map((o) => ({ ...o, type: "Objective", link: `/objectives/${o.objectiveKey}` })),
-                                    ...blocked.initiatives.map((i) => ({ ...i, type: "Initiative", title: i.name, link: `/initiatives/${i.initiativeKey}` })),
-                                ].length === 0 ? (
-                                    <tr><td colSpan={4} className="px-4 py-3 text-center">No hay items bloqueados.</td></tr>
-                                ) : (
-                                    [
-                                        ...blocked.objectives.map((o) => ({ ...o, type: "Objective", link: `/objectives/${o.objectiveKey}` })),
-                                        ...blocked.initiatives.map((i) => ({ ...i, type: "Initiative", title: i.name, link: `/initiatives/${i.initiativeKey}` })),
-                                    ].map((item: any) => (
-                                        <tr key={item.objectiveKey || item.initiativeKey} className="hover:bg-default-50">
-                                            <td className="px-4 py-3">
-                                                <span className="px-2 py-0.5 rounded-md text-xs font-medium bg-default-100 text-default-600">
-                                                    {item.type}
-                                                </span>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <Link href={item.link} className="font-medium hover:underline">
-                                                    {item.title}
-                                                </Link>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                {item.owner ? (
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold uppercase">
-                                                            {item.owner.fullName.charAt(0)}
-                                                        </div>
-                                                        <div className="text-sm font-medium">{item.owner.fullName}</div>
-                                                    </div>
-                                                ) : "-"}
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <StatusChip status={item.status} />
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+        <div className="space-y-4">
+            {/* Blocked / At Risk */}
+            {blockedItems.length > 0 && (
+                <Card className="p-4">
+                    <h3 className="text-sm font-semibold text-danger flex items-center gap-1.5 mb-3">
+                        <AlertTriangle className="h-3.5 w-3.5" />
+                        En Riesgo / Bloqueados ({blockedItems.length})
+                    </h3>
+                    <div className="space-y-2">
+                        {blockedItems.map((item) => (
+                            <div key={item.key} className="flex items-center justify-between gap-3 py-1.5 px-2 rounded-lg hover:bg-default-50">
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <span className="text-[10px] uppercase font-medium text-default-400 w-16 shrink-0">
+                                        {item.type}
+                                    </span>
+                                    <Link href={item.link} className="text-sm font-medium truncate hover:underline">
+                                        {item.title}
+                                    </Link>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    {item.owner && <span className="text-xs text-default-400">{item.owner}</span>}
+                                    <StatusChip status={item.status} />
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                </div>
-            </Card>
+                </Card>
+            )}
 
-            {/* High Priority Items */}
-            <Card>
-                <CardHeader>
-                    <h3 className="font-bold text-lg">Prioridad Alta</h3>
-                </CardHeader>
-                <div className="p-4">
-                    <div className="w-full overflow-x-auto">
-                        <table className="w-full text-sm text-left">
-                            <thead className="border-b bg-default-100 uppercase text-xs font-semibold text-default-500">
-                                <tr>
-                                    <th className="px-4 py-3">TIPO</th>
-                                    <th className="px-4 py-3">ITEM</th>
-                                    <th className="px-4 py-3">PRIORIDAD</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-default-200">
-                                {[
-                                    ...priorities.objectives.map((o) => ({ ...o, type: "Objective", link: `/objectives/${o.objectiveKey}` })),
-                                    ...priorities.initiatives.map((i) => ({ ...i, type: "Initiative", title: i.name, link: `/initiatives/${i.initiativeKey}` })),
-                                ].length === 0 ? (
-                                    <tr><td colSpan={3} className="px-4 py-3 text-center">No hay items de prioridad alta/crítica.</td></tr>
-                                ) : (
-                                    [
-                                        ...priorities.objectives.map((o) => ({ ...o, type: "Objective", link: `/objectives/${o.objectiveKey}` })),
-                                        ...priorities.initiatives.map((i) => ({ ...i, type: "Initiative", title: i.name, link: `/initiatives/${i.initiativeKey}` })),
-                                    ].map((item: any) => (
-                                        <tr key={item.objectiveKey || item.initiativeKey} className="hover:bg-default-50">
-                                            <td className="px-4 py-3">
-                                                <span className="text-xs text-default-500 uppercase">{item.type}</span>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <Link href={item.link} className="whitespace-normal block min-w-[150px] hover:underline">
-                                                    {item.title}
-                                                </Link>
-                                                {item.dueDate && (
-                                                    <span className="text-xs text-default-400 block">Due: {new Date(item.dueDate).toLocaleDateString()}</span>
-                                                )}
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                <PriorityChip priority={item.priority} />
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </Card>
+            {/* High Priority + No Evidence in a row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {highPriorityItems.length > 0 && (
+                    <Card className="p-4">
+                        <h3 className="text-sm font-semibold flex items-center gap-1.5 mb-3">
+                            Prioridad Alta ({highPriorityItems.length})
+                        </h3>
+                        <div className="space-y-2">
+                            {highPriorityItems.map((item) => (
+                                <div key={item.key} className="flex items-center justify-between gap-3 py-1.5 px-2 rounded-lg hover:bg-default-50">
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <span className="text-[10px] uppercase font-medium text-default-400 w-16 shrink-0">
+                                            {item.type}
+                                        </span>
+                                        <Link href={item.link} className="text-sm truncate hover:underline">
+                                            {item.title}
+                                        </Link>
+                                    </div>
+                                    <PriorityChip priority={item.priority} />
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                )}
 
-            {/* No Recent Evidence */}
-            <Card>
-                <CardHeader>
-                    <h3 className="font-bold text-lg text-warning">Sin Evidencia Reciente (+7 días)</h3>
-                </CardHeader>
-                <div className="p-4">
-                    <div className="w-full overflow-x-auto">
-                        <table className="w-full text-sm text-left">
-                            <thead className="border-b bg-default-100 uppercase text-xs font-semibold text-default-500">
-                                <tr>
-                                    <th className="px-4 py-3">INICIATIVA</th>
-                                    <th className="px-4 py-3">OWNER</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-default-200">
-                                {noEvidence.length === 0 ? (
-                                    <tr><td colSpan={2} className="px-4 py-3 text-center">Todo actualizado.</td></tr>
-                                ) : (
-                                    noEvidence.map((item: any) => (
-                                        <tr key={item.initiativeKey} className="hover:bg-default-50">
-                                            <td className="px-4 py-3">
-                                                <Link href={`/initiatives/${item.initiativeKey}`} className="font-medium hover:underline">
-                                                    {item.name}
-                                                </Link>
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                {item.owner ? (
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold uppercase">
-                                                            {item.owner.fullName.charAt(0)}
-                                                        </div>
-                                                        <div className="text-sm font-medium">{item.owner.fullName}</div>
-                                                    </div>
-                                                ) : "-"}
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </Card>
-
+                {noEvidence.length > 0 && (
+                    <Card className="p-4">
+                        <h3 className="text-sm font-semibold text-warning flex items-center gap-1.5 mb-3">
+                            <Clock className="h-3.5 w-3.5" />
+                            Sin evidencia reciente ({noEvidence.length})
+                        </h3>
+                        <div className="space-y-2">
+                            {noEvidence.map((item: any) => (
+                                <div key={item.initiativeKey} className="flex items-center justify-between gap-3 py-1.5 px-2 rounded-lg hover:bg-default-50">
+                                    <span className="text-sm truncate">{item.name}</span>
+                                    {item.owner && (
+                                        <span className="text-xs text-default-400 shrink-0">{item.owner.fullName}</span>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                )}
+            </div>
         </div>
     );
 }

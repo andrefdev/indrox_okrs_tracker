@@ -34,7 +34,8 @@ export async function getCheckIns(krId: string) {
  */
 export async function createCheckIn(
     data: Omit<NewKeyResultCheckIn, "id" | "createdAt">,
-    evidenceList: Omit<NewCheckInEvidence, "id" | "checkInId" | "createdAt">[] = []
+    evidenceList: Omit<NewCheckInEvidence, "id" | "checkInId" | "createdAt">[] = [],
+    confidence?: number
 ) {
     await requireAuth();
 
@@ -52,13 +53,18 @@ export async function createCheckIn(
             );
         }
 
-        // 3. Update Key Result current value
+        // 3. Update Key Result current value and confidence
+        const updateData: any = {
+            currentValue: data.value,
+            updatedAt: new Date(),
+        };
+        if (confidence !== undefined) {
+            updateData.confidence = confidence;
+        }
+
         const [updatedKr] = await tx
             .update(keyResult)
-            .set({
-                currentValue: data.value,
-                updatedAt: new Date()
-            })
+            .set(updateData)
             .where(eq(keyResult.krKey, data.krId))
             .returning();
 

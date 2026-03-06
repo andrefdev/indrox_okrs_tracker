@@ -27,74 +27,53 @@ export function ObjectivesTable({ objectives, onEdit }: ObjectivesTableProps) {
 
     if (objectives.length === 0) {
         return (
-            <Card className="p-8 text-center">
-                <div className="text-default-500">
-                    No se encontraron objetivos con los filtros seleccionados.
-                </div>
+            <Card className="p-8 text-center text-default-400">
+                <p className="text-sm">No se encontraron objetivos con los filtros seleccionados.</p>
             </Card>
         );
     }
 
     return (
-        <Card className="overflow-hidden">
+        <Card>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                     <thead className="border-b border-default-200 bg-default-50">
                         <tr>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Título</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Tipo</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Estado</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Confianza</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Owner</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Área</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Prioridad</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Acciones</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Título</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Estado</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Confianza</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Prioridad</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Owner</th>
+                            <th className="px-3 py-2.5 text-right font-medium text-default-600 w-20"></th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-default-100">
                         {objectives.map(({ objective, owner, area }) => (
-                            <tr key={objective.objectiveKey} className="hover:bg-default-50">
-                                <td className="px-4 py-3">
-                                    <div className="max-w-xs">
-                                        <p className="font-medium truncate">{objective.title}</p>
-                                        {objective.description && (
-                                            <p className="text-xs text-default-400 truncate">
-                                                {objective.description}
-                                            </p>
-                                        )}
-                                    </div>
+                            <tr
+                                key={objective.objectiveKey}
+                                className="hover:bg-default-50 cursor-pointer"
+                                onClick={() => handleView(objective.objectiveKey)}
+                            >
+                                <td className="px-3 py-2.5">
+                                    <p className="font-medium truncate max-w-xs">{objective.title}</p>
+                                    {area && (
+                                        <p className="text-xs text-default-400">{area.name}</p>
+                                    )}
                                 </td>
-                                <td className="px-4 py-3">
-                                    <span className="text-sm capitalize">
-                                        {objective.objectiveType}
-                                    </span>
-                                </td>
-                                <td className="px-4 py-3">
+                                <td className="px-3 py-2.5">
                                     <StatusChip status={objective.status} />
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="px-3 py-2.5">
                                     <ConfidenceBadge value={objective.confidence || 0} />
                                 </td>
-                                <td className="px-4 py-3">
-                                    <span className="text-sm">{owner?.fullName || "-"}</span>
-                                </td>
-                                <td className="px-4 py-3">
-                                    <span className="text-sm">{area?.name || "-"}</span>
-                                </td>
-                                <td className="px-4 py-3">
+                                <td className="px-3 py-2.5">
                                     <PriorityChip priority={objective.priority} />
                                 </td>
-                                <td className="px-4 py-3">
-                                    <div className="flex items-center gap-1">
-                                        <Button
-                                            isIconOnly
-                                            variant="ghost"
-                                            size="sm"
-                                            onPress={() => handleView(objective.objectiveKey)}
-                                            aria-label="Ver detalle"
-                                        >
-                                            <Eye className="h-4 w-4" />
-                                        </Button>
+                                <td className="px-3 py-2.5">
+                                    <span className="text-xs text-default-600">{owner?.fullName || "-"}</span>
+                                </td>
+                                <td className="px-3 py-2.5 text-right">
+                                    <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
                                         <Button
                                             isIconOnly
                                             variant="ghost"
@@ -102,7 +81,7 @@ export function ObjectivesTable({ objectives, onEdit }: ObjectivesTableProps) {
                                             onPress={() => onEdit(objective)}
                                             aria-label="Editar"
                                         >
-                                            <Edit className="h-4 w-4" />
+                                            <Edit className="h-4 w-4 text-default-400" />
                                         </Button>
                                     </div>
                                 </td>

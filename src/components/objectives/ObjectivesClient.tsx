@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, Button, Input, Select, ListBox, ListBoxItem } from "@heroui/react";
-import { Plus, Search } from "lucide-react";
+import { Button, Input, Select, ListBox, ListBoxItem } from "@heroui/react";
+import { Plus, Search, FilterX } from "lucide-react";
 import { ObjectivesTable } from "./ObjectivesTable";
 import { ObjectiveModal } from "./ObjectiveModal";
 import type { Objective, OkrCycle } from "@/db/schema/okr";
@@ -43,7 +43,7 @@ const statusOptions = [
 ];
 
 const priorityOptions = [
-    { value: "", label: "Todas las prioridades" },
+    { value: "", label: "Todas" },
     { value: "low", label: "Baja" },
     { value: "medium", label: "Media" },
     { value: "high", label: "Alta" },
@@ -58,9 +58,7 @@ export function ObjectivesClient({
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingObjective, setEditingObjective] = useState<Objective | null>(
-        null
-    );
+    const [editingObjective, setEditingObjective] = useState<Objective | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleFilterChange = (key: string, value: string) => {
@@ -71,6 +69,13 @@ export function ObjectivesClient({
             params.delete(key);
         }
         router.push(`/objectives?${params.toString()}`);
+    };
+
+    const hasFilters = currentFilters.cycleId || currentFilters.status || currentFilters.priority || searchQuery;
+
+    const clearFilters = () => {
+        setSearchQuery("");
+        router.push("/objectives");
     };
 
     const handleEdit = (objective: Objective) => {
@@ -88,7 +93,6 @@ export function ObjectivesClient({
         setEditingObjective(null);
     };
 
-    // Filter by search query
     const filteredObjectives = objectives.filter((obj) =>
         obj.objective.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -96,105 +100,103 @@ export function ObjectivesClient({
     return (
         <div className="space-y-4">
             {/* Filters */}
-            <Card className="p-4">
-                <div className="flex flex-wrap items-center gap-4">
-                    {/* Search */}
-                    <div className="relative flex-1 min-w-[200px]">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-default-400" />
-                        <Input
-                            type="search"
-                            placeholder="Buscar objetivos..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-9"
-                        />
-                    </div>
+            <div className="flex flex-wrap items-center gap-3">
+                <div className="relative flex-1 min-w-[180px]">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-default-400" />
+                    <Input
+                        type="search"
+                        placeholder="Buscar objetivos..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-9"
 
-                    {/* Cycle Filter */}
-                    <Select
-                        selectedKey={currentFilters.cycleId || "all"}
-                        onSelectionChange={(key) =>
-                            handleFilterChange("cycleId", key === "all" ? "" : String(key))
-                        }
-                        className="w-40"
-                    >
-                        <Select.Trigger>
-                            <Select.Value />
-                        </Select.Trigger>
-                        <Select.Popover>
-                            <ListBox>
-                                <ListBoxItem key="all" id="all">
-                                    Todos los ciclos
-                                </ListBoxItem>
-                                {cycles.map((cycle) => (
-                                    <ListBoxItem key={cycle.cycleId} id={cycle.cycleId}>
-                                        {cycle.name}
-                                    </ListBoxItem>
-                                ))}
-                            </ListBox>
-                        </Select.Popover>
-                    </Select>
-
-                    {/* Status Filter */}
-                    <Select
-                        selectedKey={currentFilters.status || "all"}
-                        onSelectionChange={(key) =>
-                            handleFilterChange("status", key === "all" ? "" : String(key))
-                        }
-                        className="w-40"
-                    >
-                        <Select.Trigger>
-                            <Select.Value />
-                        </Select.Trigger>
-                        <Select.Popover>
-                            <ListBox>
-                                {statusOptions.map((opt) => (
-                                    <ListBoxItem
-                                        key={opt.value || "all"}
-                                        id={opt.value || "all"}
-                                    >
-                                        {opt.label}
-                                    </ListBoxItem>
-                                ))}
-                            </ListBox>
-                        </Select.Popover>
-                    </Select>
-
-                    {/* Priority Filter */}
-                    <Select
-                        selectedKey={currentFilters.priority || "all"}
-                        onSelectionChange={(key) =>
-                            handleFilterChange("priority", key === "all" ? "" : String(key))
-                        }
-                        className="w-40"
-                    >
-                        <Select.Trigger />
-                        <Select.Popover>
-                            <ListBox>
-                                {priorityOptions.map((opt) => (
-                                    <ListBoxItem
-                                        key={opt.value || "all"}
-                                        id={opt.value || "all"}
-                                    >
-                                        {opt.label}
-                                    </ListBoxItem>
-                                ))}
-                            </ListBox>
-                        </Select.Popover>
-                    </Select>
-
-                    {/* Create Button */}
-                    <Button onPress={handleCreate}>
-                        <Plus className="h-4 w-4" />
-                        Nuevo Objetivo
-                    </Button>
+                    />
                 </div>
-            </Card>
 
-            {/* Table */}
+                <Select
+                    aria-label="Ciclo"
+                    selectedKey={currentFilters.cycleId || "all"}
+                    onSelectionChange={(key) =>
+                        handleFilterChange("cycleId", key === "all" ? "" : String(key))
+                    }
+                    className="w-36"
+
+                >
+                    <Select.Trigger>
+                        <Select.Value />
+                    </Select.Trigger>
+                    <Select.Popover>
+                        <ListBox>
+                            <ListBoxItem key="all" id="all">Todos los ciclos</ListBoxItem>
+                            {cycles.map((cycle) => (
+                                <ListBoxItem key={cycle.cycleId} id={cycle.cycleId}>
+                                    {cycle.name}
+                                </ListBoxItem>
+                            ))}
+                        </ListBox>
+                    </Select.Popover>
+                </Select>
+
+                <Select
+                    aria-label="Estado"
+                    selectedKey={currentFilters.status || "all"}
+                    onSelectionChange={(key) =>
+                        handleFilterChange("status", key === "all" ? "" : String(key))
+                    }
+                    className="w-36"
+
+                >
+                    <Select.Trigger>
+                        <Select.Value />
+                    </Select.Trigger>
+                    <Select.Popover>
+                        <ListBox>
+                            {statusOptions.map((opt) => (
+                                <ListBoxItem key={opt.value || "all"} id={opt.value || "all"}>
+                                    {opt.label}
+                                </ListBoxItem>
+                            ))}
+                        </ListBox>
+                    </Select.Popover>
+                </Select>
+
+                <Select
+                    aria-label="Prioridad"
+                    selectedKey={currentFilters.priority || "all"}
+                    onSelectionChange={(key) =>
+                        handleFilterChange("priority", key === "all" ? "" : String(key))
+                    }
+                    className="w-28"
+
+                >
+                    <Select.Trigger>
+                        <Select.Value />
+                    </Select.Trigger>
+                    <Select.Popover>
+                        <ListBox>
+                            {priorityOptions.map((opt) => (
+                                <ListBoxItem key={opt.value || "all"} id={opt.value || "all"}>
+                                    {opt.label}
+                                </ListBoxItem>
+                            ))}
+                        </ListBox>
+                    </Select.Popover>
+                </Select>
+
+                {hasFilters && (
+                    <Button isIconOnly variant="ghost" onPress={clearFilters} size="sm">
+                        <FilterX className="h-4 w-4 text-default-500" />
+                    </Button>
+                )}
+
+                <Button onPress={handleCreate} size="sm" className="bg-primary text-primary-foreground ml-auto">
+                    <Plus className="h-4 w-4" />
+                    Nuevo
+                </Button>
+            </div>
+
             <ObjectivesTable objectives={filteredObjectives} onEdit={handleEdit} />
 
-            {/* Create/Edit Modal */}
             <ObjectiveModal
                 isOpen={isModalOpen}
                 onClose={handleModalClose}

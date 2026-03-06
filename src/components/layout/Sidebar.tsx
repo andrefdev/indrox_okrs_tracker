@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Target } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { IndroxLogo } from "@/components/icons/IndroxLogo";
 import { Button } from "@heroui/react";
-import { navigation, getNavigationForRole, type NavSection } from "@/config/navigation";
+import { getNavigationForRole, type NavSection } from "@/config/navigation";
 import type { UserRole } from "@/types/user";
 
 interface SidebarProps {
@@ -21,20 +23,19 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
     return (
         <div className="flex h-full flex-col border-r border-default-200 bg-background">
-            {/* Logo Section */}
-            <div className="flex h-16 items-center justify-between border-b border-default-200 px-4">
-                {!collapsed && (
+            {/* Logo */}
+            <div className="flex h-14 items-center justify-between border-b border-default-200 px-3">
+                {!collapsed ? (
                     <Link href="/dashboard" className="flex items-center gap-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                            <Target className="h-5 w-5 text-primary-foreground" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
+                            <IndroxLogo className="h-4 w-4 text-primary-foreground" />
                         </div>
-                        <span className="text-lg font-semibold">OKRs</span>
+                        <span className="text-base font-semibold">OKRs</span>
                     </Link>
-                )}
-                {collapsed && (
+                ) : (
                     <div className="flex w-full justify-center">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                            <Target className="h-5 w-5 text-primary-foreground" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
+                            <IndroxLogo className="h-4 w-4 text-primary-foreground" />
                         </div>
                     </div>
                 )}
@@ -43,86 +44,117 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     variant="ghost"
                     size="sm"
                     onPress={onToggle}
-                    className={`hidden lg:flex ${collapsed ? "absolute -right-3 top-5 z-50 rounded-full border border-default-200 bg-background shadow-sm" : ""}`}
+                    className={`hidden lg:flex ${collapsed ? "absolute -right-3 top-4 z-50 rounded-full border border-default-200 bg-background shadow-sm" : ""}`}
                     aria-label={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
                 >
-                    {collapsed ? (
-                        <ChevronRight className="h-4 w-4" />
-                    ) : (
-                        <ChevronLeft className="h-4 w-4" />
-                    )}
+                    {collapsed ? <ChevronRight className="h-3 w-3" /> : <ChevronLeft className="h-3 w-3" />}
                 </Button>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto p-3">
-                {filteredNavigation.map((section) => (
-                    <NavSectionComponent
-                        key={section.id}
-                        section={section}
-                        collapsed={collapsed}
-                        currentPath={pathname}
-                    />
-                ))}
-            </nav>
-
-            {/* Footer */}
-            {!collapsed && (
-                <div className="border-t border-default-200 p-4">
-                    <p className="text-xs text-default-400">
-                        © 2026 Indrox OKRs
-                    </p>
+            <nav className="flex-1 overflow-y-auto py-2 px-2">
+                <div className="space-y-0.5">
+                    {filteredNavigation.map((section) => (
+                        <NavSectionComponent
+                            key={section.id}
+                            section={section}
+                            collapsed={collapsed}
+                            currentPath={pathname}
+                        />
+                    ))}
                 </div>
-            )}
+            </nav>
         </div>
     );
 }
 
-interface NavSectionComponentProps {
+function NavSectionComponent({
+    section,
+    collapsed,
+    currentPath,
+}: {
     section: NavSection;
     collapsed: boolean;
     currentPath: string;
-}
+}) {
+    const isSectionActive = section.href
+        ? currentPath === section.href
+        : section.items.some(
+              (item) => currentPath === item.href || currentPath.startsWith(`${item.href}/`)
+          );
 
-function NavSectionComponent({ section, collapsed, currentPath }: NavSectionComponentProps) {
+    const [isOpen, setIsOpen] = useState(
+        section.defaultCollapsed ? isSectionActive : true
+    );
+
+    const SectionIcon = section.icon;
+
+    // Direct link section (Dashboard - no children)
+    if (section.href) {
+        return (
+            <Link
+                href={section.href}
+                className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors ${
+                    isSectionActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-default-600 hover:bg-default-100"
+                } ${collapsed ? "justify-center" : ""}`}
+                title={collapsed ? section.title : undefined}
+            >
+                <SectionIcon className="h-4 w-4 flex-shrink-0" />
+                {!collapsed && <span>{section.title}</span>}
+            </Link>
+        );
+    }
+
+    // Collapsible section with children
     return (
-        <div className="mb-4">
-            {!collapsed && (
-                <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-default-400">
-                    {section.title}
-                </h3>
-            )}
-            <ul className="space-y-1">
-                {section.items.map((item) => {
-                    const isActive = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
-                    const Icon = item.icon;
+        <div>
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition-colors ${
+                    isSectionActive && !isOpen
+                        ? "text-primary"
+                        : "text-default-500 hover:bg-default-100 hover:text-default-700"
+                } ${collapsed ? "justify-center" : ""}`}
+                title={collapsed ? section.title : undefined}
+            >
+                <SectionIcon className="h-4 w-4 flex-shrink-0" />
+                {!collapsed && (
+                    <>
+                        <span className="flex-1 text-left text-xs font-medium uppercase tracking-wider">
+                            {section.title}
+                        </span>
+                        <ChevronDown
+                            className={`h-3 w-3 transition-transform ${isOpen ? "" : "-rotate-90"}`}
+                        />
+                    </>
+                )}
+            </button>
 
-                    return (
-                        <li key={item.id}>
+            {!collapsed && isOpen && (
+                <div className="ml-3 mt-0.5 space-y-0.5 border-l border-default-200 pl-2">
+                    {section.items.map((item) => {
+                        const isActive =
+                            currentPath === item.href ||
+                            currentPath.startsWith(`${item.href}/`);
+
+                        return (
                             <Link
+                                key={item.id}
                                 href={item.href}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
-                                        ? "bg-primary/10 text-primary"
-                                        : "text-default-600 hover:bg-default-100 hover:text-default-900"
-                                    } ${collapsed ? "justify-center" : ""}`}
-                                title={collapsed ? item.label : undefined}
+                                className={`flex items-center rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                                    isActive
+                                        ? "bg-primary/10 text-primary font-medium"
+                                        : "text-default-600 hover:bg-default-100"
+                                }`}
                             >
-                                <Icon className="h-5 w-5 flex-shrink-0" />
-                                {!collapsed && (
-                                    <>
-                                        <span className="flex-1">{item.label}</span>
-                                        {item.badge && (
-                                            <span className="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
-                                                {item.badge}
-                                            </span>
-                                        )}
-                                    </>
-                                )}
+                                {item.label}
                             </Link>
-                        </li>
-                    );
-                })}
-            </ul>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }

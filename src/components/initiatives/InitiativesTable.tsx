@@ -9,10 +9,8 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import type { Initiative } from "@/db/schema/okr";
-import type { Owner, Area } from "@/db/schema/core";
 import { useRouter } from "next/navigation";
 
-// Extended type to include relations
 interface InitiativeWithRelations extends Initiative {
     cycle: { cycleId: string; name: string } | null;
     owner: { ownerKey: string; fullName: string } | null;
@@ -29,84 +27,66 @@ export function InitiativesTable({ initiatives, onEdit }: InitiativesTableProps)
     const router = useRouter();
 
     const handleDelete = (id: string, name: string) => {
-        if (confirm(`¿Estás seguro de que quieres eliminar la iniciativa "${name}"?`)) {
+        if (confirm(`¿Eliminar "${name}"?`)) {
             startTransition(async () => {
                 try {
                     await deleteInitiative(id);
-                    toast.success("Iniciativa eliminada correctamente");
-                } catch (error) {
-                    toast.error("Error al eliminar la iniciativa");
-                    console.error(error);
+                    toast.success("Iniciativa eliminada");
+                } catch {
+                    toast.error("Error al eliminar");
                 }
             });
         }
     };
 
-    const handleView = (id: string) => {
-        router.push(`/initiatives/${id}`);
-    }
-
     if (initiatives.length === 0) {
         return (
-            <Card className="p-8 text-center">
-                <div className="text-default-500">
-                    No se encontraron iniciativas. Crea una nueva para comenzar.
-                </div>
+            <Card className="p-8 text-center text-default-400">
+                <p className="text-sm">No se encontraron iniciativas.</p>
             </Card>
         );
     }
 
     return (
-        <Card className="overflow-hidden">
+        <Card>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                     <thead className="border-b border-default-200 bg-default-50">
                         <tr>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Nombre</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Estado</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Prioridad</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Owner</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Ciclo</th>
-                            <th className="px-4 py-3 text-left font-medium text-default-600">Fechas</th>
-                            <th className="px-4 py-3 text-right font-medium text-default-600">Acciones</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Nombre</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Estado</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Prioridad</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Owner</th>
+                            <th className="px-3 py-2.5 text-left font-medium text-default-600">Entrega</th>
+                            <th className="px-3 py-2.5 text-right font-medium text-default-600 w-20"></th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-default-100">
                         {initiatives.map((item) => (
                             <tr key={item.initiativeKey} className="hover:bg-default-50">
-                                <td className="px-4 py-3 font-medium">
-                                    <div
-                                        className="cursor-pointer hover:text-primary transition-colors"
-                                        onClick={() => handleView(item.initiativeKey)}
-                                    >
-                                        {item.name}
-                                    </div>
+                                <td className="px-3 py-2.5">
+                                    <p className="font-medium truncate max-w-xs">{item.name}</p>
                                     {item.area && (
-                                        <div className="text-xs text-default-400">
-                                            {item.area.name}
-                                        </div>
+                                        <p className="text-xs text-default-400">{item.area.name}</p>
                                     )}
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="px-3 py-2.5">
                                     <StatusChip status={item.status} />
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="px-3 py-2.5">
                                     <PriorityChip priority={item.priority} />
                                 </td>
-                                <td className="px-4 py-3 text-default-600">
-                                    {item.owner?.fullName || "-"}
+                                <td className="px-3 py-2.5">
+                                    <span className="text-xs text-default-600">
+                                        {item.owner?.fullName || "-"}
+                                    </span>
                                 </td>
-                                <td className="px-4 py-3 text-default-600">
-                                    {item.cycle?.name || "-"}
-                                </td>
-                                <td className="px-4 py-3 text-default-600 text-xs">
-                                    <div>
-                                        {item.startDate ? format(new Date(item.startDate), "d MMM", { locale: es }) : "-"}
-                                        <span className="mx-1">→</span>
+                                <td className="px-3 py-2.5">
+                                    <span className="text-xs text-default-600">
                                         {item.dueDate ? format(new Date(item.dueDate), "d MMM", { locale: es }) : "-"}
-                                    </div>
+                                    </span>
                                 </td>
-                                <td className="px-4 py-3 text-right">
+                                <td className="px-3 py-2.5 text-right">
                                     <div className="flex items-center justify-end gap-1">
                                         <Button
                                             isIconOnly
@@ -116,9 +96,8 @@ export function InitiativesTable({ initiatives, onEdit }: InitiativesTableProps)
                                             aria-label="Editar"
                                             isDisabled={isPending}
                                         >
-                                            <Edit className="h-4 w-4" />
+                                            <Edit className="h-4 w-4 text-default-400" />
                                         </Button>
-
                                         <Button
                                             isIconOnly
                                             variant="ghost"
@@ -126,9 +105,8 @@ export function InitiativesTable({ initiatives, onEdit }: InitiativesTableProps)
                                             onPress={() => handleDelete(item.initiativeKey, item.name)}
                                             aria-label="Eliminar"
                                             isDisabled={isPending}
-                                            className="text-danger"
                                         >
-                                            <Trash2 className="h-4 w-4" />
+                                            <Trash2 className="h-4 w-4 text-danger" />
                                         </Button>
                                     </div>
                                 </td>

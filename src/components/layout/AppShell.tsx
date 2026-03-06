@@ -53,7 +53,7 @@ export function AppShell({ children, user }: AppShellProps) {
 
             {/* Main Content Area */}
             <div
-                className={`transition-all duration-300 ease-in-out ${sidebarOpen ? "lg:ml-[260px]" : "lg:ml-[72px]"
+                className={`transition-all duration-300 ease-in-out ${sidebarOpen ? "lg:ml-[240px]" : "lg:ml-[72px]"
                     }`}
             >
                 <Topbar

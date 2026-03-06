@@ -24,7 +24,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     return (
         <div className="flex h-full flex-col border-r border-default-200 bg-background">
             {/* Logo */}
-            <div className="flex h-14 items-center justify-between border-b border-default-200 px-3">
+            <div className="flex h-12 items-center justify-between border-b border-default-200 px-3">
                 {!collapsed ? (
                     <Link href="/dashboard" className="flex items-center gap-2">
                         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">

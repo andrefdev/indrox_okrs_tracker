@@ -13,6 +13,7 @@ import {
     Building2,
     Settings,
     Calendar,
+    GanttChart,
     type LucideIcon,
 } from "lucide-react";
 import { type UserRole, ADMIN_ROLES, ALL_ROLES } from "@/types/user";
@@ -52,6 +53,7 @@ export const navigation: NavSection[] = [
         roles: ALL_ROLES,
         items: [
             { id: "cycles", label: "Ciclos", href: "/cycles", icon: Calendar, roles: ALL_ROLES },
+            { id: "timeline", label: "Timeline", href: "/timeline", icon: GanttChart, roles: ALL_ROLES },
             { id: "objectives", label: "Objetivos", href: "/objectives", icon: Target, roles: ALL_ROLES },
             { id: "initiatives", label: "Iniciativas", href: "/initiatives", icon: Rocket, roles: ALL_ROLES },
             { id: "work-items", label: "Work Items", href: "/work-items", icon: ListTodo, roles: ALL_ROLES },

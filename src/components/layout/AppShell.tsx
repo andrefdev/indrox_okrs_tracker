@@ -3,6 +3,7 @@
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { useState } from "react";
+import type { UserRole } from "@/types/user";
 
 interface UserData {
     name: string;
@@ -29,6 +30,7 @@ export function AppShell({ children, user }: AppShellProps) {
                 <Sidebar
                     collapsed={!sidebarOpen}
                     onToggle={() => setSidebarOpen(!sidebarOpen)}
+                    userRole={user.role as UserRole}
                 />
             </aside>
 
@@ -48,6 +50,7 @@ export function AppShell({ children, user }: AppShellProps) {
                 <Sidebar
                     collapsed={false}
                     onToggle={() => setMobileSidebarOpen(false)}
+                    userRole={user.role as UserRole}
                 />
             </aside>
 

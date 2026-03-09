@@ -3,19 +3,39 @@
 import { useState } from "react";
 import { Card, Input, Button, Link, Label, Spinner } from "@heroui/react";
 import { Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { createClientSupabaseClient } from "@/lib/supabase/client";
 
 export default function ResetPasswordPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        // TODO: Implement actual reset logic with Supabase
-        setTimeout(() => {
+        setError(null);
+
+        const formData = new FormData(e.target as HTMLFormElement);
+        const email = formData.get("email") as string;
+
+        try {
+            const supabase = createClientSupabaseClient();
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/auth/callback?next=/reset/update`,
+            });
+
+            if (error) {
+                setError(error.message);
+                setIsLoading(false);
+                return;
+            }
+
             setIsLoading(false);
             setIsSubmitted(true);
-        }, 1500);
+        } catch {
+            setError("Ocurrió un error inesperado. Intenta de nuevo.");
+            setIsLoading(false);
+        }
     };
 
     if (isSubmitted) {
@@ -58,6 +78,7 @@ export default function ResetPasswordPage() {
                             <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-default-400" />
                             <Input
                                 id="email"
+                                name="email"
                                 type="email"
                                 placeholder="tu@empresa.com"
                                 className="pl-9"
@@ -65,6 +86,10 @@ export default function ResetPasswordPage() {
                             />
                         </div>
                     </div>
+
+                    {error && (
+                        <p className="text-sm text-danger">{error}</p>
+                    )}
 
                     <Button type="submit" fullWidth isPending={isLoading}>
                         {({ isPending }) => (

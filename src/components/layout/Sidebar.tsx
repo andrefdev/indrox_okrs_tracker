@@ -12,13 +12,11 @@ import type { UserRole } from "@/types/user";
 interface SidebarProps {
     collapsed: boolean;
     onToggle: () => void;
+    userRole?: UserRole;
 }
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, userRole = "CEO" }: SidebarProps) {
     const pathname = usePathname();
-
-    // TODO: Get actual user role from auth context
-    const userRole: UserRole = "CEO";
     const filteredNavigation = getNavigationForRole(userRole);
 
     return (

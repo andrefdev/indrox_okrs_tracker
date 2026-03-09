@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Modal, Button, Select, ListBox, ListBoxItem, Slider, Label } from "@heroui/react";
-import { linkInitiativeToObjective } from "@/app/actions/initiatives";
+import { linkInitiativeToObjective, getAvailableInitiatives } from "@/app/actions/initiatives";
 import { toast } from "sonner";
 
 interface LinkInitiativeModalProps {
@@ -31,9 +31,10 @@ export function LinkInitiativeModal({
     // Fetch available initiatives
     useEffect(() => {
         if (isOpen) {
-            // TODO: Fetch from API
-            // For now, this would need a separate query
-            setInitiatives([]);
+            getAvailableInitiatives().then(setInitiatives).catch(() => {
+                toast.error("Error al cargar iniciativas");
+                setInitiatives([]);
+            });
         }
     }, [isOpen]);
 

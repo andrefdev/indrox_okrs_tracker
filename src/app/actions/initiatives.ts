@@ -129,6 +129,29 @@ export async function unlinkInitiativeFromObjective(
 }
 
 /**
+ * Get available initiatives for linking (used by LinkInitiativeModal)
+ */
+export async function getAvailableInitiatives(cycleId?: string) {
+    await requireAuth();
+
+    const conditions = [];
+    if (cycleId) {
+        conditions.push(eq(initiative.cycleId, cycleId));
+    }
+
+    return db
+        .select({
+            initiativeKey: initiative.initiativeKey,
+            name: initiative.name,
+            status: initiative.status,
+            cycleId: initiative.cycleId,
+        })
+        .from(initiative)
+        .where(conditions.length > 0 ? and(...conditions) : undefined)
+        .orderBy(initiative.name);
+}
+
+/**
  * Update initiative status
  */
 export async function updateInitiativeStatus(
